@@ -1,5 +1,5 @@
 import Pages from "../../pages/index";
-import { SignUp } from "../../pages/Signup/Signup";
+import SignUp from "../../pages/Signup";
 
 const { Home, About, Login, Profile, CreateRecipe } = Pages;
 
