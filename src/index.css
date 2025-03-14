@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
@@ -115,10 +116,64 @@
 }
 
 @layer base {
+  :root {
+    --font-open-sans: "Open Sans", sans-serif;
+    --font-poppins: "Poppins", sans-serif;
+  }
+
+  @theme {
+    --color-header: #82ad0c; /* For headings, e.g. header */
+    --color-secondary: #99cc66; /* Small icons, lines, active button, hover */
+    --color-button: #059212; /* Color for main buttons */
+    --color-background: #dae4cf; /* Background */
+    --color-filter-inactive: #31dd50; /* Color for product filter button when inactive */
+    --color-filter-active: #0b5c1a; /* Color for product filter button when active */
+    --color-allergen-filter-inactive: #cbcbcb; /* Color for allergen filter button when inactive */
+    --color-allergen-filter-active: #c94f48; /* Color for allergen filter button when active */
+    --color-calorie-filter-inactive: #737373; /* Color for calorie selection button (deficit, maintenance or surplus) when inactive */
+    --color-calorie-filter-active: #222222; /* Color for calorie selection button (deficit, maintenance or surplus) when active */
+    --color-placeholder: #a59999; /* Color for placeholder text in signup, login forms */
+    --box-shadow-primary: 0px 20px 50px 4px rgba(26, 26, 26, 0.1); /* Primary shadow for elements */
+  }
+
+  .border-primary {
+    border: 2px solid var(--color-border-primary);
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-open-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-poppins);
+  }
+}
+
+@layer utilities {
+  .rounded-small {
+    /* For small elements */
+    border-radius: 6px;
+  }
+  /* For other elements */
+  .rounded-medium {
+    border-radius: 12px;
+  }
+  /* Specifically for product or allergen filter buttons */
+  .rounded-large {
+    border-radius: 16px;
+  }
+
+  .container-responsive {
+    @apply mx-auto px-6 sm:px-8 lg:px-10; /* Centered container with padding */
   }
 }
