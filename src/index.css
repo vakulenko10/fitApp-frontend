@@ -40,7 +40,6 @@
   --destructive: oklch(84.21% 0 0);
   --destructive-foreground:  oklch(100% 0 0);
 
-
   --border: oklch(0.922 0 0);
 
   --input: oklch(0.922 0 0);
@@ -66,22 +65,22 @@
 
 
   /* radius variables */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
+  /* --radius-xs: 4px;
+  --radius-sm: 6px; 
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-2xl: 24px;
-  --radius-full: 999px;
+  --radius-full: 999px; */
 
   /* Spacing (for margin/padding) */
-  --spacing-xs: 4px;
+  /* --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 12px;
   --spacing-lg: 16px;
   --spacing-xl: 24px;
   --spacing-2xl: 32px;
-  --spacing-3xl: 48px;
+  --spacing-3xl: 48px; */
   
   
   /* Font Families */
@@ -90,7 +89,7 @@
   --font-mono: "Courier New", monospace;
 
   /* Font Sizes */
-  --text-xs: 12px;
+  /* --text-xs: 12px;
   --text-sm: 14px;
   --text-md: 16px;
   --text-lg: 18px;
@@ -98,17 +97,7 @@
   --text-2xl: 32px;
   --text-3xl: 40px;
   --text-4xl: 48px;
-  --text-5xl: 64px;
-
-  /* Font Weights */
-  --font-thin: 100;
-  --font-light: 300;
-  --font-regular: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
-  --font-extrabold: 800;
-  --font-black: 900;
+  --text-5xl: 64px; */
 
 }
 
@@ -191,8 +180,6 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-
-
   
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -231,7 +218,51 @@
     --color-placeholder: #a59999; /* Color for placeholder text in signup, login forms */
     --box-shadow-primary: 0px 20px 50px 4px rgba(26, 26, 26, 0.1); /* Primary shadow for elements */
   }
+  body {
+    @apply m-0 p-0;
+  }
 
+  h1, h2, h3, h4, h5, h6 {
+    @apply my-2 p-0;
+  }
+
+  p {
+    @apply my-2 p-0;
+  }
+  a {
+    @apply my-2 p-0;
+  }
+  ul, ol {
+    @apply my-4 pl-6;
+  }
+
+  li {
+    @apply my-1;
+  }
+
+  img {
+    @apply my-4 max-w-full h-auto;
+  }
+
+  input, textarea, select {
+    @apply my-2 p-0;
+  }
+
+  section {
+    @apply my-6 py-6;
+  }
+
+  article {
+    @apply my-6 p-4;
+  }
+
+  header, footer {
+    @apply my-6 py-4;
+  }
+  .container {
+    @apply mx-auto px-4; /* Centering with horizontal padding */
+    max-width: 1200px; /* Set a max width for content */
+  }
   .border-primary {
     border: 2px solid var(--color-border-primary);
   }
