@@ -6,31 +6,53 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* color variables */
+  --background: oklch(90.56% 0.0301 127.9);
+  --foreground: oklch(0% 0 0);
+
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
+
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --popover-foreground:oklch(0% 0 0);
+
+  /* --primary:oklch(41.49% 0.1233 145.19);
+  --primary-foreground: oklch(100% 0 0); */
+
+  --primary:oklch(1 0 0);
+  --primary-foreground: oklch(0.145 0 0);
+
+  --secondary: oklch(41.49% 0.1233 145.19);
+  --secondary-foreground:oklch(100% 0 0); 
+
+  --tertiary: oklch(57.28% 0.1893 143.11);
+  --tertiary-foreground:  oklch(100% 0 0);
+
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
+
+  --accent:oklch(78.6% 0.2278 145.4);
+  --accent-foreground: oklch(100% 0 0);
+
+  --accent-negative:oklch(58.8% 0.1571 26.31);
+  --accent-negative-foreground: oklch(100% 0 0);
+
+  --destructive: oklch(84.21% 0 0);
+  --destructive-foreground:  oklch(100% 0 0);
+
+
   --border: oklch(0.922 0 0);
+
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+
+  --ring: oklch(34.68% 0.0643 142.02);
+
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
+  
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -39,9 +61,58 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --radius: 0.625rem;
+
+
+  /* radius variables */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 999px;
+
+  /* Spacing (for margin/padding) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 48px;
+  
+  
+  /* Font Families */
+  --font-body: "Open Sans", sans-serif;
+  --font-heading: "Poppins", sans-serif;
+  --font-mono: "Courier New", monospace;
+
+  /* Font Sizes */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 40px;
+  --text-4xl: 48px;
+  --text-5xl: 64px;
+
+  /* Font Weights */
+  --font-thin: 100;
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
 }
 
-.dark {
+/* .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
@@ -74,25 +145,44 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
+
+  --color-primary: var(--primary);/* Color for main buttons, */
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
+  
+  --color-secondary: var(--secondary);/* Small icons, lines, active button, hover */
   --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-tertiary: var(--tertiary);/* Small icons, lines, active button, hover */
+  --color-tertiary-foreground: var(--tertiary-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
+
+  --color-accent: var(--accent);/* Color for accent buttons, */
   --color-accent-foreground: var(--accent-foreground);
+
+  --color-accent: var(--accent);/* Color for accent buttons, */
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-accent-negative: var(--accent-negative);/* Color for accent buttons, */
+  --color-accent-negative-foreground: var(--accent-negative-foreground);
+
+
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -101,10 +191,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+
+
+  
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -113,6 +202,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  
 }
 
 @layer base {
@@ -123,9 +218,10 @@
 
   @theme {
     --color-header: #82ad0c; /* For headings, e.g. header */
-    --color-secondary: #99cc66; /* Small icons, lines, active button, hover */
-    --color-button: #059212; /* Color for main buttons */
-    --color-background: #dae4cf; /* Background */
+    --color-button: var(--color-secondary); /* Color for main buttons */
+    --color-button-submit: var(--color-tertiary);
+    /* --color-button-wanted: var(--) */
+    --color-accent: var(--accent);
     --color-filter-inactive: #31dd50; /* Color for product filter button when inactive */
     --color-filter-active: #0b5c1a; /* Color for product filter button when active */
     --color-allergen-filter-inactive: #cbcbcb; /* Color for allergen filter button when inactive */
