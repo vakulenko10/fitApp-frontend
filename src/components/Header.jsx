@@ -1,19 +1,25 @@
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/Button";
 import { AuthData } from "./auth/AuthWrapper";
+import Container from "./Container";
 
 export default function Header() {
   const { user, login, logout } = AuthData();
 
   return (
-    <div className="container mx-auto px-4 md:px-6 lg:px-8">
-      <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
+  
+    
+  
+      <header className="m-0 p-0 bg-header">
+        <Container>
+          <div className="header_inner flex h-20 w-full shrink-0 items-center">
+         
         <Link to="/" className="mr-6 hidden lg:flex">
           <ShirtIcon className="h-6 w-6" />
           <span className="sr-only">ShadCN</span>
         </Link>
-        <div className="ml-auto flex gap-2">
-          <Link to="/about" className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900">
+        <div className="ml-auto flex justify-end items-center gap-2">
+          <Link to="/about" className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900">
             About
           </Link>
 
@@ -35,8 +41,10 @@ export default function Header() {
             </>
           )}
         </div>
-      </header>
+      
     </div>
+    </Container>
+    </header>
   );
 }
 

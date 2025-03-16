@@ -1,8 +1,11 @@
+import ThemeDisplayed from '@/components/ThemeDisplayed'
 import React from 'react'
 
 const About = () => {
   return (
-    <div>About</div>
+    <div>
+       <ThemeDisplayed/>
+    </div>
   )
 }
 
