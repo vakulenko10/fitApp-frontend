@@ -188,7 +188,7 @@ const ThemeDisplayed = () => {
 
         <Dialog>
           <DialogTrigger>
-            <Button>Open dialog</Button>
+            Open dialog
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -202,9 +202,10 @@ const ThemeDisplayed = () => {
         </Dialog>
 
         <Input />
+        
         <Drawer>
           <DrawerTrigger>
-            <Button variant="submit">Open drawer</Button>
+            Open drawer
           </DrawerTrigger>
           <DrawerContent>
             <div className="mx-auto w-full max-w-sm">
@@ -236,11 +237,9 @@ const ThemeDisplayed = () => {
               description: "Your changes have been saved!",
               action: {
                 label: (
-                  <div className="!bg-transparent !p-0 !m-0">
-                    <button className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                    <label className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
                       Retry
-                    </button>
-                  </div>
+                    </label>
                 ),
                 onClick: () => console.log("Undo clicked"),
               },
