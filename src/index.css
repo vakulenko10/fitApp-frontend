@@ -10,6 +10,10 @@
   --background: oklch(90.56% 0.0301 127.9);
   --foreground: oklch(0% 0 0);
 
+  --header: oklch(69.09% 0.1723 125.61);
+  --header-foreground: oklch(100% 0 0);
+
+
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
 
@@ -30,6 +34,9 @@
 
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
+
+  --muted-darker: oklch(55.55% 0 0);
+  --muted-darker-foreground: oklch(100% 0 0);
 
   --accent:oklch(78.6% 0.2278 145.4);
   --accent-foreground: oklch(100% 0 0);
@@ -61,26 +68,29 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --radius: 0.625rem;
+  --spacing: 0.1875rem;
+
+  /* --radius: 0.25rem; */
 
 
   /* radius variables */
-  /* --radius-xs: 4px;
-  --radius-sm: 6px; 
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
-  --radius-full: 999px; */
-
+  --size-xs: 0.25rem;
+  --size-sm: 0.375rem; 
+  --size-md: 0.5rem;
+  --size-lg: 0.75rem;
+  --size-xl: 1rem;
+  --size-2xl: 1.5rem;
+  --size-3xl: 2rem;
+  --size-4xl: 2.5rem;
+  --size-5xl: 3rem;
+  --size-6xl: 3.5rem;
+  --size-7xl: 4rem;
+  --size-8xl: 4.5rem;
+  --size-9xl: 5rem;
+  --size-10xl: 5.5rem;
+  --size-11xl: 6rem;
   /* Spacing (for margin/padding) */
-  /* --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 12px;
-  --spacing-lg: 16px;
-  --spacing-xl: 24px;
-  --spacing-2xl: 32px;
-  --spacing-3xl: 48px; */
+
   
   
   /* Font Families */
@@ -140,6 +150,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
+  --color-header: var(--header);
+  --color-header-foreground: var(--header-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
 
@@ -158,6 +170,8 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
+  --color-muted-darker: var(--muted-darker);
+  --color-muted-darker-foreground: var(--muted-darker-foreground);
   --color-accent: var(--accent);/* Color for accent buttons, */
   --color-accent-foreground: var(--accent-foreground);
 
@@ -190,11 +204,37 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xs:  var(--size-xs);
+  --radius-sm: var(--size-sm);/* most used one */
+  --radius-md: var(--size-md);
+  --radius-lg: var(--size-lg);/* most used one */
+  --radius-xl: var(--size-xl);
+  --radius-2xl: var(--size-2xl);
+  --radius-3xl: var(--size-3xl);
+  --radius-4xl: var(--size-4xl);
+  --radius-5xl: var(--size-5xl);
+  --radius-6xl: var(--size-6xl);
+  --radius-7xl: var(--size-7xl);
+  --radius-8xl: var(--size-8xl);
+  --radius-9xl:var(--size-9xl);
+  --radius-10xl: var(--size-10xl);
+  --radius-11xl: var(--size-11xl);
   
+  --text-xxs: 0.5rem;
+  --text-xs: 0.75rem;
+  --text-sm: 1rem;
+  --text-md: 1.5rem;
+  --text-lg: 2rem;
+  --text-xl: 2.25rem;
+  --text-2xl: 2.5rem;
+  --text-3xl: 3rem;
+  --text-4xl: 3.5rem;
+  --text-5xl: 4rem;
+  --text-6xl: 3rem;
+
+  --font-open-sans: var(--font-body);
+  --font-poppins: var(--font-heading);
+
 }
 
 @layer base {
@@ -218,71 +258,57 @@
     --color-placeholder: #a59999; /* Color for placeholder text in signup, login forms */
     --box-shadow-primary: 0px 20px 50px 4px rgba(26, 26, 26, 0.1); /* Primary shadow for elements */
   }
+  
+  * {
+    @apply border-border outline-ring/50 font-open-sans;
+  }
+  
   body {
-    @apply m-0 p-0;
+    @apply bg-background text-foreground m-0 p-0;
+    font-family: var(--font-open-sans);
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply my-2 p-0;
-  }
-
-  p {
-    @apply my-2 p-0;
-  }
-  a {
-    @apply my-2 p-0;
-  }
-  ul, ol {
-    @apply my-4 pl-6;
-  }
-
-  li {
-    @apply my-1;
-  }
-
-  img {
-    @apply my-4 max-w-full h-auto;
-  }
-
-  input, textarea, select {
-    @apply my-2 p-0;
-  }
-
-  section {
-    @apply my-6 py-6;
-  }
-
-  article {
-    @apply my-6 p-4;
-  }
-
-  header, footer {
-    @apply my-6 py-4;
-  }
+  
   .container {
     @apply mx-auto px-4; /* Centering with horizontal padding */
     max-width: 1200px; /* Set a max width for content */
   }
-  .border-primary {
-    border: 2px solid var(--color-border-primary);
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply m-0 px-2 font-poppins;
+  }
+  h1{
+    @apply text-5xl py-6;
+  }
+  h2{
+    @apply text-3xl  py-5;
+  }
+  h3{
+    @apply text-xl py-4;
+  }
+  h4{
+    @apply text-lg py-3;
+  }
+  h5{
+    @apply text-md py-2;
+  }
+  h6{
+    @apply text-sm py-1;
+  }
+  p {
+    @apply py-2 px-2 text-sm;
+  }
+  a {
+    @apply py-2 px-2 text-sm;
+  }
+  span{
+    @apply py-2 px-2 text-sm;
+  } 
+  ul, ol {
+    @apply py-4 pl-6;
   }
 
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-open-sans);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-poppins);
+  li {
+    @apply my-1;
   }
 }
 
