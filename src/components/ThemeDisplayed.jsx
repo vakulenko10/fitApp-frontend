@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { AuthWrapper } from "./auth/AuthWrapper";
-import Header from "./Header";
-import { RenderRoutes } from "./navigation/RenderRoutes";
+import  Header  from "./navigation/Header";
 import { Button } from "./ui/button";
 import { toast, Toaster } from "sonner";
 import {
