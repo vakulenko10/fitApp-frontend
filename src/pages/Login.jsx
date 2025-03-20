@@ -50,25 +50,23 @@ const Login = () => {
           <div><label>Password:</label>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
           </div>
-          <Button variant={"accent"} onClick={handleLogin}  className="button hidden md:flex" type="onSubmit">Login</Button>
+          <div className="flex flex-col py-2 justify-center items-center gap-2">
+          <Button variant={"accent"} onClick={handleLogin}  className="w-full max-w-[330px]" type="onSubmit">Login</Button>
+          <Button
+          variant={"accent"}
+          onClick={handleGoogleLogin}
+          className="w-full max-w-[330px]">
+            Login with google
+        </Button>
+          </div>
+          
           <p>Don't have an account? <button onClick={() => navigate("/signup")} className="button">Sign Up</button></p>
         </div>
         {/*button out the block on mobile*/}
-        <Button
-          variant={"accent"}
-          onClick={handleLogin}
-          className="button sm:flex md:hidden mt-20 w-full max-w-[330px]"
-          type="onSubmit">
-            Login
-        </Button>
+        
         
       </div>
-      <Button
-          variant={"accent"}
-          onClick={handleGoogleLogin}
-          className="button sm:flex md:hidden mt-20 w-full max-w-[330px]">
-            Login with google
-        </Button>
+      
     </>
   );
 };
