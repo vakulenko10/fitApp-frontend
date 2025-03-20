@@ -10,16 +10,29 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const {login} = AuthData();
+  const {login, googleAuth, setUser, setToken} = AuthData();
   const handleLogin = async () => {
     try {
       await login(email, password);
-      navigate("/profile"); 
+      navigate("/profile");
     } catch (error) {
       alert(error.message);
     }
   };
-
+  const handleGoogleLogin = async () => {
+    try {
+      const { user, token } = await googleAuth();
+      console.log('token in Login:', token)
+      setUser({ ...user, isAuthenticated: true });
+      setToken(token);
+      document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict; Secure`;
+      localStorage.setItem("user", JSON.stringify({ ...user, isAuthenticated: true }));
+      navigate('/profile'); // redirect wherever you need
+    } catch (err) {
+      console.error("Google auth failed:", err);
+    }
+  };
+  
   return (
     <>
       <div className="flex flex-col justify-center items-center min-h-screen" >
@@ -48,7 +61,14 @@ const Login = () => {
           type="onSubmit">
             Login
         </Button>
+        
       </div>
+      <Button
+          variant={"accent"}
+          onClick={handleGoogleLogin}
+          className="button sm:flex md:hidden mt-20 w-full max-w-[330px]">
+            Login with google
+        </Button>
     </>
   );
 };

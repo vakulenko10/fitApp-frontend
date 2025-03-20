@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 export const loginUser = async (email, password) => {
   console.log("Login function called with:", email, password);
   try {
