@@ -2,19 +2,19 @@
 import React from "react"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { loginUser } from "./Authentication.js";
 import { Button } from "../components/ui/button.jsx";
 import { Input } from "../components/ui/input.jsx";
+import { AuthData } from "@/components/auth/AuthWrapper.jsx";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const {login} = AuthData();
   const handleLogin = async () => {
     try {
-      await loginUser(email, password);
-      // navigate("/dashboard"); 
+      await login(email, password);
+      navigate("/profile"); 
     } catch (error) {
       alert(error.message);
     }

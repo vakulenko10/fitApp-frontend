@@ -1,19 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { registerUser } from "./Authentication.js";
+import { AuthData } from "@/components/auth/AuthWrapper.jsx";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+   const {signup} = AuthData();
   const handleSignup = async () => {
     try {
-      await registerUser(name, email, password);
-      alert("Registration successful! You can now log in.");
-      navigate("/login");
+      await signup(name, email, password);
+      navigate("/profile");
     } catch (error) {
       alert(error.message);
     }

@@ -1,5 +1,4 @@
-const API_URL = "https://fitapp-backend.onrender.com";
-
+const API_URL = import.meta.env.VITE_API_URL
 export const loginUser = async (email, password) => {
   console.log("Login function called with:", email, password);
   try {
@@ -26,20 +25,21 @@ export const loginUser = async (email, password) => {
   }
 };
 
-export const getProfile = async () => {
+export const getProfile = async (token) => {
   try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user || !user.token) throw new Error("User not authenticated");
+    // const user = JSON.parse(localStorage.getItem("user"));
+    if (!token) throw new Error("User not authenticated");
 
     const response = await fetch(`${API_URL}/user/profile`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${user.token}`
+        "Authorization": `Bearer ${token}`
       }
     });
     
     const data = await response.json();
+    console.log("data in getProfile:",data)
     if (!response.ok) throw new Error(data.message || "Failed to fetch profile");
     return data;
   } catch (error) {
@@ -47,11 +47,6 @@ export const getProfile = async () => {
     throw error;
   }
 };
-
-getProfile()
-  .then(userData => console.log("User Profile:", userData))
-  .catch(error => console.error("Error fetching profile:", error));
-
 
 export const registerUser = async (name, email, password) => {
   try {
