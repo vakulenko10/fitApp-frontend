@@ -62,7 +62,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Блок активности */}
         <div className="p-6 border rounded-lg flex flex-col items-center mt-6 w-full">
           <p className="mb-4 text-lg font-medium text-center">
             How active are you on a daily basis?
