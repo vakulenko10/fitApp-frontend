@@ -29,12 +29,12 @@ const buttonVariants = cva(
         default: "h-[2rem] px-4 py-2 has-[>svg]:px-3",//for all the buttons except for submit and grey
         sm: " rounded-md gap-1.5 py-2 px-3 has-[>svg]:px-2.5",
         customSm:
-          "h-[1.5rem] w-[4.44rem] md:h-[2.5rem] md:w-[10rem] lg:h-[3.125rem] lg:w-[11.25rem] rounded-md px-4",
+          "h-[2rem] w-[10rem] sm:h-[2.25rem] md:h-[2.5rem] md:w-[10rem] lg:h-[3.125rem] lg:w-[11.25rem] rounded-md px-4",
 
         /*For small buttons, such as those for selecting calorie deficit, maintenance, and surplus, as well as similar-sized buttons.*/
         lg: " text-md rounded-md py-1 px-5 has-[>svg]:px-5",//for submit and grey buttons
         veryLg:
-          "h-[3.25rem] w-[20.625rem] md:h-[2.75rem] md:w-[39.5rem] lg:h-[3.25rem] lg:w-[51rem] rounded-md px-6" /*For large buttons such as Calculate, Create New Receipt, etc., but it's better to double-check.*/,
+          "h-[3rem] w-[16rem] sm:h-[3.25rem] sm:w-[20.625rem] lg:h-[3.25rem] lg:w-[51rem] rounded-md px-6" /*For large buttons such as Calculate, Create New Receipt, etc., but it's better to double-check.*/,
         icon: "size-9",
       },
     },
