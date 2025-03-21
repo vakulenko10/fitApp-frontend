@@ -1,7 +1,5 @@
-
-import React from "react"
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { Button } from "../components/ui/button.jsx";
 import { Input } from "../components/ui/input.jsx";
 import { AuthData } from "@/components/auth/AuthWrapper.jsx";
@@ -15,6 +13,7 @@ const Login = () => {
     try {
       await login(email, password);
       navigate("/profile");
+
     } catch (error) {
       alert(error.message);
     }
@@ -34,11 +33,9 @@ const Login = () => {
   };
   
   return (
-    <>
-      <div className="flex flex-col justify-center items-center min-h-screen" >
-        <h1 className=" h-[100px] bg-background rounded-sm text-center w-full max-w-[330px] md:max-w-[600px] md:hidden">
-          Login
-        </h1>
+    <div className="flex flex-col justify-center items-center min-h-screen">
+      <div className="bg-primary p-10 rounded-lg w-full max-w-[330px] md:max-w-[600px] lg:max-w-[510px] md:pt-[85px] md:pb-[70px] md:px-[50px]  
+      lg:pt-10 lg:pb-6 lg:px-16 px-[15px] pt-[65px] pb-[70px]">
         <div className="bg-primary p-10 rounded-lg w-full max-w-[330px] md:max-w-[600px] lg:max-w-[510px]">
           <h1 className=" h-[100px] rounded-sm text-center flex justify-center items-center w-full max-w-[330px] md:max-w-[600px] lg:max-w-[510px] hidden md:flex">
             Login
@@ -66,8 +63,7 @@ const Login = () => {
         
         
       </div>
-      
-    </>
+      </div>
   );
 };
 
