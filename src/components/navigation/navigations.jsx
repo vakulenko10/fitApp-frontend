@@ -37,7 +37,7 @@ export const nav = [
     name: "Create Recipe",
     element: <CreateRecipe />,
     isMenu: true,
-    isPrivate: false,
+    isPrivate: true,
   },
   {
     path: "/signup",
