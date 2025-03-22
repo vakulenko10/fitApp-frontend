@@ -1,9 +1,10 @@
 import { ComboboxDropdownMenu } from "@/components/ui/combobox-dropdown-menu";
 import Container from "../components/Container";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { AuthData } from "@/components/auth/AuthWrapper";
+import { Textarea } from "@/components/ui/textarea";
 
 const CreateRecipe = () => {
   // State variables to store user input and component status
@@ -13,26 +14,15 @@ const CreateRecipe = () => {
   const [goal, setGoal] = useState("maintain"); // Options: "deficit", "maintain", "surplus"
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null); // For showing success/error messages
-  const navigate = useNavigate(); // Add this to enable navigation
+  const [generatedRecipe, setGeneratedRecipe] = useState(null); // New state to store the generated recipe
+  const { user, token } = AuthData(); // Get both user and token from AuthData
 
-  /**
-   * Retrieves authentication token from localStorage
-   * Used to determine if the user is logged in and which API endpoint to use
-   * @returns {string|null} The user's token or null if not logged in
-   */
-  const getUserToken = () => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      try {
-        const userData = JSON.parse(user);
-        return userData.token;
-      } catch (error) {
-        console.error("Error parsing user data:", error);
-        return null;
-      }
+  // Load user's calorie intake when component mounts or user data changes
+  useEffect(() => {
+    if (user && user.isAuthenticated && user.currentCalorieIntake) {
+      setCalorieIntake(user.currentCalorieIntake.toString());
     }
-    return null;
-  };
+  }, [user]);
 
   /**
    * Validates and updates calorie intake value
@@ -81,7 +71,7 @@ const CreateRecipe = () => {
 
   /**
    * Submits user preferences to the backend to generate a meal plan
-   * After successful generation, navigates to the Recipe page to display results
+   * After successful generation, displays the recipe on the same page
    */
   const handleCreateRecipe = async () => {
     // Input validation
@@ -102,7 +92,7 @@ const CreateRecipe = () => {
 
     try {
       setIsLoading(true);
-      const token = getUserToken();
+      setGeneratedRecipe(null); // Clear any previous recipe
 
       // API endpoint selection:
       // - For authenticated users: /mealplan/generate (with token)
@@ -140,14 +130,17 @@ const CreateRecipe = () => {
       // }
       const data = await response.json();
 
-      // Store received meal plan in localStorage for the results page
+      // Store received meal plan in localStorage for reference if needed later
       localStorage.setItem("mealPlan", JSON.stringify(data.mealPlan));
+
+      // Set the generated recipe to display on this page
+      setGeneratedRecipe(data.mealPlan);
 
       // Show success message
       showMessage("Meal plan generated successfully!");
 
-      // Navigate to the Recipe page
-      navigate("/recipe");
+      // No longer navigate to Recipe page
+      // navigate("/recipe");
     } catch (error) {
       console.error("Error creating recipe:", error);
       showMessage(error.message || "Failed to create recipe", "error");
@@ -156,13 +149,7 @@ const CreateRecipe = () => {
     }
   };
 
-  // Component render with UI sections:
-  // 1. Error/success message display
-  // 2. Calorie input field
-  // 3. Food selection component
-  // 4. Goal selection buttons (deficit, maintain, surplus)
-  // 5. Generate recipe button
-  // 6. Calculated calorie display
+  // Component render with UI sections
   return (
     <Container>
       <div className="bg-white shadow-lg rounded-lg p-10 w-full xl:max-w-[1200px] mx-auto my-12 mt-21.5">
@@ -182,6 +169,11 @@ const CreateRecipe = () => {
         <div className="mb-4.5 xl:mb-12.5">
           <h1 className="text-center text-xl font-semibold md:font-bold">
             Your daily calorie intake
+            {user && user.isAuthenticated && user.currentCalorieIntake && (
+              <span className="text-sm font-normal block text-gray-500">
+                (Automatically loaded from your profile)
+              </span>
+            )}
           </h1>
           <div className="flex justify-center">
             <Input
@@ -204,6 +196,13 @@ const CreateRecipe = () => {
             onProductsChange={setSelectedProducts}
             onAllergensChange={setSelectedAllergens}
           />
+        </div>
+        <div className="mb-5 sm:mb-8">
+          <div className="text-center mb-3">
+            <h3 className="text-lg font-semibold p-0">Type your preferences or allergies</h3>
+            <p className="text-muted-foreground">We cannot guarantee that preferences will always be followed.</p>
+          </div>
+          <Textarea placeholder="Preferences" className={"lg:min-h-25"} />
         </div>
         <div className="flex flex-col gap-3 items-center mb-3 sm:flex-row sm:gap-5 sm:justify-center sm:mb-3 md:mb-4 xl:mb-8">
           <Button
@@ -259,6 +258,51 @@ const CreateRecipe = () => {
                 {calculateFinalCalories()} calories
               </span>
             </p>
+          </div>
+        )}
+
+        {/* Display generated recipe */}
+        {isLoading && (
+          <div className="flex justify-center py-10 mt-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        )}
+
+        {generatedRecipe && !isLoading && (
+          <div className="mt-8 border-t-2 pt-6">
+            <h2 className="text-xl font-semibold mb-4 text-center">
+              Your Generated Recipe
+            </h2>
+            <div className="prose prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h2:text-blue-700 prose-strong:font-semibold prose-em:italic max-w-none p-4 bg-gray-50 rounded-lg shadow-inner">
+              <pre className="whitespace-pre-wrap font-sans text-base">
+                {generatedRecipe}
+              </pre>
+            </div>
+            <div className="flex justify-center mt-6">
+              <Button
+                className="mr-3"
+                variant="submit"
+                size="lg"
+                onClick={() => {
+                  // Save functionality can be implemented here if needed
+                  showMessage("Recipe saved to your favorites!");
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                variant="submit"
+                size="lg"
+                onClick={() => {
+                  // Reset generated recipe to create a new one
+                  setGeneratedRecipe(null);
+                  setSelectedProducts([]);
+                  setSelectedAllergens([]);
+                }}
+              >
+                New Recipe
+              </Button>
+            </div>
           </div>
         )}
       </div>

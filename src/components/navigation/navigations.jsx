@@ -1,7 +1,7 @@
 import Pages from "../../pages/index";
 import SignUp from "../../pages/Signup";
 
-const { Home, About, Login, Profile, CreateRecipe, Recipe } = Pages;
+const { Home, About, Login, Profile, CreateRecipe } = Pages;
 
 export const nav = [
   {
@@ -36,13 +36,6 @@ export const nav = [
     path: "/create-recipe",
     name: "Create Recipe",
     element: <CreateRecipe />,
-    isMenu: true,
-    isPrivate: false,
-  },
-  {
-    path: "/recipe",
-    name: "Recipe",
-    element: <Recipe />,
     isMenu: true,
     isPrivate: false,
   },
