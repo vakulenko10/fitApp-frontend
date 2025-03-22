@@ -9,7 +9,7 @@ export const nav = [
     name: "Home",
     element: <Home />,
     isMenu: true,
-    isPrivate: false,
+    isPrivate: true,
   },
   {
     path: "/about",
@@ -37,7 +37,7 @@ export const nav = [
     name: "Create Recipe",
     element: <CreateRecipe />,
     isMenu: true,
-    isPrivate: true,
+    isPrivate: false,
   },
   {
     path: "/signup",
