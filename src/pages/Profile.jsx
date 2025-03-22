@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import {Input} from "@/components/ui/input"
 import {Button} from "@/components/ui/button"
-import { AuthData } from "./auth/AuthWrapper";
+import { AuthData } from "@components/auth/AuthWrapper";
 
 const Profile = () => {
 
-  // async function updateUserProfile(profileData) {
+  // async function updateUserProfile(user) {
   //   const backendURL = "https://example.com";
   
   //   try {
@@ -14,7 +14,7 @@ const Profile = () => {
   //       headers: {
   //         "Content-Type": "application/json",
   //       },
-  //       body: JSON.stringify(profileData),
+  //       body: JSON.stringify(user),
   //     });
   
   //     if (!response.ok) {
@@ -32,15 +32,15 @@ const Profile = () => {
 
   const {user} = AuthData();
 
-  const [profileData, setProfileData] = useState({
-    name: '',
-    surname: '',
-    sex: '',
-    height: '',
-    weight: '',
-    age: '',
-    email: '',
-  });
+  // const [user, setProfileData] = useState({
+  //   name: '',
+  //   surname: '',
+  //   sex: '',
+  //   height: '',
+  //   weight: '',
+  //   age: '',
+  //   email: '',
+  // });
 
   return (
     <>
@@ -57,7 +57,7 @@ const Profile = () => {
               type="text"
               className="text-md placeholder:text-black"
               placeholder="Aboba"
-              value={profileData.name}
+              value={user.name}
             />
           </div>
           <div>
@@ -68,7 +68,7 @@ const Profile = () => {
               type="text"
               className="text-md placeholder:text-black"
               placeholder="Abobos"
-              value={profileData.surname}
+              value={user.surname}
             />
           </div>
           <div>
@@ -79,7 +79,7 @@ const Profile = () => {
               type="text"
               className="text-md placeholder:text-black"
               placeholder="abobatestpoczta@gmail.com"
-              value={profileData.email}
+              value={user.email}
             />
           </div>
           <div className='grid grid-cols-2 sm:max-lg:grid-cols-4 gap-4 mb-4'>
@@ -91,7 +91,7 @@ const Profile = () => {
                 type="text"
                 className="text-md placeholder:text-black"
                 placeholder="Male"
-                value={profileData.sex}
+                value={user.sex}
               />
             </div>
             <div>
@@ -102,7 +102,7 @@ const Profile = () => {
                 type="text"
                 className="text-md placeholder:text-black"
                 placeholder="55"
-                value={profileData.weight}
+                value={user.weight}
               />
             </div>
             <div>
@@ -113,7 +113,7 @@ const Profile = () => {
                 type="text"
                 className="text-md placeholder:text-black"
                 placeholder="173"
-                value={profileData.height}
+                value={user.height}
               />
             </div>
             <div>
@@ -124,7 +124,7 @@ const Profile = () => {
                 type="text"
                 className="text-md placeholder:text-black"
                 placeholder="49"
-                value={profileData.age}
+                value={user.age}
               />
             </div>
           </div>
@@ -160,10 +160,10 @@ const Profile = () => {
           </Drawer> */}
 
           <div className='flex space-x-2.5 justify-center sm:justify-around mx-3'>
-            <Button className="bg-muted-darker py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20">
+            <Button variant="grey" className="py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20">
               Cancel
             </Button>
-            <Button className="bg-ring py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20">
+            <Button variant="submit" className="py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20">
               Save
             </Button>
           </div>
