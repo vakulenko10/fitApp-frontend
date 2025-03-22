@@ -1,50 +1,50 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Input} from "@/components/ui/input"
 import {Button} from "@/components/ui/button"
 import { AuthData } from "@components/auth/AuthWrapper";
+import LineChartComponent from '@/components/LineChart';
+import { getWeightHistory } from '@/lib/profile';
+function GridItem({ title, children, className}) {
+  return (
+    <div className={`${className} flex flex-col items-center justify-center p-4 border-0 rounded-xl h-[400px]`}>
+      <h3 className="text-2xl font-semibold text-white mb-4">{title}</h3>
+      {children}
+    </div>
+  );}
+export const Profile = () => {
+  const {user, token} = AuthData();
+  const [loading, setLoading] = useState(true);  
+  // console.log(user)
+  const fetchWeightHistory = async () => {
+    try {
+      const response = await getWeightHistory(token);
+      setWeightHistory(response);
+    } catch (error) {
+      console.error("Error fetching weight history:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const [weightHistory, setWeightHistory] = useState()
 
-const Profile = () => {
+  useEffect(() => {
+    if (token) fetchWeightHistory();
+  }, [token]);
+  if (loading) {
+    return <div>Loading...</div>;  // Display loading state
+  }
+  else{
 
-  // async function updateUserProfile(user) {
-  //   const backendURL = "https://example.com";
-  
-  //   try {
-  //     const response = await fetch(`${backendURL}/user/profile`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(user),
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error(`Błąd: ${response.status} - ${response.statusText}`);
-  //     }
-  
-  //     const data = await response.json(); 
-  //     console.log("Profil został zaktualizowany:", data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Wystąpił problem podczas aktualizacji profilu:", error);
-  //     throw error;
-  //   }
-  // }
-
-  const {user} = AuthData();
-
-  // const [user, setProfileData] = useState({
-  //   name: '',
-  //   surname: '',
-  //   sex: '',
-  //   height: '',
-  //   weight: '',
-  //   age: '',
-  //   email: '',
-  // });
-  console.log(user)
+ 
   return (
     <>
       <div className='bg-white shadow-lg flex flex-col rounded-lg mx-12 sm:max-lg:mx-7.5 lg:mx-[7.25rem] my-8 sm:max-lg:my-14 py-4 sm:pt-4 sm:pb-7 lg:pt-6 lg:pb-[6.25] px-2 sm:px-6 min-w-[20rem]'>
+      <div className="grid xl:grid-cols-3 lg:grid-cols-2 w-full gap-10 max-w-[1400px]">
+        <GridItem className=" border-2 border-tertiary">
+        <LineChartComponent data={weightHistory}/>
+        </GridItem>
+      </div>
+      
         <h1 className='font-semibold text-lg lg:text-4xl flex justify-center sm:justify-start mb-4'>
           Account Settings
         </h1>
@@ -136,6 +136,8 @@ const Profile = () => {
                 value={user.age}
               />
             </div>
+
+            
           </div>
 
           <div className="flex flex-col sm:flex-row items-center space-y-4 mb-4">
@@ -180,6 +182,7 @@ const Profile = () => {
       </div>
     </>
   )
+}
 }
 
 export default Profile
