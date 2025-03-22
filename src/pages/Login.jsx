@@ -20,9 +20,9 @@ const Login = () => {
   };
   const handleGoogleLogin = async () => {
     try {
-      const { user, token } = await googleAuth();
+      const { user, token, profileImageURL} = await googleAuth();
       console.log('token in Login:', token)
-      setUser({ ...user, isAuthenticated: true });
+      setUser({ ...user,profileImageURL, isAuthenticated: true });
       setToken(token);
       document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict; Secure`;
       localStorage.setItem("user", JSON.stringify({ ...user, isAuthenticated: true }));

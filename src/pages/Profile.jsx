@@ -41,7 +41,7 @@ const Profile = () => {
   //   age: '',
   //   email: '',
   // });
-
+  console.log(user)
   return (
     <>
       <div className='bg-white shadow-lg flex flex-col rounded-lg mx-12 sm:max-lg:mx-7.5 lg:mx-[7.25rem] my-8 sm:max-lg:my-14 py-4 sm:pt-4 sm:pb-7 lg:pt-6 lg:pb-[6.25] px-2 sm:px-6 min-w-[20rem]'>
@@ -69,6 +69,15 @@ const Profile = () => {
               className="text-md placeholder:text-black"
               placeholder="Abobos"
               value={user.surname}
+            />
+          </div>
+          <div>
+            <p className='font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl'>
+              First name
+            </p>
+            <img
+              src={`${user?.profileImageURL
+              }`}
             />
           </div>
           <div>
