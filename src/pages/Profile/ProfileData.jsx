@@ -5,12 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthData } from '@/components/auth/AuthWrapper';
 import Container from '@/components/Container';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const ProfileData = ({profileData, setProfileData}) => {
    const { user, token } = AuthData();
     const [loading, setLoading] = useState(true);
 const [isEditing, setIsEditing] = useState(false);
-
+const [isWeightEditing, setIsWeightEditing] = useState(false);
 const handleChange = (e) => {
     const { name, value } = e.target;
     setProfileData((prevData) => ({
@@ -32,7 +33,7 @@ const handleChange = (e) => {
       const response = await updateWeight(token, parseInt(profileData.weight, 10));
   
       console.log("Weight updated successfully:", response);
-      setIsEditing(false); // Disable editing after successful update
+      setIsWeightEditing(false); // Disable editing after successful update
     } catch (error) {
       console.error("Error updating weight:", error);
     }
@@ -48,11 +49,13 @@ const handleChange = (e) => {
     if (profileData.name !== user.name) updatedProfile.name = profileData.name;
     if (profileData.email !== user.email)
       updatedProfile.email = profileData.email;
-    if (profileData.sex !== user.sex) updatedProfile.sex = profileData.sex;
+    if (profileData.gender !== user.gender) updatedProfile.gender = profileData.gender;
     if (parseInt(profileData.height, 10) !== user.height)
       updatedProfile.height = parseInt(profileData.height, 10);
     if (parseInt(profileData.age, 10) !== user.age)
       updatedProfile.age = parseInt(profileData.age, 10);
+    if (parseInt(profileData.currentCalorieIntake, 10) !== user.currentCalorieIntake)
+      updatedProfile.currentCalorieIntake = parseInt(profileData.currentCalorieIntake, 10);
 
     // Don't send empty fields
     if (Object.keys(updatedProfile).length === 0) {
@@ -76,12 +79,20 @@ const handleChange = (e) => {
     setProfileData({
       name: user.name || "",
       email: user.email || "",
-      sex: user.sex || "",
+      gender: user.gender || "",
       height: user.height || "",
       weight: user.weight || null,
       age: user.age || "",
-    });
+      currentCalorieIntake: user.currentCalorieIntake ||null
+      });
     setIsEditing(false);
+  };
+  const handleWeightCancel = (e) => {
+    setProfileData((prev)=>({
+      ...prev,
+      weight: user.weight || null
+    }));
+    setIsWeightEditing(false);
   };
   const handleEdit = (e) => {
     e.preventDefault();
@@ -92,13 +103,20 @@ const handleChange = (e) => {
   useEffect(() => {
       setLoading(false);
   }, [token]);
+  useEffect(()=>{
+
+  }, [user])
   if (loading) {
     return <Container><div>Loading...</div></Container>;
   }
 
   return (
-    <div className="bg-primary shadow-lg flex flex-col rounded-lg px-4">
-            <h1 className="font-semibold text-lg lg:text-4xl flex justify-center sm:justify-start mb-4">
+    <div className="bg-primary shadow-lg flex flex-col justify-center items-center md:flex-row rounded-lg p-4 relative">
+      <h1 className="font-semibold md:hidden text-lg lg:text-4xl flex justify-center sm:justify-start">
+              Account Settings
+            </h1>
+      <div className='flex-9/12  order-2 md:order-2 lg:order-1  '>
+      <h1 className="font-semibold text-lg hidden md:flex lg:text-4xl justify-center sm:justify-start">
               Account Settings
             </h1>
     
@@ -118,11 +136,7 @@ const handleChange = (e) => {
                     disabled={!isEditing}
                   />
                 </div>
-                <div>
-                  {user?.profileImageURL && (
-                    <img src={user?.profileImageURL} alt="Profile" />
-                  )}
-                </div>
+                
                 <div>
                   <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
                     Email
@@ -137,22 +151,22 @@ const handleChange = (e) => {
                     disabled={!isEditing}
                   />
                 </div>
-                <div className="grid grid-cols-2 sm:max-lg:grid-cols-4 gap-4 mb-4">
-                  <div>
+                <div className="flex flex-col md:flex-row w-full items-baseline justify-between mb-4 relative">
+                  <div className='w-full  mx-1'>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
-                      Sex
+                    Gender
                     </p>
                     <Input
                       type="text"
-                      name="sex"
+                      name="gender"
                       className="text-md placeholder:text-black"
                       placeholder="Male"
-                      value={profileData.sex}
+                      value={profileData.gender}
                       onChange={handleChange}
                       disabled={!isEditing}
                     />
                   </div>
-                  <div>
+                  <div className='w-full  mx-1'>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
                       Height
                     </p>
@@ -166,7 +180,7 @@ const handleChange = (e) => {
                       disabled={!isEditing}
                     />
                   </div>
-                  <div>
+                  <div className='w-full mx-1'>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
                       Age
                     </p>
@@ -180,10 +194,27 @@ const handleChange = (e) => {
                       disabled={!isEditing}
                     />
                   </div>
-                  <div>
+                  
+                </div>
+                <div>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
+                      Calorie Intake
+                    </p>
+                    <Input
+                      type="number"
+                      name="currentCalorieIntake"
+                      className="text-md placeholder:text-black"
+                      placeholder={profileData.currentCalorieIntake}
+                      value={profileData.currentCalorieIntake}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                    />
+                  </div>
+                  <div><p className="font-semibold text-center sm:text-left text-muted-darker text-lg  lg:text-xl">
                       weight
                     </p>
+                <div className='w-full flex justify-center items-center gap-2'>
+                    
                     <Input
                       type="number"
                       name="weight"
@@ -191,19 +222,31 @@ const handleChange = (e) => {
                       placeholder="49"
                       value={profileData.weight}
                       onChange={handleChange}
-                      disabled={!isEditing}
+                      disabled={!isWeightEditing}
                     />
-                    {isEditing&&
+                    {isWeightEditing?<>
+                      <Button
+                      variant="grey"
+                      size="lg"
+                      onClick={handleWeightCancel}
+                    >
+                      Cancel
+                    </Button>
                     <Button
                       variant="submit"
-                      className="py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20"
+                       size="lg"
                       onClick={handleWeightSubmit}
                     >
                       Save
+                    </Button>
+                    </>:
+                    <Button
+                      size="lg"
+                      onClick={()=>setIsWeightEditing((prev)=>!prev)}
+                    >
+                      Edit
                     </Button>}
-                  </div>
-                </div>
-    
+                  </div></div>
                 <div className="flex flex-col sm:flex-row items-center space-y-4 mb-4">
                   <p className="text-sm sm:text-lg font-semibold sm:font-bold hover:underline cursor-pointer">
                     Change password
@@ -242,6 +285,26 @@ const handleChange = (e) => {
                 </div>
               </div>
             </form>
+            </div>
+            <div className='relative m-0 border-box flex-1/4 justify-center order-1 md:order-2 items-center my-auto'>
+                  {/* {user?.profileImageURL && (
+                    <img src={user?.profileImageURL} alt="Profile"  className='rounded-full'/>
+                  )} */}
+               
+                    <Avatar className="h-20 w-20 md:h-40 md:w-40 rounded-full p-0 border-2 relative border-secondary shadow-md ">
+                    <AvatarImage
+                      src={user?.profileImageURL}
+                      alt={user.name}
+                      className="h-full w-full object-cover rounded-full"
+                    />
+                   {!(user.profileImageURL)&&
+                   <AvatarFallback className="flex items-center justify-center h-full w-full bg-gray-200 text-gray-600 font-bold text-lg">
+                      {user.name?.charAt(0).toUpperCase()}
+                    </AvatarFallback>}
+                  </Avatar>
+                  
+                  
+                </div>
     </div>
   )
 }
