@@ -41,11 +41,11 @@ const UserCharts = ({setWeightHistory, weightHistory}) => {
 
   return (
     <div className="bg-primary shadow-lg flex flex-col rounded-lg px-4">
-    <div className="grid xl:grid-cols-2 lg:grid-cols-2 w-full gap-10 py-10">
-          <GridItem className="border-2 border-tertiary text-black">
-            <h1>Weight</h1>
+    <div className=" w-full gap-10">
+          <div className='flex flex-col justify-center items-center'>
+            <h1 className='font-semibold text-lg m-0 lg:text-4xl flex justify-center sm:justify-start'>Weight</h1>
             <LineChartComponent data={weightHistory} />
-          </GridItem>
+            </div>
         </div>
         </div>
   )

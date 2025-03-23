@@ -33,12 +33,13 @@ const Profile = () => {
     <main>
       
       <Tabs defaultValue="profile" className="w-full ">
-      <TabsList className={`w-full rounded-none p-5`}>
-    <TabsTrigger value="profile" className={`py-4`}><h6>Your profile</h6></TabsTrigger>
+        
+      <TabsList className={`w-full rounded-none p-5 bg-header`}>
+    <TabsTrigger value="profile" className={`py-4 `}><h6>Your profile</h6></TabsTrigger>
     <TabsTrigger value="charts"  className={`py-4`}><h6>Charts</h6></TabsTrigger>
     <TabsTrigger value="mealplan history"  className={`py-4`}><h6>History</h6></TabsTrigger>
   </TabsList>
-  <Container className={``} >
+  <Container className={`sm:max-w-[30rem] md:max-w-[40rem] lg:max-w-[60rem] my-12`} >
   <TabsContent value="profile"><ProfileData profileData={profileData} setProfileData={setProfileData}/></TabsContent>
   <TabsContent value="charts"><UserCharts setWeightHistory={setWeightHistory} weightHistory={weightHistory} /></TabsContent>
   <TabsContent value="mealplan history"><MealPlanHistory /></TabsContent>

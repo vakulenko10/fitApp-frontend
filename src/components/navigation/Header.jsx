@@ -11,9 +11,9 @@ export default function Header() {
   return (
     <div className="px-4 md:px-6 lg:px-8 bg-header">
       <Container>
-      <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
+      <header className="flex flex-col md:flex-row   h-20 w-full shrink-0 items-center px-4 md:px-6">
         
-        <nav className="flex space-x-4">
+        <nav className="flex flex-col md:flex-row  space-x-4">
           {nav.map((r, i) => {
             if ((!r.isPrivate || user.isAuthenticated) && r.isMenu) {
               return (
@@ -32,8 +32,8 @@ export default function Header() {
         <div className="ml-auto flex gap-2">
           {user.isAuthenticated ? (
             <>
-              <Button className={'m-auto'} onClick={logout}>Log out</Button>
-              <Avatar className="h-15 w-15 rounded-full p-0 border-2 relative border-secondary shadow-md ">
+              
+              <Avatar className="h-12 w-12 rounded-full p-0 border-2 relative border-secondary shadow-md ">
                 <AvatarImage
                   src={user?.profileImageURL}
                   alt={user.name}
@@ -44,6 +44,7 @@ export default function Header() {
                   {user.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>}
               </Avatar>
+              <Button className={'m-auto'} onClick={logout}>Log out</Button>
             </>
           ) : (
             <>
