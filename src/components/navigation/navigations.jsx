@@ -9,7 +9,7 @@ export const nav = [
     name: "Home",
     element: <Home />,
     isMenu: true,
-    isPrivate: true,
+    isPrivate: false,
   },
   {
     path: "/about",
