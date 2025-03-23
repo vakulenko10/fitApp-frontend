@@ -1,72 +1,98 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { getMealPlanHistory } from "@/lib/mealplan";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthData } from '@/components/auth/AuthWrapper';
 import Container from '@/components/Container';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerDescription, DrawerTrigger } from "@/components/ui/drawer";
+
 const MealPlanHistory = () => {
-     const { user, token } = AuthData();
-    const [loading, setLoading] = useState(true);
-    const [mealPlanHistory, setMealPlanHistory] = useState();
-      useEffect(() => {
-        const fetchMealPlanHistory = async () => {
-          try {
-            setLoading(true);
-            const mealHistory = await getMealPlanHistory(token);
-            console.log("mealHistory:", mealHistory.mealPlans);
-            setMealPlanHistory(mealHistory.mealPlans);
-          } catch (error) {
-            console.error("Error fetching meal plan history:", error);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        if (token) fetchMealPlanHistory();
-      }, [token]);
-      
+  const { user, token } = AuthData();
+  const [loading, setLoading] = useState(true);
+  const [mealPlanHistory, setMealPlanHistory] = useState([]);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+
+  useEffect(() => {
+    const fetchMealPlanHistory = async () => {
+      try {
+        setLoading(true);
+        const mealHistory = await getMealPlanHistory(token);
+        setMealPlanHistory(mealHistory.mealPlans);
+      } catch (error) {
+        console.error("Error fetching meal plan history:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) fetchMealPlanHistory();
+  }, [token]);
+
   if (loading) {
     return <Container><div>Loading...</div></Container>;
   }
 
   return (
-    <div className="bg-primary shadow-lg flex flex-col rounded-lg px-4">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-    {mealPlanHistory?.length > 0 ? (
-      mealPlanHistory.map((plan, index) => (
-        <div
-          key={plan.id}
-          className="bg-secondary text-white shadow-lg rounded-lg"
-        >
-          <div>
-            <div className="text-lg font-bold">
-              {`Meal Plan ${index + 1} (${plan.calorieIntake} kcal)`}
-            </div>
-          </div>
-          <div>
-            <p className="text-sm text-gray-300">
-              <strong>Included Products:</strong>{" "}
-              {JSON.parse(plan.includedProducts).join(", ")}
-            </p>
-            <p className="mt-2 text-gray-300">
-              {plan.generatedText.length > 100
-                ? `${plan.generatedText.substring(0, 100)}...`
-                : plan.generatedText}
-            </p>
-            {plan.generatedText.length > 100 && (
-              <Button variant="ghost" className="text-sm mt-2">
-                Show More
-              </Button>
-            )}
-          </div>
-        </div>
-      ))
-    ) : (
-      <p className="text-gray-300">No meal plans found.</p>
-    )}
-  </div>
-  </div>
-  )
-}
+    <Container>
+      <div className="bg-primary shadow-lg p-6 rounded-lg">
+        <h2 className="text-2xl font-bold text-primary-foreground mb-6">Meal Plan History</h2>
 
-export default MealPlanHistory
+        <ScrollArea className="h-[400px] overflow-y-auto">
+          <table className="min-w-full text-sm text-left text-primary-foreground">
+            <thead className="bg-secondary text-white">
+              <tr>
+                <th className="px-6 py-3">Meal Plan</th>
+                <th className="px-6 py-3">Calorie Intake</th>
+                <th className="px-6 py-3">Included Products</th>
+                <th className="px-6 py-3">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mealPlanHistory?.length > 0 ? (
+                mealPlanHistory.map((plan, index) => (
+                  <tr key={plan.id} className="bg-background border-b">
+                    <td className="px-6 py-4">{new Date(plan.createdAt).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">{plan.calorieIntake} kcal</td>
+                    <td className="px-6 py-4">{JSON.parse(plan.includedProducts).join(", ")}</td>
+                    <td className="px-6 py-4">
+                      <Drawer className="h-full">
+                        <DrawerTrigger>
+                          <Button variant="ghost" size="sm">View Details</Button>
+                        </DrawerTrigger>
+                        <DrawerContent className="h-[500px] overflow-hidden">
+                          <DrawerHeader>
+                            <DrawerTitle>Meal Plan Details</DrawerTitle>
+                            <DrawerDescription className="h-[400px] overflow-y-auto">
+                              <p><strong>Generated Text:</strong></p>
+                              <p
+                                className="text-sm text-muted-foreground"
+                                dangerouslySetInnerHTML={{ __html: plan.generatedText }}
+                              />
+                            </DrawerDescription>
+                          </DrawerHeader>
+                          <DrawerFooter>
+                            <DrawerClose>
+                              <Button variant="outline" className="text-secondary hover:text-secondary/80">
+                                Close
+                              </Button>
+                            </DrawerClose>
+                          </DrawerFooter>
+                        </DrawerContent>
+                      </Drawer>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="px-6 py-4 text-center text-muted-foreground">No meal plans found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </ScrollArea>
+      </div>
+    </Container>
+  );
+};
+
+export default MealPlanHistory;
