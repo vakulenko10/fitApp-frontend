@@ -55,19 +55,21 @@ const MealPlanHistory = () => {
                     <td className="px-6 py-4">{plan.calorieIntake} kcal</td>
                     <td className="px-6 py-4">{JSON.parse(plan.includedProducts).join(", ")}</td>
                     <td className="px-6 py-4">
-                      <Drawer className="h-full">
-                        <DrawerTrigger>
+                      <Drawer className=" h-screen relative   ">
+                        <DrawerTrigger >
                           <Button variant="ghost" size="sm">View Details</Button>
                         </DrawerTrigger>
-                        <DrawerContent className="h-[500px] overflow-hidden">
+                        <DrawerContent >
                           <DrawerHeader>
                             <DrawerTitle>Meal Plan Details</DrawerTitle>
-                            <DrawerDescription className="h-[400px] overflow-y-auto">
+                            <DrawerDescription className="">
                               <p><strong>Generated Text:</strong></p>
-                              <p
-                                className="text-sm text-muted-foreground"
-                                dangerouslySetInnerHTML={{ __html: plan.generatedText }}
-                              />
+                              <ScrollArea className={'h-[40vh]'}>
+                              <div
+                                className="text-sm text-muted-foreground h-full overflow-y-auto"
+                                // dangerouslySetInnerHTML={{ __html: plan.generatedText }}
+                              >{plan.generatedText}</div>
+                              </ScrollArea>
                             </DrawerDescription>
                           </DrawerHeader>
                           <DrawerFooter>
