@@ -32,10 +32,7 @@ export default function Header() {
         <div className="ml-auto flex gap-2">
           {user.isAuthenticated ? (
             <>
-              <Link to="/profile">
-                <Button variant="outline">Profile</Button>
-              </Link>
-              <Button onClick={logout}>Log out</Button>
+              <Button className={'m-auto'} onClick={logout}>Log out</Button>
               <Avatar className="h-15 w-15 rounded-full p-0 border-2 relative border-secondary shadow-md ">
                 <AvatarImage
                   src={user?.profileImageURL}
