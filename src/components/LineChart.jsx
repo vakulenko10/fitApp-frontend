@@ -70,10 +70,10 @@ const LineChartComponent = ({ data }) => {
   return (
     <div className='w-full relative flex flex-wrap'>
       {/* Buttons to switch between scales */}
-      <div className="mb-4 w-full flex justify-center">
-        <Button onClick={() => setTimeScale('day')}>Daily</Button>
-        <Button onClick={() => setTimeScale('month')}>Monthly</Button>
-        <Button onClick={() => setTimeScale('year')}>Yearly</Button>
+      <div className="mb-4 w-full flex justify-center gap-2">
+        <Button onClick={() => setTimeScale('day')} variant={`${timeScale=='day'?'accent':'default'}`}>Daily</Button>
+        <Button onClick={() => setTimeScale('month')} variant={`${timeScale=='month'?'accent':'default'}`}>Monthly</Button>
+        <Button onClick={() => setTimeScale('year')} variant={`${timeScale=='year'?'accent':'default'}`}>Yearly</Button>
       </div>
 
       <ResponsiveContainer width="100%" height={300} className={'p-5'}>

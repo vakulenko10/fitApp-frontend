@@ -32,8 +32,8 @@ export default function Header() {
         <div className="ml-auto flex gap-2">
           {user.isAuthenticated ? (
             <>
-              <Button className={'m-auto'} onClick={logout}>Log out</Button>
-              <Avatar className="h-15 w-15 rounded-full p-0 border-2 relative border-secondary shadow-md ">
+              
+              <Avatar className="h-12 w-12 rounded-full p-0 border-2 relative border-secondary shadow-md ">
                 <AvatarImage
                   src={user?.profileImageURL}
                   alt={user.name}
@@ -44,6 +44,7 @@ export default function Header() {
                   {user.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>}
               </Avatar>
+              <Button className={'m-auto'} onClick={logout}>Log out</Button>
             </>
           ) : (
             <>
