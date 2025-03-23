@@ -45,10 +45,10 @@ export function AuthWrapper({ children }) {
     return new Promise((resolve, reject) => {
       const listener = (event) => {
         if (event.origin !== API_URL) return; // validate backend origin
-        const { user, token } = event.data;
+        const { user, token, profileImageURL } = event.data;
   
         if (token && user) {
-          resolve({ user, token });
+          resolve({ user, token, profileImageURL });
           window.removeEventListener('message', listener);
           authWindow.close();
         }
@@ -61,10 +61,10 @@ export function AuthWrapper({ children }) {
   
   
   const logout = () => {
-    setUser(null);
     setToken(null);
     setUser({ isAuthenticated: false });
     localStorage.removeItem("user");
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
   };
   
 

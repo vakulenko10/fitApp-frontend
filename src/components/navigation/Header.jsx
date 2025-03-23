@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { AuthData } from "../auth/AuthWrapper";
 import { nav } from "./navigations";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
 
 export default function Header() {
   const { user, logout } = AuthData();
@@ -32,6 +33,17 @@ export default function Header() {
                 <Button variant="outline">Profile</Button>
               </Link>
               <Button onClick={logout}>Log out</Button>
+              <Avatar className="h-15 w-15 rounded-full p-0 border-2 relative border-secondary shadow-md ">
+                <AvatarImage
+                  src={user?.profileImageURL}
+                  alt={user.name}
+                  className="h-full w-full object-cover rounded-full"
+                />
+               {!(user.profileImageURL)&&
+               <AvatarFallback className="flex items-center justify-center h-full w-full bg-gray-200 text-gray-600 font-bold text-lg">
+                  {user.name?.charAt(0).toUpperCase()}
+                </AvatarFallback>}
+              </Avatar>
             </>
           ) : (
             <>
