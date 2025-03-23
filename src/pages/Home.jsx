@@ -8,6 +8,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { updateUserProfile } from "@/lib/profile";
 import { toast } from 'sonner'; // Import the toast from sonner
 import { Toaster } from "@/components/ui/sonner";
+import { Link } from "react-router-dom";
 
 
 export default function Home() {
@@ -43,6 +44,7 @@ export default function Home() {
       toast.success(
         <div>
           <p><strong>Success:</strong> Calorie intake updated!</p>
+          <Link to="/profile" className="text-muted-foreground underline">go to profile</Link>
         </div>,
         {
           action: {

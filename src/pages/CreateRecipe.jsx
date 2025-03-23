@@ -19,9 +19,9 @@ const CreateRecipe = () => {
 
   // Load user's calorie intake when component mounts or user data changes
   useEffect(() => {
-    if (user && user.isAuthenticated && user.currentCalorieIntake) {
-      setCalorieIntake(user.currentCalorieIntake.toString());
-    }
+    (user && user.isAuthenticated && user.currentCalorieIntake)?
+      setCalorieIntake(user.currentCalorieIntake):setCalorieIntake(2000)
+    
   }, [user]);
 
   /**
@@ -35,7 +35,10 @@ const CreateRecipe = () => {
       setCalorieIntake(value);
     }
   };
-
+  const resetCalorieIntake = () =>{
+    
+  setCalorieIntake(user.isAuthenticated&&user.currentCalorieIntake!=null?user.currentCalorieIntake:'2000')
+  }
   /**
    * Calculates final calorie target based on selected goal
    * - deficit: 20% reduction from base calories
@@ -43,20 +46,20 @@ const CreateRecipe = () => {
    * - maintain: keeps the original calorie amount
    * @returns {number} The calculated calorie target
    */
-  const calculateFinalCalories = () => {
-    if (!calorieIntake) return 0;
+  // const calculateFinalCalories = () => {
+  //   if (!calorieIntake) return 0;
 
-    const baseCalories = parseInt(calorieIntake);
+  //   const baseCalories = parseInt(calorieIntake);
 
-    switch (goal) {
-      case "deficit":
-        return Math.round(baseCalories * 0.8); // 20% deficit
-      case "surplus":
-        return Math.round(baseCalories * 1.2); // 20% surplus
-      default:
-        return baseCalories; // maintain weight
-    }
-  };
+  //   switch (goal) {
+  //     case "deficit":
+  //       return Math.round(baseCalories * 0.8); // 20% deficit
+  //     case "surplus":
+  //       return Math.round(baseCalories * 1.2); // 20% surplus
+  //     default:
+  //       return baseCalories; // maintain weight
+  //   }
+  // };
 
   /**
    * Displays notification messages to the user
@@ -88,7 +91,7 @@ const CreateRecipe = () => {
       return;
     }
 
-    const finalCalories = calculateFinalCalories();
+    // const finalCalories = calculateFinalCalories();
 
     try {
       setIsLoading(true);
@@ -113,7 +116,7 @@ const CreateRecipe = () => {
         body: JSON.stringify({
           products: selectedProducts,
           excludedProducts: selectedAllergens,
-          calories: finalCalories,
+          calories: calorieIntake,
         }),
       };
 
@@ -171,18 +174,19 @@ const CreateRecipe = () => {
             Your daily calorie intake
             {user && user.isAuthenticated && user.currentCalorieIntake && (
               <span className="text-sm font-normal block text-gray-500">
-                (Automatically loaded from your profile)
+                (your daily calorie intake is automatically loaded from your profile)
               </span>
             )}
           </h1>
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center gap-4">
             <Input
               className="bg-primary text-foreground border-black w-[200px] sm:h-12 text-center"
               value={calorieIntake}
               onChange={handleCalorieChange}
-              placeholder="Enter calories"
+              placeholder={`Enter calories ${calorieIntake}`}
               type="text"
             />
+            <Button variant={'submit'} onClick={resetCalorieIntake}>reset</Button>
           </div>
         </div>
         <div className="mb-3 xl:mb-12.5">
@@ -255,7 +259,7 @@ const CreateRecipe = () => {
               calorie target:
               <span className="font-bold">
                 {" "}
-                {calculateFinalCalories()} calories
+                {calorieIntake} calories
               </span>
             </p>
           </div>
