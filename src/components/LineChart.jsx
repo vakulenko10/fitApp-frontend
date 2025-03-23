@@ -68,25 +68,25 @@ const LineChartComponent = ({ data }) => {
   const chartData = prepareData(timeScale);
 
   return (
-    <div className='w-full'>
+    <div className='w-full relative flex flex-wrap'>
       {/* Buttons to switch between scales */}
-      <div className="mb-4">
+      <div className="mb-4 w-full flex justify-center">
         <Button onClick={() => setTimeScale('day')}>Daily</Button>
         <Button onClick={() => setTimeScale('month')}>Monthly</Button>
         <Button onClick={() => setTimeScale('year')}>Yearly</Button>
       </div>
 
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={300} className={'p-5'}>
         <LineChart
           data={chartData}
-          margin={{ right: 30 }}
+          className='m-0'
         >
-          <CartesianGrid strokeDasharray="3 3"  className='fill-white'/>
-          <XAxis dataKey="name" />
-          <YAxis />
+          <CartesianGrid strokeDasharray="2 2" />
+          <XAxis dataKey="name" className='text-primary-foreground'/>
+          <YAxis domain={[(dataMin) => Math.floor(dataMin * 1.001), (dataMax) => Math.ceil(dataMax * 1.001)]} name='kg'  />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          <Line type="monotone" dataKey="weight" stroke="#000" className='' />
+          <Line type="monotone" dataKey="weight" stroke="#82ad0c" className='' />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -96,11 +96,11 @@ const LineChartComponent = ({ data }) => {
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="p-4 bg-popover shadow-2xl flex flex-col gap-4 rounded-md">
-        <p className="text-medium text-lg">{label}</p>
-        <p className="text-sm text-secondary">
-          weight: <span className="ml-2">{payload[0].value} kg</span>
-        </p>
+      <div className="p-2 bg-popover shadow-xl flex flex-col gap-4 rounded-md">
+        <p className="text-medium text-lg text-tertiary">{label}</p>
+        <h5 className=" text-secondary">
+          weight: {payload[0].value} kg
+        </h5>
       </div>
     );
   }
