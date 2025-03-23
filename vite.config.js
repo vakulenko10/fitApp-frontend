@@ -10,8 +10,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
       '@components': path.resolve(__dirname, 'src/components')
     },
-  },
-  esbuild: {
-    logLevel: 'silent', // Suppress TypeScript-related errors
   }
 });

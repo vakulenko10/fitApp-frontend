@@ -4,8 +4,6 @@
       "paths": {
         "@/*": ["./src/*"],
         "@components/*": ["src/components/*"]
-      },
-      "skipLibCheck": true,
-      "noEmit": true
+      }
     }
   }
