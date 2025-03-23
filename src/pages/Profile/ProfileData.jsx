@@ -54,6 +54,8 @@ const handleChange = (e) => {
       updatedProfile.height = parseInt(profileData.height, 10);
     if (parseInt(profileData.age, 10) !== user.age)
       updatedProfile.age = parseInt(profileData.age, 10);
+    if (parseInt(profileData.currentCalorieIntake, 10) !== user.currentCalorieIntake)
+      updatedProfile.currentCalorieIntake = parseInt(profileData.currentCalorieIntake, 10);
 
     // Don't send empty fields
     if (Object.keys(updatedProfile).length === 0) {
@@ -81,7 +83,8 @@ const handleChange = (e) => {
       height: user.height || "",
       weight: user.weight || null,
       age: user.age || "",
-    });
+      currentCalorieIntake: user.currentCalorieIntake ||null
+      });
     setIsEditing(false);
   };
   const handleWeightCancel = (e) => {
@@ -100,6 +103,9 @@ const handleChange = (e) => {
   useEffect(() => {
       setLoading(false);
   }, [token]);
+  useEffect(()=>{
+
+  }, [user])
   if (loading) {
     return <Container><div>Loading...</div></Container>;
   }
@@ -145,8 +151,8 @@ const handleChange = (e) => {
                     disabled={!isEditing}
                   />
                 </div>
-                <div className="grid grid-cols-2 sm:max-lg:grid-cols-4 gap-4 mb-4">
-                  <div>
+                <div className="flex flex-col md:flex-row w-full items-baseline justify-between mb-4 relative">
+                  <div className='w-full  mx-1'>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
                     Gender
                     </p>
@@ -160,7 +166,7 @@ const handleChange = (e) => {
                       disabled={!isEditing}
                     />
                   </div>
-                  <div>
+                  <div className='w-full  mx-1'>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
                       Height
                     </p>
@@ -174,7 +180,7 @@ const handleChange = (e) => {
                       disabled={!isEditing}
                     />
                   </div>
-                  <div>
+                  <div className='w-full mx-1'>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
                       Age
                     </p>
@@ -190,10 +196,25 @@ const handleChange = (e) => {
                   </div>
                   
                 </div>
-                <div className='w-full flex justify-center items-center gap-2'>
-                    <p className="font-semibold text-center sm:text-left text-muted-darker text-lg  lg:text-xl">
+                <div>
+                    <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
+                      Calorie Intake
+                    </p>
+                    <Input
+                      type="number"
+                      name="currentCalorieIntake"
+                      className="text-md placeholder:text-black"
+                      placeholder={profileData.currentCalorieIntake}
+                      value={profileData.currentCalorieIntake}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                    />
+                  </div>
+                  <div><p className="font-semibold text-center sm:text-left text-muted-darker text-lg  lg:text-xl">
                       weight
                     </p>
+                <div className='w-full flex justify-center items-center gap-2'>
+                    
                     <Input
                       type="number"
                       name="weight"
@@ -225,7 +246,7 @@ const handleChange = (e) => {
                     >
                       Edit
                     </Button>}
-                  </div>
+                  </div></div>
                 <div className="flex flex-col sm:flex-row items-center space-y-4 mb-4">
                   <p className="text-sm sm:text-lg font-semibold sm:font-bold hover:underline cursor-pointer">
                     Change password

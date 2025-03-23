@@ -92,6 +92,13 @@ export function AuthWrapper({ children }) {
       })();
     }
   }, []);
+  useEffect(() => {
+    if (user && user.isAuthenticated) {
+      localStorage.setItem("user", JSON.stringify({ ...user }));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);  // This effect will run every time `user` changes
   return (
     <AuthContext.Provider value={{ user, setUser,setToken, token, login, signup, googleAuth, logout }}>
       {children}

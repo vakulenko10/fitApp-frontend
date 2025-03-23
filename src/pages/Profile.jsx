@@ -20,6 +20,7 @@ const Profile = () => {
     height: user.height || "",
     weight: user.weight || 0,
     age: user.age || "",
+    currentCalorieIntake: user.currentCalorieIntake || 0
   });
 
   

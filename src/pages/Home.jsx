@@ -5,9 +5,13 @@ import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"; // Import Popover
+import { updateUserProfile } from "@/lib/profile";
+import { toast } from 'sonner'; // Import the toast from sonner
+import { Toaster } from "@/components/ui/sonner";
+
 
 export default function Home() {
-  const { user } = AuthData();
+  const { user,setUser, token } = AuthData();
   const [age, setAge] = useState(25);
   const [gender, setGender] = useState('female');
   const [currentWeight, setCurrentWeight] = useState(70);
@@ -28,6 +32,41 @@ export default function Home() {
     const result = calculateCalorieIntake(age, gender, currentWeight, height, activityLevel, goalWeight, startDate, endDate);
     setCalculatedCalories(result);
   };
+
+  const updateCalorieIntake = async () =>{
+    try{
+      const response = await updateUserProfile(token, {currentCalorieIntake: calculatedCalories.calorieIntake })
+      setUser(prev => ({
+        ...prev,
+        currentCalorieIntake: calculatedCalories.calorieIntake,  // Update the calorie intake in the state
+      }));
+      toast.success(
+        <div>
+          <p><strong>Success:</strong> Calorie intake updated!</p>
+        </div>,
+        {
+          action: {
+            label: "Close",
+            onClick: () => toast.dismiss(),
+          },
+        },
+        {
+          className: "bg-green-100 text-green-800 border border-green-400 shadow-lg",
+        }
+        
+        
+      );
+    }
+    catch(e){
+      toast.error('Something went wrong while saving your calorie intake!', {
+        action: {
+          label: "Close",
+          onClick: () => toast.dismiss(),
+        },
+      });
+    }
+
+  }
 
   return (
     <div className="container mx-auto">
@@ -152,9 +191,16 @@ export default function Home() {
         {calculatedCalories !== null && (
           <div className="mt-6 text-center">
             {user ? (
+              <>
               <p className="text-lg">
                 🎯 Would you like to save this intake in your profile?
               </p>
+              <div className="flex gap-2 justify-center items-center ">
+              <Button variant={'grey'}>cancel</Button>
+              <Button variant={'submit'} onClick={updateCalorieIntake}>save</Button>
+              </div>
+              </>
+              
             ) : (
               <p className="text-lg text-red-500">
                 🔒 Log in or register to save your calorie intake results!
@@ -163,6 +209,7 @@ export default function Home() {
           </div>
         )}
       </div>
+      <Toaster/>
     </div>
   );
 }
