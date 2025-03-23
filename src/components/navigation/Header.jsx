@@ -3,13 +3,16 @@ import { Button } from "../ui/button";
 import { AuthData } from "../auth/AuthWrapper";
 import { nav } from "./navigations";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
+import Container from "../Container";
 
 export default function Header() {
   const { user, logout } = AuthData();
 
   return (
-    <div className="container mx-auto px-4 md:px-6 lg:px-8">
+    <div className="px-4 md:px-6 lg:px-8 bg-header">
+      <Container>
       <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
+        
         <nav className="flex space-x-4">
           {nav.map((r, i) => {
             if ((!r.isPrivate || user.isAuthenticated) && r.isMenu) {
@@ -29,10 +32,7 @@ export default function Header() {
         <div className="ml-auto flex gap-2">
           {user.isAuthenticated ? (
             <>
-              <Link to="/profile">
-                <Button variant="outline">Profile</Button>
-              </Link>
-              <Button onClick={logout}>Log out</Button>
+              <Button className={'m-auto'} onClick={logout}>Log out</Button>
               <Avatar className="h-15 w-15 rounded-full p-0 border-2 relative border-secondary shadow-md ">
                 <AvatarImage
                   src={user?.profileImageURL}
@@ -57,6 +57,7 @@ export default function Header() {
           )}
         </div>
       </header>
+      </Container>
     </div>
   );
 }

@@ -24,7 +24,11 @@ const Login = () => {
       console.log('token in Login:', token)
       setUser({ ...user,profileImageURL, isAuthenticated: true });
       setToken(token);
-      document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict; Secure`;
+      // document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict; Secure`;
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + 1); // Cookie expires in 1 day
+      document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/;`;
+
       localStorage.setItem("user", JSON.stringify({ ...user, isAuthenticated: true }));
       navigate('/profile'); // redirect wherever you need
     } catch (err) {
