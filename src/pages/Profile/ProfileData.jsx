@@ -206,22 +206,21 @@ const handleChange = (e) => {
                     {isWeightEditing?<>
                       <Button
                       variant="grey"
-                      className="py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20"
+                      size="lg"
                       onClick={handleWeightCancel}
                     >
                       Cancel
                     </Button>
                     <Button
                       variant="submit"
-                      className="py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20"
+                       size="lg"
                       onClick={handleWeightSubmit}
                     >
                       Save
                     </Button>
                     </>:
                     <Button
-                    
-                      className="py-3 sm:py-6 lg:py-8 px-6 sm:px-8 lg:px-20"
+                      size="lg"
                       onClick={()=>setIsWeightEditing((prev)=>!prev)}
                     >
                       Edit
