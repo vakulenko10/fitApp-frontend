@@ -18,6 +18,9 @@ export function AuthWrapper({ children }) {
       setUser({...userData, isAuthenticated: true});
       setToken(token);
       localStorage.setItem("user", ({...userData, isAuthenticated: true}));
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + 1); // Cookie expires in 1 day
+      document.cookie = `token=${data.token}; expires=${expirationDate.toUTCString()}; path=/;`;
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
@@ -30,6 +33,10 @@ export function AuthWrapper({ children }) {
       setToken(token);
       setUser({...userData, isAuthenticated: true});
       localStorage.setItem("user", JSON.stringify({...userData, isAuthenticated: true}));
+      const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 1); // Cookie expires in 1 day
+    document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/;`;
+
     } catch (error) {
       console.error("Signup failed:", error);
       throw error;
