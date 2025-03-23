@@ -16,7 +16,7 @@ const Profile = () => {
   const [profileData, setProfileData] = useState({
     name: user.name || "",
     email: user.email || "",
-    sex: user.sex || "",
+    gender: user.gender || "",
     height: user.height || "",
     weight: user.weight || 0,
     age: user.age || "",

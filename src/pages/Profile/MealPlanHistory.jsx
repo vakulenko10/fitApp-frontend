@@ -59,9 +59,10 @@ const MealPlanHistory = () => {
                         </DrawerTrigger>
                         <DrawerContent>
                           <DrawerHeader>
-                            <DrawerTitle className={'flex justify-between items-baseline'}>Meal Plan Details
-                            <h3 className='text-primary-foreground/80 px-0'>{new Date(plan.createdAt).toLocaleDateString()}</h3>
-                            <h3 className='text-primary-foreground/80 px-0'>{plan.calorieIntake}kcal</h3>
+                            <DrawerTitle className={'flex justify-between items-baseline'}><h4>Meal Plan Details</h4>
+                            <div className='flex flex-col md:flex-row gap-0 md:gap-6'>
+                            <h5 className='text-primary-foreground/80 p-0 m-0 '>{new Date(plan.createdAt).toLocaleDateString()}</h5>
+                            <h5 className='text-primary-foreground/80 p-0 m-0 '>{plan.calorieIntake}kcal</h5></div>
                             </DrawerTitle>
                             
                             <DrawerDescription className={'m-0 py-0'}>

@@ -49,7 +49,7 @@ const handleChange = (e) => {
     if (profileData.name !== user.name) updatedProfile.name = profileData.name;
     if (profileData.email !== user.email)
       updatedProfile.email = profileData.email;
-    if (profileData.sex !== user.sex) updatedProfile.sex = profileData.sex;
+    if (profileData.gender !== user.gender) updatedProfile.gender = profileData.gender;
     if (parseInt(profileData.height, 10) !== user.height)
       updatedProfile.height = parseInt(profileData.height, 10);
     if (parseInt(profileData.age, 10) !== user.age)
@@ -77,7 +77,7 @@ const handleChange = (e) => {
     setProfileData({
       name: user.name || "",
       email: user.email || "",
-      sex: user.sex || "",
+      gender: user.gender || "",
       height: user.height || "",
       weight: user.weight || null,
       age: user.age || "",
@@ -148,14 +148,14 @@ const handleChange = (e) => {
                 <div className="grid grid-cols-2 sm:max-lg:grid-cols-4 gap-4 mb-4">
                   <div>
                     <p className="font-semibold text-center sm:text-left text-muted-darker text-lg lg:text-xl lg:text-xl">
-                      Sex
+                    Gender
                     </p>
                     <Input
                       type="text"
-                      name="sex"
+                      name="gender"
                       className="text-md placeholder:text-black"
                       placeholder="Male"
-                      value={profileData.sex}
+                      value={profileData.gender}
                       onChange={handleChange}
                       disabled={!isEditing}
                     />
