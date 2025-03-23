@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AuthData } from "@/components/auth/AuthWrapper";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
-import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"; // Import Popover
 import { updateUserProfile } from "@/lib/profile";
 import { toast } from 'sonner'; // Import the toast from sonner
@@ -87,22 +85,44 @@ export default function Home() {
           <div className="p-6 border rounded-lg flex flex-col items-center">
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
             <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
-              <Button className="w-full md:w-auto px-6 py-2 border rounded-md" variant={gender === "male" ? "default" : "ghost"} onClick={() => setGender("male")}>Male</Button>
-              <Button className="w-full md:w-auto px-6 py-2 border rounded-md" variant={gender === "female" ? "default" : "ghost"} onClick={() => setGender("female")}>Female</Button>
+              <Button
+                className="w-full md:w-auto px-6 py-2 border rounded-md"
+                variant={gender === "male" ? "default" : "ghost"}
+                onClick={() => setGender("male")}
+              >
+                Male
+              </Button>
+              <Button
+                className="w-full md:w-auto px-6 py-2 border rounded-md"
+                variant={gender === "female" ? "default" : "ghost"}
+                onClick={() => setGender("female")}
+              >
+                Female
+              </Button>
             </div>
           </div>
 
           {/* Age Input */}
           <div className="p-6 border rounded-lg flex flex-col items-center">
             <p className="mb-4 text-lg font-medium">How old are you?</p>
-            <input type="number" className="w-24 border p-2 rounded-md text-center" value={age} onChange={(e) => setAge(Number(e.target.value))} />
+            <input
+              type="number"
+              className="w-24 border p-2 rounded-md text-center"
+              value={age}
+              onChange={(e) => setAge(Number(e.target.value))}
+            />
           </div>
 
           {/* Height Input */}
           <div className="p-6 border rounded-lg flex flex-col items-center">
             <p className="mb-4 text-lg font-medium">How tall are you?</p>
             <div className="flex items-center gap-2">
-              <input type="number" className="w-24 border p-2 rounded-md text-center" value={height} onChange={(e) => setHeight(Number(e.target.value))} />
+              <input
+                type="number"
+                className="w-24 border p-2 rounded-md text-center"
+                value={height}
+                onChange={(e) => setHeight(Number(e.target.value))}
+              />
               <span>cm</span>
             </div>
           </div>
@@ -111,15 +131,27 @@ export default function Home() {
           <div className="p-6 border rounded-lg flex flex-col items-center">
             <p className="mb-4 text-lg font-medium">How much do you weigh?</p>
             <div className="flex items-center gap-2">
-              <input type="number" className="w-24 border p-2 rounded-md text-center" value={currentWeight} onChange={(e) => setCurrentWeight(Number(e.target.value))} />
+              <input
+                type="number"
+                className="w-24 border p-2 rounded-md text-center"
+                value={currentWeight}
+                onChange={(e) => setCurrentWeight(Number(e.target.value))}
+              />
               <span>kg</span>
             </div>
           </div>
 
           <div className="p-6 border rounded-lg flex flex-col items-center">
-            <p className="mb-4 text-lg font-medium">What is your weight goal?</p>
+            <p className="mb-4 text-lg font-medium">
+              What is your weight goal?
+            </p>
             <div className="flex items-center gap-2">
-              <input type="number" className="w-24 border p-2 rounded-md text-center" value={goalWeight} onChange={(e) => setGoalWeight(Number(e.target.value))} />
+              <input
+                type="number"
+                className="w-24 border p-2 rounded-md text-center"
+                value={goalWeight}
+                onChange={(e) => setGoalWeight(Number(e.target.value))}
+              />
               <span>kg</span>
             </div>
           </div>
@@ -129,11 +161,18 @@ export default function Home() {
         <div className="p-6 border rounded-lg flex flex-col items-center mt-6">
           <p className="mb-4 text-lg font-medium">How active are you?</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
-            {["sedentary", "light", "moderate", "active", "superActive"].map((level) => (
-              <Button className="w-full md:w-auto px-6 py-2 border rounded-md" key={level} variant={activityLevel === level ? "default" : "ghost"} onClick={() => setActivityLevel(level)}>
-                {level.charAt(0).toUpperCase() + level.slice(1)}
-              </Button>
-            ))}
+            {["sedentary", "light", "moderate", "active", "superActive"].map(
+              (level) => (
+                <Button
+                  className="w-full md:w-auto px-6 py-2 border rounded-md"
+                  key={level}
+                  variant={activityLevel === level ? "default" : "ghost"}
+                  onClick={() => setActivityLevel(level)}
+                >
+                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                </Button>
+              )
+            )}
           </div>
         </div>
 
@@ -145,11 +184,16 @@ export default function Home() {
               <p className="text-md">Start Date</p>
               <Popover>
                 <PopoverTrigger className="w-full md:w-auto px-6 py-2 border rounded-md">
-                {startDate.toLocaleDateString()}
+                  {startDate.toLocaleDateString()}
                   {/* <Button className="w-full">{startDate.toLocaleDateString()}</Button> */}
                 </PopoverTrigger>
                 <PopoverContent className="p-4">
-                  <Calendar mode="single" selected={startDate} onSelect={setStartDate} className="rounded-md border" />
+                  <input
+                    type="date"
+                    value={startDate.toLocaleDateString("en-CA")} // Enabling ISO format for the date input
+                    onChange={(e) => setStartDate(new Date(e.target.value))}
+                    className="w-full md:w-auto px-6 py-2 border rounded-md"
+                  />{" "}
                 </PopoverContent>
               </Popover>
             </div>
@@ -157,11 +201,16 @@ export default function Home() {
               <p className="text-md">End Date</p>
               <Popover>
                 <PopoverTrigger className="w-full md:w-auto px-6 py-2 border rounded-md">
-                {endDate.toLocaleDateString()}
+                  {endDate.toLocaleDateString()}
                   {/* <Button className="w-full">{endDate.toLocaleDateString()}</Button> */}
                 </PopoverTrigger>
                 <PopoverContent className="p-4">
-                  <Calendar mode="single" selected={endDate} onSelect={setEndDate} className="rounded-md border" />
+                <input
+        type="date"
+        value={endDate.toLocaleDateString("en-CA")} // Enabling ISO format for the date input
+        onChange={(e) => setEndDate(new Date(e.target.value))}
+        className="w-full md:w-auto px-6 py-2 border rounded-md"
+      />
                 </PopoverContent>
               </Popover>
             </div>
@@ -170,23 +219,34 @@ export default function Home() {
 
         {/* Calculate Button */}
         <div className="mt-8 text-center">
-          <Button variant="submit" onClick={handleCalculate} size="lg" className="w-full">
+          <Button
+            variant="submit"
+            onClick={handleCalculate}
+            size="lg"
+            className="w-full"
+          >
             Calculate
           </Button>
         </div>
 
         {/* Results Display */}
         {calculatedCalories !== null && (
-         <div className="mt-6 p-4 border rounded-lg text-center">
-         <p className="text-lg font-bold">Daily Caloric Intake:</p>
-         <p className="text-2xl font-semibold text-green-600">{Math.round(calculatedCalories.calorieIntake)} kcal</p>
-         <p className="text-lg font-bold mt-4">Total Calories for {calculatedCalories.days} Days:</p>
-         <p className="text-2xl font-semibold text-green-600">{calculatedCalories.totalCalories} kcal</p>
-         <p className="mt-4 font-semibold">Macronutrients (per day):</p>
-         <p>Protein: {calculatedCalories.macronutrients.protein}g</p>
-         <p>Fats: {calculatedCalories.macronutrients.fats}g</p>
-         <p>Carbs: {calculatedCalories.macronutrients.carbs}g</p>
-       </div>
+          <div className="mt-6 p-4 border rounded-lg text-center">
+            <p className="text-lg font-bold">Daily Caloric Intake:</p>
+            <p className="text-2xl font-semibold text-green-600">
+              {Math.round(calculatedCalories.calorieIntake)} kcal
+            </p>
+            <p className="text-lg font-bold mt-4">
+              Total Calories for {calculatedCalories.days} Days:
+            </p>
+            <p className="text-2xl font-semibold text-green-600">
+              {calculatedCalories.totalCalories} kcal
+            </p>
+            <p className="mt-4 font-semibold">Macronutrients (per day):</p>
+            <p>Protein: {calculatedCalories.macronutrients.protein}g</p>
+            <p>Fats: {calculatedCalories.macronutrients.fats}g</p>
+            <p>Carbs: {calculatedCalories.macronutrients.carbs}g</p>
+          </div>
         )}
 
         {/* Authentication Check for Saving Results */}
@@ -194,15 +254,16 @@ export default function Home() {
           <div className="mt-6 text-center">
             {user ? (
               <>
-              <p className="text-lg">
-                🎯 Would you like to save this intake in your profile?
-              </p>
-              <div className="flex gap-2 justify-center items-center ">
-              <Button variant={'grey'}>cancel</Button>
-              <Button variant={'submit'} onClick={updateCalorieIntake}>save</Button>
-              </div>
+                <p className="text-lg">
+                  🎯 Would you like to save this intake in your profile?
+                </p>
+                <div className="flex gap-2 justify-center items-center ">
+                  <Button variant={"grey"}>cancel</Button>
+                  <Button variant={"submit"} onClick={updateCalorieIntake}>
+                    save
+                  </Button>
+                </div>
               </>
-              
             ) : (
               <p className="text-lg text-red-500">
                 🔒 Log in or register to save your calorie intake results!
@@ -211,7 +272,7 @@ export default function Home() {
           </div>
         )}
       </div>
-      <Toaster/>
+      <Toaster />
     </div>
   );
 }
