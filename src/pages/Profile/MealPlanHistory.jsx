@@ -53,7 +53,7 @@ const MealPlanHistory = () => {
                   <tr key={plan.id} className="group bg-background border-b text-secondary hover:bg-background/50 transition">
                      <td className="px-4 py-2 md:px-6 md:py-4">
                       <Drawer>
-                        <DrawerTrigger className={` text-nowrap rounded-2xl py-2 px-4 text-accent-foreground text-md font-sans transition bg-accent group-hover:bg-secondary hover:bg-secondary/80`}>
+                        <DrawerTrigger className={` text-nowrap rounded-2xl py-1 px-3 text-accent-foreground text-md font-sans transition bg-accent group-hover:bg-secondary hover:bg-secondary/80`}>
                           View Details
                         </DrawerTrigger>
                         <DrawerContent>

@@ -2,22 +2,21 @@ import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner";
 
 const Toaster = ({
-  bg,
-  textColor,
-  borderColor,
+  
   ...props
 }) => {
   const { theme = "system" } = useTheme()
-
   return (
     (<Sonner
+      
       theme={theme}
-      className="toaster group"
+      className="toaster group bg-red-300"
       style={
         {
-          "--normal-bg": `var(--${bg?bg:'background'})`,
-          "--normal-text": `var(--${textColor?textColor:'secondary'})`,
-          "--normal-border": `var(--${borderColor?borderColor:'none'})`
+          "--normal-bg": `var(--popover)`,
+          "--normal-text": `var(--secondary)`,
+          "--normal-border": `var(--none)`,
+
         }
       }
       {...props} />)

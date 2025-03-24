@@ -40,7 +40,9 @@ export const updateWeight = async (token, weightData) => {
   );
 
   if (!response.ok) {
-    throw new Error("Failed to update weight");
+    console.log(JSON.stringify(response))
+    
+    throw new Error(response.status);
   }
 
   return await response.json();

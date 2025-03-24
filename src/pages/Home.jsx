@@ -5,7 +5,7 @@ import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"; // Import Popover
 import { updateUserProfile } from "@/lib/profile";
 import { toast } from 'sonner'; // Import the toast from sonner
-import { Toaster } from "@/components/ui/sonner";
+
 import { Link } from "react-router-dom";
 
 
@@ -49,11 +49,7 @@ export default function Home() {
             label: "Close",
             onClick: () => toast.dismiss(),
           },
-        },
-        {
-          className: "bg-green-100 text-green-800 border border-green-400 shadow-lg",
         }
-        
         
       );
     }
@@ -79,7 +75,7 @@ export default function Home() {
           calculator to receive your personal current daily calorie intake, and
           what your body needs to fuel itself during the day with your routine!
         </p>
-
+      
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Gender Selection */}
           <div className="p-6 border rounded-lg flex flex-col items-center">
@@ -272,7 +268,7 @@ export default function Home() {
           </div>
         )}
       </div>
-      <Toaster />
+      
     </div>
   );
 }
