@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { AuthData } from '@/components/auth/AuthWrapper';
 import Container from '@/components/Container';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { toast, Toaster } from 'sonner';
 
 const ProfileData = ({profileData, setProfileData}) => {
-   const { user, token } = AuthData();
+   const { user,setUser, token } = AuthData();
     const [loading, setLoading] = useState(true);
 const [isEditing, setIsEditing] = useState(false);
 const [isWeightEditing, setIsWeightEditing] = useState(false);
@@ -33,8 +34,43 @@ const handleChange = (e) => {
       const response = await updateWeight(token, parseInt(profileData.weight, 10));
   
       console.log("Weight updated successfully:", response);
+      setUser(prev => ({
+        ...prev,
+        weight: profileData.weight,  // Update the calorie intake in the state
+      }));
+      toast.success(
+        <div>
+          <p><strong>Success:</strong> Weight updated!</p>
+        </div>,
+        {
+          action: {
+            label: "Close",
+            onClick: () => toast.dismiss(),
+            
+          },
+          style:{
+            background: "var(--accent)"
+          }
+        },
+        {
+          className: "bg-green-100 text-green-800 border border-green-400 shadow-lg",
+        }
+        
+        
+      );
       setIsWeightEditing(false); // Disable editing after successful update
     } catch (error) {
+      // console.log('error keys:', Error.prototype)
+        toast.error(<p >You can't add more than on weight track per day</p>, {
+          action: {
+            label: "Close",
+            onClick: () => toast.dismiss(),
+          }, style:{
+            background: "var(--popover)",
+            color: "var(--muted-darker)"
+          }
+        });
+     
       console.error("Error updating weight:", error);
     }
   };

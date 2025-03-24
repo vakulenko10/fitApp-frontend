@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthData } from "@/components/auth/AuthWrapper";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 const CreateRecipe = () => {
   // State variables to store user input and component status
@@ -67,9 +68,32 @@ const CreateRecipe = () => {
    * @param {string} type - Message type ('success' or 'error')
    */
   const showMessage = (text, type = "success") => {
-    setMessage({ text, type });
-    // Auto-clear message after 5 seconds
-    setTimeout(() => setMessage(null), 5000);
+    type=="success"?
+        toast.success(
+      <div>
+        <p>{text}</p>
+      </div>,
+      {
+        action: {
+          label: "Close",
+          onClick: () => toast.dismiss(),
+        }
+      } 
+    )
+ :toast.error(<p >Error:{text}</p>, {
+        action: {
+          label: "Close",
+          onClick: () => toast.dismiss(),
+        }, style:{
+          background: "var(--primary)",
+          color: "var(--muted-darker)",
+          all: {
+            color: 'white',
+            fill: 'white',
+            background: 'white'
+          }
+        }
+      })
   };
 
   /**
@@ -157,17 +181,7 @@ const CreateRecipe = () => {
     <Container>
       <div className="bg-white shadow-lg rounded-lg p-10 w-full xl:max-w-[1200px] mx-auto my-12 mt-21.5">
         {/* Message notification */}
-        {message && (
-          <div
-            className={`mb-4 p-3 rounded-md ${
-              message.type === "error"
-                ? "bg-red-100 text-red-700"
-                : "bg-green-100 text-green-700"
-            }`}
-          >
-            {message.text}
-          </div>
-        )}
+        
 
         <div className="mb-4.5 xl:mb-12.5">
           <h1 className="text-center text-xl font-semibold md:font-bold">
