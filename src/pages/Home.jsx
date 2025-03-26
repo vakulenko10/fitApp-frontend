@@ -2,47 +2,62 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AuthData } from "@/components/auth/AuthWrapper";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"; // Import Popover
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover"; // Import Popover
 import { updateUserProfile } from "@/lib/profile";
-import { toast } from 'sonner'; // Import the toast from sonner
+import { toast } from "sonner"; // Import the toast from sonner
 
 import { Link } from "react-router-dom";
-
+import { Container } from "lucide-react";
 
 export default function Home() {
-  const { user,setUser, token } = AuthData();
+  const { user, setUser, token } = AuthData();
   const [age, setAge] = useState(25);
-  const [gender, setGender] = useState('female');
+  const [gender, setGender] = useState("male");
   const [currentWeight, setCurrentWeight] = useState(70);
   const [goalWeight, setGoalWeight] = useState(70);
   const [height, setHeight] = useState(170);
   const [activityLevel, setActivityLevel] = useState("moderate");
-  const [startDate, setStartDate] = useState(new Date()); // Start date state
-  const [endDate, setEndDate] = useState(new Date()); // End date state
   const [calculatedCalories, setCalculatedCalories] = useState(null);
-  useEffect(()=>{
-    setAge(user.age||25)
-    setGender(user.gender||'female')
-    setCurrentWeight(user.weight||70)
-    setHeight(user.height||180)
-  }, [user])
+  useEffect(() => {
+    setAge(user.age || 25);
+    setGender(user.gender || "male");
+    setCurrentWeight(user.weight || 70);
+    setHeight(user.height || 180);
+  }, [user]);
   const handleCalculate = () => {
     // Pass the start and end dates to the calculation function
-    const result = calculateCalorieIntake(age, gender, currentWeight, height, activityLevel, goalWeight, startDate, endDate);
+    const result = calculateCalorieIntake(
+      age,
+      gender,
+      currentWeight,
+      height,
+      activityLevel,
+      goalWeight
+    );
     setCalculatedCalories(result);
   };
 
-  const updateCalorieIntake = async () =>{
-    try{
-      const response = await updateUserProfile(token, {currentCalorieIntake: calculatedCalories.calorieIntake })
-      setUser(prev => ({
+  const updateCalorieIntake = async () => {
+    try {
+      const response = await updateUserProfile(token, {
+        currentCalorieIntake: calculatedCalories.calorieIntake,
+      });
+      setUser((prev) => ({
         ...prev,
-        currentCalorieIntake: calculatedCalories.calorieIntake,  // Update the calorie intake in the state
+        currentCalorieIntake: calculatedCalories.calorieIntake, // Update the calorie intake in the state
       }));
       toast.success(
         <div>
-          <p><strong>Success:</strong> Calorie intake updated!</p>
-          <Link to="/profile" className="text-muted-foreground underline">go to profile</Link>
+          <p>
+            <strong>Success:</strong> Calorie intake updated!
+          </p>
+          <Link to="/profile" className="text-muted-foreground underline">
+            go to profile
+          </Link>
         </div>,
         {
           action: {
@@ -50,35 +65,32 @@ export default function Home() {
             onClick: () => toast.dismiss(),
           },
         }
-        
       );
-    }
-    catch(e){
-      toast.error('Something went wrong while saving your calorie intake!', {
+    } catch (e) {
+      toast.error("Something went wrong while saving your calorie intake!", {
         action: {
           label: "Close",
           onClick: () => toast.dismiss(),
         },
       });
     }
-
-  }
+  };
 
   return (
-    <div className="container mx-auto">
-      <div className="bg-white shadow-lg rounded-lg p-10 w-full max-w-3xl mx-auto my-12">
-        <h1 className="text-2xl font-bold text-center mb-6 mt-6">
+    <div className="container p-0 flex justify-center">
+      <div className="bg-white shadow-lg w-full max-w-6xl text-center">
+        <h1 className="text-2xl font-bold">
           Daily Calorie Intake Calculator
         </h1>
-        <p className="text-center mb-6">
+        <p className="m-2">
           Feel free to enter your information below in the Daily Calorie Intake
           calculator to receive your personal current daily calorie intake, and
           what your body needs to fuel itself during the day with your routine!
         </p>
-      
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Gender Selection */}
-          <div className="p-6 border rounded-lg flex flex-col items-center">
+          <div className="p-6 border flex flex-col items-center">
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
             <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
               <Button
@@ -172,47 +184,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Date Selection (Start Date & End Date) */}
-        <div className="p-6 border rounded-lg flex flex-col items-center mt-6">
-          <p className="mb-4 text-lg font-medium">Select your date range</p>
-          <div className="flex gap-4">
-            <div>
-              <p className="text-md">Start Date</p>
-              <Popover>
-                <PopoverTrigger className="w-full md:w-auto px-6 py-2 border rounded-md">
-                  {startDate.toLocaleDateString()}
-                  {/* <Button className="w-full">{startDate.toLocaleDateString()}</Button> */}
-                </PopoverTrigger>
-                <PopoverContent className="p-4">
-                  <input
-                    type="date"
-                    value={startDate.toLocaleDateString("en-CA")} // Enabling ISO format for the date input
-                    onChange={(e) => setStartDate(new Date(e.target.value))}
-                    className="w-full md:w-auto px-6 py-2 border rounded-md"
-                  />{" "}
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div>
-              <p className="text-md">End Date</p>
-              <Popover>
-                <PopoverTrigger className="w-full md:w-auto px-6 py-2 border rounded-md">
-                  {endDate.toLocaleDateString()}
-                  {/* <Button className="w-full">{endDate.toLocaleDateString()}</Button> */}
-                </PopoverTrigger>
-                <PopoverContent className="p-4">
-                <input
-        type="date"
-        value={endDate.toLocaleDateString("en-CA")} // Enabling ISO format for the date input
-        onChange={(e) => setEndDate(new Date(e.target.value))}
-        className="w-full md:w-auto px-6 py-2 border rounded-md"
-      />
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-        </div>
-
         {/* Calculate Button */}
         <div className="mt-8 text-center">
           <Button
@@ -268,7 +239,6 @@ export default function Home() {
           </div>
         )}
       </div>
-      
     </div>
   );
 }
