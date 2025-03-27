@@ -302,6 +302,10 @@
     max-width: 1200px; /* Set a max width for content */
   }
 
+  .section-input{
+    @apply p-8 flex flex-col items-center border-b-1;
+  }
+
   h1,
   h2,
   h3,
