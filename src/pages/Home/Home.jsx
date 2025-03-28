@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AuthData } from "@/components/auth/AuthWrapper";
+import { AuthData } from "@/hooks/AuthData";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { updateUserProfile } from "@/lib/profile";

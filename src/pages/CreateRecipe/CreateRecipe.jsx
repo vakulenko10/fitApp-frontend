@@ -3,7 +3,7 @@ import Container from "@/components/Container";
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AuthData } from "@/components/auth/AuthWrapper";
+import { AuthData } from "@/hooks/AuthData";
 import { Textarea } from "@/components/ui/textarea";
 import { useNotification } from "@/hooks/useNotification";
 

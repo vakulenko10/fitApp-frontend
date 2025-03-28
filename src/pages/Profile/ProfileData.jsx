@@ -3,7 +3,7 @@ import { updateUserProfile } from "@/lib/profile"; // Assuming you've created th
 import {updateWeight } from "@/lib/profile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AuthData } from '@/components/auth/AuthWrapper';
+import { AuthData } from "@/hooks/AuthData";
 import Container from '@/components/Container';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useNotification } from "../../hooks/useNotification";

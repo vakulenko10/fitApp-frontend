@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { AuthData } from "@/components/auth/AuthWrapper.jsx";
+import { AuthData } from "@/hooks/AuthData";
 
 import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";

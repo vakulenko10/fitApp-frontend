@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { AuthData } from "../auth/AuthWrapper";
+import { AuthData } from "@/hooks/AuthData";
 import { nav } from "./navigations";
 export const RenderRoutes = () => {
     const { user } = AuthData();

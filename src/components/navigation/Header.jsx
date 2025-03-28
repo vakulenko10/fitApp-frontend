@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AuthData } from "@/components/auth/AuthWrapper";
+import { AuthData } from "@/hooks/AuthData";
 import { nav } from "./navigations";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
 import Container from "@/components/Container";

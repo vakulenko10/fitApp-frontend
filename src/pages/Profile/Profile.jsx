@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { AuthData } from "@components/auth/AuthWrapper";
+import { AuthData } from "@/hooks/AuthData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ProfileData from "./ProfileData";
 import UserCharts from "./UserCharts";
