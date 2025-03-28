@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AuthData } from "@/components/auth/AuthWrapper";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"; // Import Popover
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { updateUserProfile } from "@/lib/profile";
-import { toast } from 'sonner'; // Import the toast from sonner
-
+import { toast } from 'sonner';
 import { Link } from "react-router-dom";
 
 
@@ -17,8 +16,8 @@ export default function Home() {
   const [goalWeight, setGoalWeight] = useState(70);
   const [height, setHeight] = useState(170);
   const [activityLevel, setActivityLevel] = useState("moderate");
-  const [startDate, setStartDate] = useState(new Date()); // Start date state
-  const [endDate, setEndDate] = useState(new Date()); // End date state
+  const [startDate, setStartDate] = useState(new Date()); 
+  const [endDate, setEndDate] = useState(new Date());
   const [calculatedCalories, setCalculatedCalories] = useState(null);
   useEffect(()=>{
     setAge(user.age||25)

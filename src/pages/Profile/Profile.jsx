@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { AuthData } from "@components/auth/AuthWrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import ProfileData from "./Profile/ProfileData";
-import UserCharts from "./Profile/UserCharts";
-import MealPlanHistory from "./Profile/MealPlanHistory";
+import ProfileData from "./ProfileData";
+import UserCharts from "./UserCharts";
+import MealPlanHistory from "./MealPlanHistory";
 import Container from "@/components/Container";
 
 const Profile = () => {

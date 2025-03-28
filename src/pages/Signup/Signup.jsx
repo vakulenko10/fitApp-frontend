@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthData } from "@/components/auth/AuthWrapper.jsx";
 
-import { Button } from "../components/ui/button.jsx";
-import { Input } from "../components/ui/input.jsx";
+import { Button } from "@/components/ui/button.jsx";
+import { Input } from "@/components/ui/input.jsx";
 
 
 const Signup = () => {

@@ -1,5 +1,5 @@
 import { ComboboxDropdownMenu } from "@/components/ui/combobox-dropdown-menu";
-import Container from "../components/Container";
+import Container from "@/components/Container";
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
