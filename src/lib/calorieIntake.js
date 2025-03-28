@@ -1,61 +1,86 @@
-export function calculateCalorieIntake(age, gender, currentWeight, height, activityLevel, goalWeight, startDate, endDate) {
-    const weight = currentWeight;
-    const heightCm = height;
-  
-    const activityMultipliers = {
-      sedentary: 1.2,
-      light: 1.375,
-      moderate: 1.55,
-      active: 1.725,
-      superActive: 1.9,
-    };
-  
-    const activityFactor = activityMultipliers[activityLevel] || 1.2;
-  
-    let BMR;
-    if (gender === "male") {
-      BMR = 10 * weight + 6.25 * heightCm - 5 * age + 5;
-    } else {
-      BMR = 10 * weight + 6.25 * heightCm - 5 * age - 161;
-    }
-  
-    const TDEE = BMR * activityFactor;
-  
-    let calorieIntake;
-    if (goalWeight > currentWeight) {
-      calorieIntake = TDEE + 500; 
-    } else if (goalWeight < currentWeight) {
-      calorieIntake = TDEE - 500; 
-    } else {
-      calorieIntake = TDEE; 
-    }
-  
-    const proteinIntake = goalWeight * 2;
-    const proteinCalories = proteinIntake * 4;
-  
-    const fatIntake = (calorieIntake * 0.25) / 9;
-    const fatCalories = fatIntake * 9;
-  
-    const carbCalories = calorieIntake - (proteinCalories + fatCalories);
-    const carbIntake = carbCalories / 4;
-  
-    // Calculate the number of days between startDate and endDate
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const timeDifference = end.getTime() - start.getTime();
-    const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)) + 1;
-  
-    const totalCalories = days * calorieIntake;
-  
-    return {
-      calorieIntake: Math.round(calorieIntake),
-      totalCalories: Math.round(totalCalories),
-      macronutrients: {
-        protein: Math.round(proteinIntake),
-        fats: Math.round(fatIntake),
-        carbs: Math.round(carbIntake),
-      },
-      days,
-    };
+export function calculateCalorieIntake(
+  age,
+  gender,
+  weight,
+  height,
+  activityLevel,
+  goal,
+) {
+  // Activity multipliers based on lifestyle
+  const activityMultipliers = {
+    sedentary: 1.2, // Little to no exercise
+    light: 1.375, // Light exercise (1-3 days per week)
+    moderate: 1.55, // Moderate exercise (3-5 days per week)
+    active: 1.725, // Heavy exercise (6-7 days per week)
+    superActive: 1.9, // Very intense training or physical job
+  };
+
+  // Goal adjustments for calorie intake
+  const goalMultipliers = {
+    loseWeight: -0.15, // Reduce 15% of total calories
+    maintainWeight: 0, // No change
+    gainMuscle: 0.1, // Increase 10% of total calories
+  };
+
+  // Select activity factor based on user input
+  const activityFactor = activityMultipliers[activityLevel] || 1.2;
+
+  let BMR;
+
+  // Calculate Basal Metabolic Rate (BMR) using the Mifflin-St Jeor equation
+  if (gender === "male") {
+    BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+  } else {
+    BMR = 10 * weight + 6.25 * height - 5 * age - 161;
   }
-  
+
+  // Total Daily Energy Expenditure (TDEE)
+  const TDEE = BMR * activityFactor;
+
+  // Adjust calorie intake based on the goal
+  const calorieIntake = TDEE * (1 + (goalMultipliers[goal] || 0));
+
+  // Macronutrient distribution based on fitness goals
+  const macroDistribution = {
+    maintainWeight: {
+      protein: 0.25,
+      carbs: 0.47,
+      fats: 0.28,
+      fiber: gender === "male" ? 14 : 12,
+    },
+    loseWeight: {
+      protein: 0.28,
+      carbs: 0.43,
+      fats: 0.29,
+      fiber: gender === "male" ? 14 : 12,
+    },
+    gainMuscle: {
+      protein: 0.25,
+      carbs: 0.49,
+      fats: 0.26,
+      fiber: gender === "male" ? 14 : 12,
+    },
+  };
+
+  // Get the macro ratios for the selected goal
+  const { protein, carbs, fats, fiber } =
+    macroDistribution[goal] || macroDistribution.maintainWeight;
+
+  // Calculate macronutrient intake in grams
+  const proteinIntake = (calorieIntake * protein) / 4; // 1g protein = 4 kcal
+  const carbIntake = (calorieIntake * carbs) / 4; // 1g carb = 4 kcal
+  const fatIntake = (calorieIntake * fats) / 9; // 1g fat = 9 kcal
+
+  // Calculate fiber intake based on total calories
+  const fiberIntake = (fiber * calorieIntake) / 1000;
+
+  return {
+    calorieIntake: Math.round(calorieIntake),
+    macronutrients: {
+      protein: Math.round(proteinIntake),
+      fats: Math.round(fatIntake),
+      carbs: Math.round(carbIntake),
+      fiber: Math.round(fiberIntake),
+    },
+  };
+}

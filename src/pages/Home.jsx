@@ -22,6 +22,7 @@ export default function Home() {
   const [height, setHeight] = useState(170);
   const [activityLevel, setActivityLevel] = useState("moderate");
   const [calculatedCalories, setCalculatedCalories] = useState(null);
+  
   useEffect(() => {
     setAge(user.age || 25);
     setGender(user.gender || "male");
