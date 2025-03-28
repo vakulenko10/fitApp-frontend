@@ -5,7 +5,7 @@ import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { updateUserProfile } from "@/lib/profile";
 import Modal from "react-modal";
 import Container from "@/components/Container";
-import { useNotification } from "@/hooks/useNotification";
+import { useNotification } from "../../hooks/useNotification";
 Modal.setAppElement("#root");
 
 export default function Home() {
