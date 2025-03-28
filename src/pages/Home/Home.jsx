@@ -4,12 +4,12 @@ import { AuthData } from "@/components/auth/AuthWrapper";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { updateUserProfile } from "@/lib/profile";
-import { toast } from 'sonner';
 import { Link } from "react-router-dom";
-
+import { useNotification } from "../../hooks/useNotification";
 
 export default function Home() {
-  const { user,setUser, token } = AuthData();
+  const { triggerToast } = useNotification();
+  const { user, setUser, token } = AuthData();
   const [age, setAge] = useState(25);
   const [gender, setGender] = useState('female');
   const [currentWeight, setCurrentWeight] = useState(70);
@@ -38,27 +38,10 @@ export default function Home() {
         ...prev,
         currentCalorieIntake: calculatedCalories.calorieIntake,  // Update the calorie intake in the state
       }));
-      toast.success(
-        <div>
-          <p><strong>Success:</strong> Calorie intake updated!</p>
-          <Link to="/profile" className="text-muted-foreground underline">go to profile</Link>
-        </div>,
-        {
-          action: {
-            label: "Close",
-            onClick: () => toast.dismiss(),
-          },
-        }
-        
-      );
+      triggerToast("Calorie intake updated", "success", "/profile" )
     }
     catch(e){
-      toast.error('Something went wrong while saving your calorie intake!', {
-        action: {
-          label: "Close",
-          onClick: () => toast.dismiss(),
-        },
-      });
+      triggerToast(`Something went wrong while saving your calorie intake: ${e}`, "error" )
     }
 
   }
