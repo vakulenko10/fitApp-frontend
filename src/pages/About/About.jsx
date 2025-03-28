@@ -1,4 +1,4 @@
-import ThemeDisplayed from '@/components/ThemeDisplayed'
+import ThemeDisplayed from './ThemeDisplayed'
 import React from 'react'
 
 const About = () => {

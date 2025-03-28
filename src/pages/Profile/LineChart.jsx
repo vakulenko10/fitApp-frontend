@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 
 const LineChartComponent = ({ data }) => {
   const [timeScale, setTimeScale] = useState('day'); // Default scale is daily

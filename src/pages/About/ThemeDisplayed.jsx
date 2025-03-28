@@ -1,7 +1,4 @@
-import { BrowserRouter } from "react-router-dom";
-import { AuthWrapper } from "./auth/AuthWrapper";
-import  Header  from "./navigation/Header";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import {
   Drawer,
   DrawerClose,
@@ -22,7 +19,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./ui/drawer";
+} from "@/components/ui/drawer";
 import {
   Dialog,
   DialogContent,
@@ -30,18 +27,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Textarea } from "./ui/textarea";
-import { Input } from "./ui/input";
-import Container from "./Container";
-import { useNotification } from "../hooks/useNotification";
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import Container from "@/components/Container";
+import { useNotification } from "@/hooks/useNotification";
 const ThemeDisplayed = () => {
   const { triggerToast } = useNotification();
 

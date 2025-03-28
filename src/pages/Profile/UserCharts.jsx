@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getWeightHistory, updateWeight } from "@/lib/profile";
-import LineChartComponent from "@/components/LineChart";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import LineChartComponent from "./LineChart";
 import { AuthData } from '@/components/auth/AuthWrapper';
 import Container from '@/components/Container';
 function GridItem({ children, className}) {

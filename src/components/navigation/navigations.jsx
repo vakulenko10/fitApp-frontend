@@ -1,4 +1,4 @@
-import { Home, About, Login, Signup, Profile, CreateRecipe, Faq } from '../../pages/index';
+import { Home, About, Login, Signup, Profile, CreateRecipe, Faq } from '@/pages/index';
 
 export const nav = [
   {
