@@ -75,7 +75,7 @@ export function AuthWrapper({ children }) {
 
   useEffect(() => {
     const tokenFromCookie = getCookie("token");
-    console.log("tokenFromCookie:", tokenFromCookie)
+    // console.log("tokenFromCookie:", tokenFromCookie)
     if (tokenFromCookie && !user.isAuthenticated) {
       (async () => {
         try {
