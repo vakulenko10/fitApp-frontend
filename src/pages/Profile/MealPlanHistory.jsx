@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getMealPlanHistory } from "@/lib/mealplan";
-import { Button } from "@/components/ui/button";
-import { AuthData } from '@/components/auth/AuthWrapper';
+import { AuthData } from "@/hooks/AuthData";
 import Container from '@/components/Container';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerDescription, DrawerTrigger } from "@/components/ui/drawer";

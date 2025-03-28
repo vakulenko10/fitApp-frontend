@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AuthData } from "@/components/auth/AuthWrapper";
+import { AuthData } from "@/hooks/AuthData";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"; // Import Popover
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { updateUserProfile } from "@/lib/profile";
-import { toast } from 'sonner'; // Import the toast from sonner
-
 import { Link } from "react-router-dom";
-
+import { useNotification } from "../../hooks/useNotification";
 
 export default function Home() {
-  const { user,setUser, token } = AuthData();
+  const { triggerToast } = useNotification();
+  const { user, setUser, token } = AuthData();
   const [age, setAge] = useState(25);
   const [gender, setGender] = useState('female');
   const [currentWeight, setCurrentWeight] = useState(70);
   const [goalWeight, setGoalWeight] = useState(70);
   const [height, setHeight] = useState(170);
   const [activityLevel, setActivityLevel] = useState("moderate");
-  const [startDate, setStartDate] = useState(new Date()); // Start date state
-  const [endDate, setEndDate] = useState(new Date()); // End date state
+  const [startDate, setStartDate] = useState(new Date()); 
+  const [endDate, setEndDate] = useState(new Date());
   const [calculatedCalories, setCalculatedCalories] = useState(null);
   useEffect(()=>{
     setAge(user.age||25)
@@ -39,27 +38,10 @@ export default function Home() {
         ...prev,
         currentCalorieIntake: calculatedCalories.calorieIntake,  // Update the calorie intake in the state
       }));
-      toast.success(
-        <div>
-          <p><strong>Success:</strong> Calorie intake updated!</p>
-          <Link to="/profile" className="text-muted-foreground underline">go to profile</Link>
-        </div>,
-        {
-          action: {
-            label: "Close",
-            onClick: () => toast.dismiss(),
-          },
-        }
-        
-      );
+      triggerToast("Calorie intake updated", "success", "/profile" )
     }
     catch(e){
-      toast.error('Something went wrong while saving your calorie intake!', {
-        action: {
-          label: "Close",
-          onClick: () => toast.dismiss(),
-        },
-      });
+      triggerToast(`Something went wrong while saving your calorie intake: ${e}`, "error" )
     }
 
   }

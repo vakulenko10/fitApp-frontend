@@ -3,10 +3,10 @@ import { updateUserProfile } from "@/lib/profile"; // Assuming you've created th
 import {updateWeight } from "@/lib/profile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AuthData } from '@/components/auth/AuthWrapper';
+import { AuthData } from "@/hooks/AuthData";
 import Container from '@/components/Container';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { toast, Toaster } from 'sonner';
+import { useNotification } from "../../hooks/useNotification";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +20,7 @@ import {
 } from "@components/ui/alert-dialog";
 
 const ProfileData = ({profileData, setProfileData}) => {
+const { triggerToast } = useNotification();
 const { user,setUser, token } = AuthData();
 const [loading, setLoading] = useState(true);
 const [isEditing, setIsEditing] = useState(false);
@@ -49,41 +50,11 @@ const handleChange = (e) => {
         ...prev,
         weight: profileData.weight,  // Update the calorie intake in the state
       }));
-      toast.success(
-        <div>
-          <p>
-            <strong>Success:</strong> Weight updated!
-          </p>
-        </div>,
-        {
-          action: {
-            label: "Close",
-            onClick: () => toast.dismiss(),
-            
-          },
-          style:{
-            background: "var(--accent)"
-          }
-        },
-        {
-          className: "bg-green-100 text-green-800 border border-green-400 shadow-lg",
-        }
-        
-        
-      );
+      triggerToast('Weight updated!', 'success')
       setIsWeightEditing(false); // Disable editing after successful update
     } catch (error) {
       // console.log('error keys:', Error.prototype)
-        toast.error(<p >You can't add more than on weight track per day</p>, {
-          action: {
-            label: "Close",
-            onClick: () => toast.dismiss(),
-          }, style:{
-            background: "var(--popover)",
-            color: "var(--muted-darker)"
-          }
-        });
-     
+      triggerToast("You can't add more than on weight track per day", 'error')
       console.error("Error updating weight:", error);
     }
   };

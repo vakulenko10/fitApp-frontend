@@ -1,14 +1,12 @@
 import { getProfile, loginUser, registerUser } from "@/lib/Authentication";
 import { getCookie } from "@/lib/utils";
-import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 export function AuthWrapper({ children }) {
   const [user, setUser] = useState({ isAuthenticated: false });
   const [token, setToken] = useState(null);
-  const navigate = useNavigate();
   const login = async (email, password) => {
     try {
       const data = await loginUser(email, password);
@@ -104,8 +102,4 @@ export function AuthWrapper({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function AuthData() {
-  return useContext(AuthContext);
 }

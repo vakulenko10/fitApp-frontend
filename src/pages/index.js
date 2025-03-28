@@ -1,9 +1,10 @@
-import Home from "./Home";
-import About from "./About";
-import Login from "./Login";
-import Profile from "./Profile";
-import CreateRecipe from "./CreateRecipe";
-import Faq from "./Faq";
+import Home from "./Home/Home";
+import About from "./About/About";
+import Login from "./Login/Login";
+import Signup from "./Signup/Signup";
+import Profile from "./Profile/Profile";
+import CreateRecipe from "./CreateRecipe/CreateRecipe";
+import Faq from "./FAQ/Faq";
 
 
-export default { Home, About, Login, Profile, CreateRecipe, Faq };
+export { Home, About, Login, Signup, Profile, CreateRecipe, Faq };
