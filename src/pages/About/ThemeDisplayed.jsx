@@ -38,7 +38,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import Container from "@/components/Container";
-import { useNotification } from "@/hooks/useNotification";
+import { useNotification } from "@/hooks/UseNotification";
 const ThemeDisplayed = () => {
   const { triggerToast } = useNotification();
 

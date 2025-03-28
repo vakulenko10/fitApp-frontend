@@ -5,11 +5,11 @@ import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { updateUserProfile } from "@/lib/profile";
 import Modal from "react-modal";
 import Container from "@/components/Container";
-// import { useNotification } from "../../hooks/useNotification";
+import { useNotification } from "@/hooks/UseNotification";
 Modal.setAppElement("#root");
 
 export default function Home() {
-  // const { triggerToast } = useNotification();
+  const { triggerToast } = useNotification();
   const { user,  setUser, token } = AuthData();
   const [age, setAge] = useState(25);
   const [gender, setGender] = useState("male");
@@ -49,10 +49,10 @@ export default function Home() {
         ...prev,
         currentCalorieIntake: calculatedCalories?.calorieIntake,
       }));
-      // triggerToast("Calorie intake updated", "success", "/profile" )
+      triggerToast("Calorie intake updated", "success", "/profile" )
     }
     catch(e){
-      // triggerToast(`Something went wrong while saving your calorie intake: ${e}`, "error" )
+      triggerToast(`Something went wrong while saving your calorie intake: ${e}`, "error" )
     }
   };
 

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AuthData } from "@/hooks/AuthData";
 import { Textarea } from "@/components/ui/textarea";
-import { useNotification } from "@/hooks/useNotification";
+import { useNotification } from "@/hooks/UseNotification";
 
 const CreateRecipe = () => {
   const [calorieIntake, setCalorieIntake] = useState("");

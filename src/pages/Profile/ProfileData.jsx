@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { AuthData } from "@/hooks/AuthData";
 import Container from '@/components/Container';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useNotification } from "@/hooks/useNotification";
+import { useNotification } from "@/hooks/UseNotification";
 import {
   AlertDialog,
   AlertDialogAction,
