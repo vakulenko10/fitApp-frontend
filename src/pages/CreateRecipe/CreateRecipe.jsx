@@ -1,136 +1,60 @@
 import { ComboboxDropdownMenu } from "@/components/ui/combobox-dropdown-menu";
-import Container from "../components/Container";
+import Container from "@/components/Container";
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AuthData } from "@/components/auth/AuthWrapper";
+import { AuthData } from "@/hooks/AuthData";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
+import { useNotification } from "@/hooks/useNotification";
 
 const CreateRecipe = () => {
-  // State variables to store user input and component status
   const [calorieIntake, setCalorieIntake] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
-  const [goal, setGoal] = useState("maintain"); // Options: "deficit", "maintain", "surplus"
+  const [goal, setGoal] = useState("maintain");
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState(null); // For showing success/error messages
-  const [generatedRecipe, setGeneratedRecipe] = useState(null); // New state to store the generated recipe
-  const { user, token } = AuthData(); // Get both user and token from AuthData
+  const [generatedRecipe, setGeneratedRecipe] = useState(null);
+  const { user, token } = AuthData();
+  const { triggerToast } = useNotification();
 
-  // Load user's calorie intake when component mounts or user data changes
   useEffect(() => {
-    (user && user.isAuthenticated && user.currentCalorieIntake)?
-      setCalorieIntake(user.currentCalorieIntake):setCalorieIntake(2000)
-    
+    user && user.isAuthenticated && user.currentCalorieIntake
+      ? setCalorieIntake(user.currentCalorieIntake)
+      : setCalorieIntake(2000);
   }, [user]);
 
-  /**
-   * Validates and updates calorie intake value
-   * Only allows numeric input in the calorie field
-   * @param {Event} e - The input change event
-   */
   const handleCalorieChange = (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value) || value === "") {
       setCalorieIntake(value);
     }
   };
-  const resetCalorieIntake = () =>{
-    
-  setCalorieIntake(user.isAuthenticated&&user.currentCalorieIntake!=null?user.currentCalorieIntake:'2000')
-  }
-  /**
-   * Calculates final calorie target based on selected goal
-   * - deficit: 20% reduction from base calories
-   * - surplus: 20% increase from base calories
-   * - maintain: keeps the original calorie amount
-   * @returns {number} The calculated calorie target
-   */
-  // const calculateFinalCalories = () => {
-  //   if (!calorieIntake) return 0;
 
-  //   const baseCalories = parseInt(calorieIntake);
-
-  //   switch (goal) {
-  //     case "deficit":
-  //       return Math.round(baseCalories * 0.8); // 20% deficit
-  //     case "surplus":
-  //       return Math.round(baseCalories * 1.2); // 20% surplus
-  //     default:
-  //       return baseCalories; // maintain weight
-  //   }
-  // };
-
-  /**
-   * Displays notification messages to the user
-   * @param {string} text - The message to display
-   * @param {string} type - Message type ('success' or 'error')
-   */
-  const showMessage = (text, type = "success") => {
-    type=="success"?
-        toast.success(
-      <div>
-        <p>{text}</p>
-      </div>,
-      {
-        action: {
-          label: "Close",
-          onClick: () => toast.dismiss(),
-        }
-      } 
-    )
- :toast.error(<p >Error:{text}</p>, {
-        action: {
-          label: "Close",
-          onClick: () => toast.dismiss(),
-        }, style:{
-          background: "var(--primary)",
-          color: "var(--muted-darker)",
-          all: {
-            color: 'white',
-            fill: 'white',
-            background: 'white'
-          }
-        }
-      })
+  const resetCalorieIntake = () => {
+    setCalorieIntake(
+      user.isAuthenticated && user.currentCalorieIntake != null
+        ? user.currentCalorieIntake
+        : "2000"
+    );
   };
 
-  /**
-   * Submits user preferences to the backend to generate a meal plan
-   * After successful generation, displays the recipe on the same page
-   */
   const handleCreateRecipe = async () => {
-    // Input validation
     if (!calorieIntake) {
-      showMessage("Please enter your daily calorie intake", "error");
+      triggerToast("Please enter your daily calorie intake", "error");
       return;
     }
-
     if (selectedProducts.length === 0) {
-      showMessage(
-        "Please select at least one product for your recipe",
-        "error"
-      );
+      triggerToast("Please select at least one product for your recipe", "error");
       return;
     }
-
-    // const finalCalories = calculateFinalCalories();
 
     try {
       setIsLoading(true);
-      setGeneratedRecipe(null); // Clear any previous recipe
-
-      // API endpoint selection:
-      // - For authenticated users: /mealplan/generate (with token)
-      // - For guests: /mealplan/generate-unauthorized
+      setGeneratedRecipe(null);
       const url = token
         ? `${import.meta.env.VITE_BACKEND_API_URL}/mealplan/generate`
-        : `${
-            import.meta.env.VITE_BACKEND_API_URL
-          }/mealplan/generate-unauthorized`;
+        : `${import.meta.env.VITE_BACKEND_API_URL}/mealplan/generate-unauthorized`;
 
-      // Request configuration with authentication if available
       const requestOptions = {
         method: "POST",
         headers: {
@@ -145,44 +69,24 @@ const CreateRecipe = () => {
       };
 
       const response = await fetch(url, requestOptions);
-
       if (!response.ok) {
         throw new Error("Failed to generate meal plan");
       }
-
-      // Response expected format:
-      // {
-      //   mealPlan: "markdown text with recipes",
-      //   storedMealPlan: {...} (only for authenticated users)
-      // }
       const data = await response.json();
-
-      // Store received meal plan in localStorage for reference if needed later
       localStorage.setItem("mealPlan", JSON.stringify(data.mealPlan));
-
-      // Set the generated recipe to display on this page
       setGeneratedRecipe(data.mealPlan);
-
-      // Show success message
-      showMessage("Meal plan generated successfully!");
-
-      // No longer navigate to Recipe page
-      // navigate("/recipe");
+      triggerToast("Meal plan generated successfully!", "success");
     } catch (error) {
       console.error("Error creating recipe:", error);
-      showMessage(error.message || "Failed to create recipe", "error");
+      triggerToast(error.message || "Failed to create recipe", "error");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Component render with UI sections
   return (
     <Container>
       <div className="bg-white shadow-lg rounded-lg p-10 w-full xl:max-w-[1200px] mx-auto my-12 mt-21.5">
-        {/* Message notification */}
-        
-
         <div className="mb-4.5 xl:mb-12.5">
           <h1 className="text-center text-xl font-semibold md:font-bold">
             Your daily calorie intake
@@ -200,7 +104,7 @@ const CreateRecipe = () => {
               placeholder={`Enter calories ${calorieIntake}`}
               type="text"
             />
-            <Button variant={'submit'} onClick={resetCalorieIntake}>reset</Button>
+            <Button variant={'submit'} onClick={resetCalorieIntake}>Reset</Button>
           </div>
         </div>
         <div className="mb-3 xl:mb-12.5">
@@ -301,10 +205,7 @@ const CreateRecipe = () => {
                 className="mr-3"
                 variant="submit"
                 size="lg"
-                onClick={() => {
-                  // Save functionality can be implemented here if needed
-                  showMessage("Recipe saved to your favorites!");
-                }}
+                onClick={() => triggerToast("Recipe saved to your favorites!", "success")}
               >
                 Save
               </Button>
@@ -312,7 +213,6 @@ const CreateRecipe = () => {
                 variant="submit"
                 size="lg"
                 onClick={() => {
-                  // Reset generated recipe to create a new one
                   setGeneratedRecipe(null);
                   setSelectedProducts([]);
                   setSelectedAllergens([]);

@@ -1,8 +1,4 @@
-import { BrowserRouter } from "react-router-dom";
-import { AuthWrapper } from "./auth/AuthWrapper";
-import  Header  from "./navigation/Header";
-import { Button } from "./ui/button";
-import { toast, Toaster } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import {
   Drawer,
   DrawerClose,
@@ -23,7 +19,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./ui/drawer";
+} from "@/components/ui/drawer";
 import {
   Dialog,
   DialogContent,
@@ -31,28 +27,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-
-import { ScrollArea } from "./ui/scroll-area";
-import { Textarea } from "./ui/textarea";
-import { Input } from "./ui/input";
-import Container from "./Container";
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import Container from "@/components/Container";
+import { useNotification } from "@/hooks/useNotification";
 const ThemeDisplayed = () => {
-  const handleClick = (data) => {
-    toast(data.title, {
-      description: data.description,
-      action: data.action, // Optional: Custom action button
-      duration: data.duration || 5000, // Default duration 5s
-      className: "visible",
-    });
-  };
+  const { triggerToast } = useNotification();
 
   return (
     <>
@@ -245,27 +233,19 @@ const ThemeDisplayed = () => {
           </Drawer>
 
           <Button
-            onClick={() =>
-              handleClick({
-                title: "Success",
-                description: "Your changes have been saved!",
-                action: {
-                  label: (
-                    <label className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
-                      Retry
-                    </label>
-                  ),
-                  onClick: () => console.log("Undo clicked"),
-                },
-                duration: 3000, // Display for 3 seconds
-                className: "!bg-white !shadow-lg !p-4 !rounded-lg",
-              })
+             onClick={() =>
+              triggerToast("Profile updated successfully!", "success", "/profile")
             }
           >
             Show Success Toast
           </Button>
-
-          <Toaster />
+          <Button
+             onClick={() =>
+              triggerToast("Message of the error here!", "error")
+            }
+          >
+            Show error Toast
+          </Button>
         </div>
       </Container>
     </>

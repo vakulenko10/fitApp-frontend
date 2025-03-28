@@ -19,6 +19,9 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0% 0 0);
 
+  --popup:oklch(1 0 0);
+  --popup-background:oklch(0% 0 6.77 / 50%);
+
   /* --primary:oklch(41.49% 0.1233 145.19);
   --primary-foreground: oklch(100% 0 0); */
 
@@ -100,7 +103,6 @@
   --text-4xl: 2.25rem;
   --text-5xl: 2.5rem;
   --text-6xl: 3rem;
-
 }
 
 @media (min-width: 768px) {
@@ -118,12 +120,10 @@
     --text-4xl: 2.75rem;
     --text-5xl: 3rem;
     --text-6xl: 3rem;
-
   }
 }
 @media (min-width: 1024px) {
   :root {
-
     --text-xxs: 0.5rem;
     --text-xs: 0.75rem;
     --text-sm: 1rem;
@@ -135,7 +135,6 @@
     --text-4xl: 3.5rem;
     --text-5xl: 4rem;
     --text-6xl: 3rem;
-
   }
 }
 /* .dark {
@@ -184,6 +183,9 @@
 
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
+  --color-popup: var(--popup);
+  --color-popup-background: var(--popup-background);
 
   --color-primary: var(--primary); /* Color for main buttons, */
   --color-primary-foreground: var(--primary-foreground);
@@ -255,11 +257,11 @@
   --text-xs: var(--text-xs);
   --text-sm: var(--text-sm);
   --text-md: var(--text-md);
-  --text-lg:var(--text-lg);
+  --text-lg: var(--text-lg);
   --text-xl: var(--text-xl);
   --text-2xl: var(--text-2xl);
   --text-3xl: var(--text-3xl);
-  --text-4xl:var(--text-4xl);
+  --text-4xl: var(--text-4xl);
   --text-5xl: var(--text-5xl);
   --text-6xl: var(--text-6xl);
 
@@ -302,40 +304,53 @@
     max-width: 1200px; /* Set a max width for content */
   }
 
+  .section-input {
+    @apply flex flex-col items-center border-b-1 p-8 md:justify-between md:gap-4 md:rounded-md md:border-1 md:p-10;
+  }
+
+  /* Styles fop popup*/
+  .modal-overlay {
+    @apply fixed bg-popup-background inset-0 flex justify-center items-center;
+  }
+
+  .modal-content {
+    @apply bg-popup rounded-lg p-5 max-w-lg w-full flex flex-col;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply m-0 px-2 font-poppins;
+    @apply font-poppins m-0 px-2;
   }
   h1 {
-    @apply text-5xl py-6;
+    @apply py-6 text-5xl;
   }
   h2 {
-    @apply text-3xl  py-5;
+    @apply py-5 text-3xl;
   }
   h3 {
-    @apply text-xl py-4;
+    @apply py-4 text-xl;
   }
   h4 {
-    @apply text-lg py-3;
+    @apply py-3 text-lg;
   }
   h5 {
     @apply text-md py-2;
   }
   h6 {
-    @apply text-sm py-1;
+    @apply py-1 text-sm;
   }
   p {
-    @apply py-2 px-2 text-sm;
+    @apply px-2 py-2 text-sm;
   }
   a {
-    @apply py-2 px-2 text-sm;
+    @apply px-2 py-2 text-sm;
   }
   span {
-    @apply py-2 px-2 text-sm;
+    @apply px-2 py-2 text-sm;
   }
   ul,
   ol {
