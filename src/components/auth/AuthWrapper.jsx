@@ -1,46 +1,63 @@
 import { getProfile, loginUser, registerUser } from "@/lib/Authentication";
 import { getCookie } from "@/lib/utils";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback, useMemo, useRef } from "react";
 
 export const AuthContext = createContext();
 const API_URL = import.meta.env.VITE_BACKEND_API_URL;
+
 export function AuthWrapper({ children }) {
-  const [user, setUser] = useState({ isAuthenticated: false });
-  const [token, setToken] = useState(null);
-  const login = async (email, password) => {
+  const [token, setToken] = useState(getCookie("token"));
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : { isAuthenticated: false };
+  });
+
+  const login = useCallback(async (email, password) => {
     try {
       const data = await loginUser(email, password);
-      console.log(data)
       const userData = await getProfile(data.token);
-      // console.log('userData:',userData)
-      setUser({...userData, isAuthenticated: true});
-      setToken(token);
-      localStorage.setItem("user", ({...userData, isAuthenticated: true}));
+
+      setUser({ ...userData, isAuthenticated: true });
+      setToken(data.token);
+      localStorage.setItem("user", JSON.stringify({
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        isAuthenticated: true
+      }));
+
       const expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 1); // Cookie expires in 1 day
+      expirationDate.setDate(expirationDate.getDate() + 1);
       document.cookie = `token=${data.token}; expires=${expirationDate.toUTCString()}; path=/;`;
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
     }
-  };
-  const signup = async (name, email, password) => {
-    try {
-      const {token} = await registerUser(name, email, password);
-      const userData = await getProfile(token);
-      setToken(token);
-      setUser({...userData, isAuthenticated: true});
-      localStorage.setItem("user", JSON.stringify({...userData, isAuthenticated: true}));
-      const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 1); // Cookie expires in 1 day
-    document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/;`;
+  }, []);
 
+  const signup = useCallback(async (name, email, password) => {
+    try {
+      const { token } = await registerUser(name, email, password);
+      const userData = await getProfile(token);
+
+      setUser({ ...userData, isAuthenticated: true });
+      setToken(token);
+      localStorage.setItem("user", JSON.stringify({
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        isAuthenticated: true
+      }));
+
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + 1);
+      document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/;`;
     } catch (error) {
       console.error("Signup failed:", error);
       throw error;
     }
-  };
-  const googleAuth = async () => {
+  }, []);
+  const googleAuth = useCallback(async () => {
     const authWindow = window.open(
       `${API_URL}/google-auth`,
       'GoogleAuth',
@@ -61,45 +78,31 @@ export function AuthWrapper({ children }) {
   
       window.addEventListener('message', listener);
     });
-  };
+  }, []);
   
   
-  
-  const logout = () => {
+  const logout = useCallback(() => {
     setToken(null);
     setUser({ isAuthenticated: false });
     localStorage.removeItem("user");
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
-  };
-  
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }, []);
 
   useEffect(() => {
-    const tokenFromCookie = getCookie("token");
-    // console.log("tokenFromCookie:", tokenFromCookie)
-    if (tokenFromCookie && !user.isAuthenticated) {
+    if (token && !user.isAuthenticated) {
       (async () => {
         try {
-          const userData = await getProfile(tokenFromCookie);
+          const userData = await getProfile(token);
           setUser({ ...userData, isAuthenticated: true });
-          setToken(tokenFromCookie);
         } catch (err) {
-          console.error("Error fetching profile from token:", err);
-          // Optionally clear invalid token cookie
+          console.error("Error fetching profile:", err);
           document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         }
       })();
     }
-  }, []);
-  useEffect(() => {
-    if (user && user.isAuthenticated) {
-      localStorage.setItem("user", JSON.stringify({ ...user }));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);  // This effect will run every time `user` changes
-  return (
-    <AuthContext.Provider value={{ user, setUser,setToken, token, login, signup, googleAuth, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  }, [token]);
+
+  const authContextValue = useMemo(() => ({ user, setUser, token,setToken, login, signup, googleAuth, logout }), [user, token,setToken, login, signup, googleAuth, logout]);
+
+  return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
 }
