@@ -14,7 +14,7 @@ export default function Header() {
     <div className="bg-header px-4">
       <Container>
         {/* Десктопний хедер */}
-        <header className="bg-header hidden min-h-20 w-full items-center px-4 md:flex lg:flex">
+        <header className="bg-header sticky top-0 hidden min-h-20 w-full items-center px-4 md:flex lg:flex">
           <nav className="flex space-x-4">
             {nav.map((r, i) =>
               (!r.isPrivate || user.isAuthenticated) && r.isMenu ? (
