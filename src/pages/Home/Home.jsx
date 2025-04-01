@@ -3,14 +3,19 @@ import { Button } from "@/components/ui/button";
 import { AuthData } from "@/hooks/AuthData";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { updateUserProfile } from "@/lib/profile";
-import Modal from "react-modal";
 import Container from "@/components/Container";
 import { useNotification } from "@/hooks/UseNotification";
-Modal.setAppElement("#root");
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function Home() {
   const { triggerToast } = useNotification();
-  const { user,  setUser, token } = AuthData();
+  const { user, setUser, token } = AuthData();
   const [age, setAge] = useState(25);
   const [gender, setGender] = useState("male");
   const [weight, setWeight] = useState(70);
@@ -49,10 +54,12 @@ export default function Home() {
         ...prev,
         currentCalorieIntake: calculatedCalories?.calorieIntake,
       }));
-      triggerToast("Calorie intake updated", "success", "/profile" )
-    }
-    catch(e){
-      triggerToast(`Something went wrong while saving your calorie intake: ${e}`, "error" )
+      triggerToast("Calorie intake updated", "success", "/profile");
+    } catch (e) {
+      triggerToast(
+        `Something went wrong while saving your calorie intake: ${e}`,
+        "error",
+      );
     }
   };
 
@@ -196,75 +203,59 @@ export default function Home() {
           Calculate
         </Button>
 
-        {/* Popup */}
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={() => setIsModalOpen(false)}
-          contentLabel="Calorie Intake Results"
-          className="modal-content"
-          overlayClassName="modal-overlay"
-        >
-          {/* Popup closer */}
-          <button
-            onClick={() => setIsModalOpen(false)}
-            className="btn-close self-end pb-2.5 text-red-500"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30px"
-              height="30px"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
-                fill="#000000"
-              />
-            </svg>
-          </button>
-          <div className="rounded-lg border p-4">
-            <p className="text-lg font-bold">Daily Caloric Intake:</p>
-            <p className="text-2xl font-semibold text-green-600">
-              {calculatedCalories?.calorieIntake} kcal
-            </p>
-            <p className="mt-4 font-semibold">Macronutrients (per day):</p>
-            <p>Protein: {calculatedCalories?.macronutrients.protein}g</p>
-            <p>Fats: {calculatedCalories?.macronutrients.fats}g</p>
-            <p>Carbs: {calculatedCalories?.macronutrients.carbs}g</p>
-            <p>Fiber: {calculatedCalories?.macronutrients.fiber}g</p>
-          </div>
-
-          {/* Authentication Check for Saving Results */}
-          {calculatedCalories !== null && (
-            <div className="text-center">
-              {user ? (
-                <>
-                  <p className="m-4 text-lg">
-                    🎯 Would you like to create a recipe based on your
-                    parameters?
-                  </p>
-                  <div className="flex items-center justify-center gap-2">
-                    <Button
-                      variant={"grey"}
-                      onClick={() => setIsModalOpen(false)}
-                    >
-                      No
-                    </Button>
-                    <Button variant={"submit"} onClick={updateCalorieIntake}>
-                      Yes
-                    </Button>
+        {/* {Modal Window} */}
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-lg font-bold">
+                Daily Caloric Intake:
+              </DialogTitle>
+              <DialogDescription asChild>
+                <div className="rounded-lg border p-4">
+                  <span className="text-2xl font-semibold text-green-600">
+                    {calculatedCalories?.calorieIntake} kcal
+                  </span>
+                  <div className="mt-4 font-semibold">
+                    Macronutrients (per day):
                   </div>
-                </>
-              ) : (
-                <p className="text-lg text-red-500">
-                  🔒 Log in or register to save your calorie intake results!
-                </p>
-              )}
-            </div>
-          )}
-        </Modal>
+                  <p>Protein: {calculatedCalories?.macronutrients.protein}g</p>
+                  <p>Fats: {calculatedCalories?.macronutrients.fats}g</p>
+                  <p>Carbs: {calculatedCalories?.macronutrients.carbs}g</p>
+                  <p>Fiber: {calculatedCalories?.macronutrients.fiber}g</p>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+
+            {/* Authentication Check for Saving Results */}
+            {calculatedCalories !== null && (
+              <div className="text-center">
+                {user ? (
+                  <>
+                    <div className="m-4 text-lg">
+                      🎯 Would you like to create a recipe based on your
+                      parameters?
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <Button
+                        variant="grey"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        No
+                      </Button>
+                      <Button variant="submit" onClick={updateCalorieIntake}>
+                        Yes
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-lg text-red-500">
+                    🔒 Log in or register to save your calorie intake results!
+                  </div>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </Container>
   );
