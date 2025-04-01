@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { AuthData } from "@/hooks/AuthData";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
@@ -12,25 +13,38 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  setAge,
+  setGender,
+  setWeight,
+  setHeight,
+  setActivityLevel,
+  setGoal,
+  setCalculatedCalories,
+  setIsModalOpen,
+} from "@/redux/calorieSlice";
 
 export default function Home() {
+  const dispatch = useDispatch();
   const { triggerToast } = useNotification();
   const { user, setUser, token } = AuthData();
-  const [age, setAge] = useState(25);
-  const [gender, setGender] = useState("male");
-  const [weight, setWeight] = useState(70);
-  const [height, setHeight] = useState(170);
-  const [activityLevel, setActivityLevel] = useState("moderate");
-  const [goal, setGoal] = useState("loseWeight");
-  const [calculatedCalories, setCalculatedCalories] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    age,
+    gender,
+    weight,
+    height,
+    activityLevel,
+    goal,
+    calculatedCalories,
+    isModalOpen,
+  } = useSelector((state) => state.calories);
 
   useEffect(() => {
-    setAge(user.age || 25);
-    setGender(user.gender || "male");
-    setWeight(user.weight || 70);
-    setHeight(user.height || 180);
-  }, [user]);
+    dispatch(setAge(user.age || 25));
+    dispatch(setGender(user.gender || "male"));
+    dispatch(setWeight(user.weight || 70));
+    dispatch(setHeight(user.height || 180));
+  }, [user, dispatch]);
 
   const handleCalculate = () => {
     const result = calculateCalorieIntake(
@@ -41,10 +55,9 @@ export default function Home() {
       activityLevel,
       goal,
     );
-    setCalculatedCalories(result);
-    setIsModalOpen(true);
+    dispatch(setCalculatedCalories(result));
+    dispatch(setIsModalOpen(true));
   };
-
   const updateCalorieIntake = async () => {
     try {
       await updateUserProfile(token, {
@@ -84,7 +97,7 @@ export default function Home() {
                 type="button"
                 className="w-full px-6 py-2 md:w-auto"
                 variant={gender === "male" ? "default" : "ghost"}
-                onClick={() => setGender("male")}
+                onClick={() => dispatch(setGender("male"))}
               >
                 Male
               </Button>
@@ -92,7 +105,7 @@ export default function Home() {
                 type="button"
                 className="w-full px-6 py-2 md:w-auto"
                 variant={gender === "female" ? "default" : "ghost"}
-                onClick={() => setGender("female")}
+                onClick={() => dispatch(setGender("female"))}
               >
                 Female
               </Button>
@@ -108,7 +121,7 @@ export default function Home() {
                 id="age-input"
                 className="w-24 rounded-md border p-2"
                 value={age}
-                onChange={(e) => setAge(Number(e.target.value))}
+                onChange={(e) => dispatch(setAge(Number(e.target.value)))}
               />
               <label htmlFor="age-input" className="text-sm">
                 Years
@@ -125,7 +138,7 @@ export default function Home() {
                 className="w-24 rounded-md border p-2"
                 value={height}
                 id="height-input"
-                onChange={(e) => setHeight(Number(e.target.value))}
+                onChange={(e) => dispatch(setHeight(Number(e.target.value)))}
               />
               <label htmlFor="height-input" className="text-sm">
                 cm
@@ -142,7 +155,7 @@ export default function Home() {
                 className="w-24 rounded-md border p-2"
                 value={weight}
                 id="weight-input"
-                onChange={(e) => setWeight(Number(e.target.value))}
+                onChange={(e) => dispatch(setWeight(Number(e.target.value)))}
               />
               <label htmlFor="weight-input" className="text-sm">
                 kg
@@ -161,7 +174,7 @@ export default function Home() {
                     type="button"
                     className="w-full rounded-md border px-6 py-2 md:w-auto"
                     variant={goal === selectedGoal ? "default" : "ghost"}
-                    onClick={() => setGoal(selectedGoal)}
+                    onClick={() => dispatch(setGoal(selectedGoal))}
                   >
                     {selectedGoal === "loseWeight"
                       ? "Lose Weight"
@@ -185,7 +198,7 @@ export default function Home() {
                 className="w-full rounded-md border px-6 py-2 md:w-auto"
                 key={level}
                 variant={activityLevel === level ? "default" : "ghost"}
-                onClick={() => setActivityLevel(level)}
+                onClick={() => dispatch(setActivityLevel(level))}
               >
                 {level.charAt(0).toUpperCase() + level.slice(1)}
               </Button>
@@ -204,7 +217,10 @@ export default function Home() {
         </Button>
 
         {/* {Modal Window} */}
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog
+          open={isModalOpen}
+          onOpenChange={(value) => dispatch(setIsModalOpen(value))}
+        >
           <DialogContent>
             <DialogHeader>
               <DialogTitle className="text-lg font-bold">
@@ -238,7 +254,7 @@ export default function Home() {
                     <div className="flex items-center justify-center gap-2">
                       <Button
                         variant="grey"
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() => dispatch(setIsModalOpen(false))}
                       >
                         No
                       </Button>
