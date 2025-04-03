@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthData } from "@/hooks/AuthData";
-
+import Container from "@/components/Container";
 import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 
@@ -21,72 +21,71 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      {/* Заголовок над блоком (мобильная версия) */}
-      <h1 className="bg-background h-[100px] w-full max-w-[330px] rounded-sm text-center md:max-w-[600px] lg:hidden">
-        Sign Up
-      </h1>
+    <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
+      <div className="bg-primary w-full rounded-md p-10 md:w-1/2 lg:w-1/3">
+        <h1 className="mb-10 p-0 text-center text-xl">Sign Up</h1>
+        <form onSubmit={handleSignup}>
+          <div className="mb-5">
+            <label htmlFor="name" className="block text-sm font-medium">
+              Name:
+            </label>
+            <Input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              className="mt-2 w-full py-8"
+            />
+          </div>
 
-      <div className="bg-primary w-full max-w-[330px] rounded-lg p-10 px-[15px] pt-[65px] pb-[70px] md:max-w-[600px] md:px-[50px] md:pt-[85px] md:pb-[70px] lg:max-w-[510px] lg:px-16 lg:pt-10 lg:pb-20">
-        {/* Заголовок внутри блока (только на десктопе) */}
-        <h1 className="mb-6 flex hidden h-[100px] w-full items-center justify-center rounded-sm text-center md:mb-8 lg:mb-[100px] lg:flex">
-          Sign Up
-        </h1>
+          <div className="mb-5">
+            <label htmlFor="email" className="block text-sm font-medium">
+              Email:
+            </label>
+            <Input
+              id="email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@gmail.com"
+              className="mt-2 w-full py-8"
+            />
+          </div>
 
-        <div>
-          <label>Name:</label>
-          <Input
-            className="bg-muted mt-4 p-6"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-          />
-        </div>
+          <div className="mb-5">
+            <label htmlFor="password" className="block text-sm font-medium">
+              Password:
+            </label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="mt-2 w-full py-8"
+            />
+          </div>
 
-        <div>
-          <label>Email:</label>
-          <Input
-            className="bg-muted mt-4 p-6"
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="name@gmail.com"
-          />
-        </div>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4">
+            <Button
+              className="w-full rounded-md p-8"
+              type="submit"
+              variant={"submit"}
+            >
+              Sign Up
+            </Button>
+          </div>
+        </form>
 
-        <div style={{ marginTop: "15px" }}>
-          <label style={{ marginRight: "8px" }}>Password:</label>
-          <Input
-            className="bg-muted mt-4 p-6"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-        </div>
-
-        {/* Кнопка для регистрации */}
-        <Button
-          variant={"submit"}
-          onClick={handleSignup} // Исправлено
-          className="button mx-auto mt-8 hidden w-full max-w-[396px] items-center justify-center md:flex md:w-[396px]"
-          type="submit"
-        >
-          Sign Up
-        </Button>
+        <p className="mt-10 text-center">
+          Already have an account?{" "}
+          <button onClick={() => navigate("/login")} className="underline">
+            Log In
+          </button>
+        </p>
       </div>
-
-      {/* Кнопка для мобильных устройств */}
-      <Button
-        variant={"submit"}
-        onClick={handleSignup} // Исправлено
-        className="button mt-20 flex w-full max-w-[330px] md:hidden"
-        type="submit"
-      >
-        Sign Up
-      </Button>
-    </div>
+    </Container>
   );
 };
 
