@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { AuthData } from "@/hooks/AuthData";
+import Container from "@/components/Container";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -39,54 +40,59 @@ const Login = () => {
   };
 
   return (
-    <div className="container m-0 mx-auto flex justify-center p-0 md:p-8 h-svh">
-        <div className="bg-primary">
-          <h1 className="">Login</h1>
-          <div>
-            <label>Email:</label>
+    <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
+      <div className="bg-primary rounded-md p-10 w-full md:w-1/2 lg:w-1/3">
+        <h1 className="mb-10 text-center text-xl p-0">Login</h1>
+        <form onSubmit={handleLogin}>
+          <div className="mb-5">
+            <label htmlFor="email" className="block text-sm font-medium">
+              Email:
+            </label>
             <Input
+              id="email"
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@gmail.com"
+              className="mt-2 py-8 w-full"
             />
           </div>
+
           <div>
-            <label>Password:</label>
+            <label htmlFor="password" className="block text-sm font-medium">
+              Password:
+            </label>
             <Input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              className="mt-2 py-8 w-full"
             />
           </div>
-          <div className="flex flex-col items-center justify-center gap-2 py-2">
-            <Button
-              variant={"accent"}
-              onClick={handleLogin}
-              className="w-full max-w-[330px]"
-              type="onSubmit"
-            >
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-4">
+            <Button className="p-8 w-full rounded-md" type="submit" variant={"submit"}>
               Login
             </Button>
-            <Button
-              variant={"accent"}
-              onClick={handleGoogleLogin}
-              className="w-full max-w-[330px]"
-            >
-              Login with google
+            <Button onClick={handleGoogleLogin} className="p-8 w-full rounded-md" >
+              Login with Google
             </Button>
           </div>
+        </form>
 
-          <p>
-            Don't have an account?{" "}
-            <button onClick={() => navigate("/signup")} className="button">
-              Sign Up
-            </button>
-          </p>
-        </div>
-        {/*button out the block on mobile*/}
-    </div>
+        <p className="mt-10 text-center">
+          Don't have an account?{" "}
+          <button
+            onClick={() => navigate("/signup")}
+            className="underline"
+          >
+            Sign Up
+          </button>
+        </p>
+      </div>
+    </Container>
   );
 };
 
