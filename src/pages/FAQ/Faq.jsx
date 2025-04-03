@@ -1,140 +1,103 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
+import Container from "@/components/Container";
 
 const Faq = () => {
+  const Section = ({ title, children }) => (
+    <section className="mt-10 rounded-lg border bg-white p-6 shadow-md">
+      <h2 className="mb-4 text-2xl font-bold">{title}</h2>
+      <hr className="mb-4 w-32 border-t-2 border-green-500" />
+      {children}
+    </section>
+  );
+
   return (
-    <div className="bg-green">
-      <div className="max-w-5xl mx-auto p-6">
-        <section className=" py-12">
-          <div className="max-w-6xl mx-auto bg-white p-10 rounded-lg shadow-lg border border-gray-200 flex flex-col md:flex-row items-center gap-10">
-            <div className="w-full md:w-1/2">
-              <h1 className="text-4xl font-bold mb-6">Get Start Now</h1>
-              <ul className="space-y-6">
-                <li className="relative pl-4 border-l-4 border-green-500">
-                  <strong className="text-mg">1. Control over nutrition</strong>
-                  <p className="text-gray-600">
-                    The calculator allows you to accurately track how many
-                    calories you consume throughout the day, helping you better
-                    understand your eating habits.
-                  </p>
-                </li>
-                <li className="relative pl-4 border-l-4 border-green-500">
-                  <strong className="text-mg">
-                    2. Personalized recommendations
-                  </strong>
-                  <p className="text-gray-600">
-                    Based on your age, weight, height, gender, and activity
-                    level, the calculator provides personalized advice on how
-                    many calories you need to reach your goals.
-                  </p>
-                </li>
-                <li className="relative pl-4 border-l-4 border-green-500">
-                  <strong className="text-mg">3. Easy to use</strong>
-                  <p className="text-gray-600">
-                    Most calorie calculators are available as smartphone apps or
-                    online, making them easy to use anytime, anywhere.
-                  </p>
-                </li>
-              </ul>
-            </div>
-
-            {/* Форма */}
-            <div className="w-full md:w-1/2 bg-gray-100 shadow-lg p-8 rounded-xl">
-              <form className="space-y-6">
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter your name"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="name@gmail.com"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-1">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="*********"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
-                </div>
-                <Button variant={"submit"} size={"lg"} className="w-full">
-                  Calculate
-                </Button>
-              </form>
-            </div>
+    <Container className="mx-auto flex justify-center p-0 md:p-8">
+      <div className="max-w-5xl space-y-8">
+        {/* Main Content Section */}
+        <section className="rounded-lg border border-gray-200 bg-white shadow-lg">
+          <div className="flex flex-col gap-8 p-6 md:p-10">
+            {/* Benefits List */}
+            <h1 className="text-3xl font-bold md:text-4xl">Get Started Now</h1>
+            {[
+              {
+                title: "Control over nutrition",
+                content: "The calculator allows you to accurately track...",
+              },
+              {
+                title: "Personalized recommendations",
+                content: "Based on your age, weight, height...",
+              },
+              {
+                title: "Easy to use",
+                content: "Most calorie calculators are available...",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="relative border-l-4 border-green-500 pl-4"
+              >
+                <strong className="text-lg">{item.title}</strong>
+                <p className="mt-2 text-gray-600">{item.content}</p>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* How it Works */}
-        <section className="bg-white mt-10 p-8 rounded-lg shadow-md max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-          <hr className="w-32 sm:w-40 md:w-52 lg:w-64 xl:w-80 border-t-2 border-green-500 mb-4 " />
-          <p className="text-gray-700 text-mg">
+        {/* Additional Sections */}
+        <Section title="How It Works">
+          <p className="text-gray-700">
             Our calculator is simple to use! Just input your age, weight,
-            height, gender, and activity level, and you'll get personalized
-            recommendations for your daily calorie intake. It helps you stay on
-            track with your fitness goals!
+            height, gender, and activity level for personalized recommendations.
           </p>
-        </section>
+        </Section>
 
-        {/* FAQ */}
-        <section className="bg-white mt-10 p-6 rounded-lg border">
-          <h2 className="text-2xl font-bold mb-4">FAQ</h2>
-          <hr className="w-32 sm:w-40 md:w-52 lg:w-64 xl:w-80 border-t-2 border-green-500 mb-4 " />
+        <Section title="FAQ">
           <div className="space-y-4">
-            <div>
-              <strong>What is a calorie calculator?</strong>
-              <p>
-                A calorie calculator helps you estimate how many calories...
-              </p>
-            </div>
-            <div>
-              <strong>Is the calculator free?</strong>
-              <p>Yes, our calorie calculator is completely free to use!</p>
-            </div>
-            <div>
-              <strong>Can I track my progress?</strong>
-              <p>Yes, you can log your daily calories...</p>
-            </div>
+            {[
+              {
+                question: "What is a calorie calculator?",
+                answer: "A calorie calculator helps you estimate...",
+              },
+              {
+                question: "Is the calculator free?",
+                answer: "Yes, our calorie calculator is completely free!",
+              },
+              {
+                question: "Can I track my progress?",
+                answer: "Yes, you can log your daily calories...",
+              },
+            ].map((item, index) => (
+              <div key={index}>
+                <strong>{item.question}</strong>
+                <p className="mt-1">{item.answer}</p>
+              </div>
+            ))}
           </div>
-        </section>
+        </Section>
 
-        {/* User Testimonials */}
-        <section className="bg-white mt-10 p-6 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4">User Testimonials</h2>
-          <hr className="w-32 sm:w-40 md:w-52 lg:w-64 xl:w-80 border-t-2 border-green-500 mb-4 " />
-          <p className="italic">
-            "This app helped me understand my eating habits..."
-          </p>
-          <p className="text-green-600">- Agnieszka J.</p>
-          <p className="italic">
-            "The personalized recommendations are exactly..."
-          </p>
-          <p className="text-green-600">- Szymon B.</p>
-        </section>
+        <Section title="User Testimonials">
+          {[
+            {
+              text: '"This app helped me understand my eating habits..."',
+              author: "Agnieszka J.",
+            },
+            {
+              text: '"The personalized recommendations are exactly..."',
+              author: "Szymon B.",
+            },
+          ].map((testimonial, index) => (
+            <div key={index} className="mb-4">
+              <p className="italic">{testimonial.text}</p>
+              <p className="text-green-600">- {testimonial.author}</p>
+            </div>
+          ))}
+        </Section>
 
-        {/* About Us */}
-        <section className="bg-white mt-10 p-6 rounded-lg border">
-          <h2 className="text-2xl font-bold mb-4">About Us</h2>
-          <hr className="w-32 sm:w-40 md:w-52 lg:w-64 xl:w-80 border-t-2 border-green-500 mb-4 " />
+        <Section title="About Us">
           <p>We are students.</p>
-        </section>
+        </Section>
       </div>
-    </div>
+    </Container>
   );
 };
 
