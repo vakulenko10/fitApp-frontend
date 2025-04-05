@@ -10,15 +10,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login, googleAuth, setUser, setToken } = AuthData();
-  const handleLogin = async () => {
-    try {
+  const handleLogin = async (e) => {
+   
+    try { 
+      e.preventDefault();
       await login(email, password);
       navigate("/profile");
     } catch (error) {
       alert(error.message);
     }
   };
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
     try {
       const { user, token, profileImageURL } = await googleAuth();
       console.log("token in Login:", token);
@@ -43,7 +46,7 @@ const Login = () => {
     <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
       <div className="bg-primary rounded-md p-10 w-full md:w-1/2 lg:w-1/3">
         <h1 className="mb-10 text-center text-xl p-0">Login</h1>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={(e)=>handleLogin(e)}>
           <div className="mb-5">
             <label htmlFor="email" className="block text-sm font-medium">
               Email:
@@ -76,7 +79,7 @@ const Login = () => {
             <Button className="p-8 w-full rounded-md" type="submit" variant={"submit"}>
               Login
             </Button>
-            <Button onClick={handleGoogleLogin} className="p-8 w-full rounded-md" >
+            <Button onClick={e =>handleGoogleLogin(e)} className="p-8 w-full rounded-md" >
               Login with Google
             </Button>
           </div>
