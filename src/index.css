@@ -296,7 +296,7 @@
   }
 
   body {
-    @apply bg-background text-foreground m-0 p-0;
+    @apply bg-background text-foreground m-0 p-0 min-h-svh;
     font-family: var(--font-open-sans);
   }
   .container {

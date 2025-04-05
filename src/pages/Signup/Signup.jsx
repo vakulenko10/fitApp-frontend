@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthData } from "@/hooks/AuthData";
-
+import Container from "@/components/Container";
 import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
-
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-   const {signup} = AuthData();
+  const { signup } = AuthData();
   const handleSignup = async () => {
     try {
       await signup(name, email, password);
@@ -22,55 +21,71 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
-      {/* Заголовок над блоком (мобильная версия) */}
-      <h1 className="h-[100px] bg-background rounded-sm text-center w-full max-w-[330px] md:max-w-[600px] lg:hidden">
-        Sign Up
-      </h1>
+    <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
+      <div className="bg-primary w-full rounded-md p-10 md:w-1/2 lg:w-1/3">
+        <h1 className="mb-10 p-0 text-center text-xl">Sign Up</h1>
+        <form onSubmit={handleSignup}>
+          <div className="mb-5">
+            <label htmlFor="name" className="block text-sm font-medium">
+              Name:
+            </label>
+            <Input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              className="mt-2 w-full py-8"
+            />
+          </div>
 
-      <div className="bg-primary p-10 rounded-lg w-full max-w-[330px] md:max-w-[600px] lg:max-w-[510px] 
-                      md:pt-[85px] md:pb-[70px] md:px-[50px] lg:pt-10 lg:pb-20 lg:px-16 px-[15px] pt-[65px] pb-[70px]">
-        {/* Заголовок внутри блока (только на десктопе) */}
-        <h1 className="h-[100px] rounded-sm text-center flex justify-center items-center w-full hidden lg:flex mb-6 md:mb-8 lg:mb-[100px]">
-          Sign Up
-        </h1>
+          <div className="mb-5">
+            <label htmlFor="email" className="block text-sm font-medium">
+              Email:
+            </label>
+            <Input
+              id="email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@gmail.com"
+              className="mt-2 w-full py-8"
+            />
+          </div>
 
-        <div>
-          <label>Name:</label>
-          <Input className="bg-muted p-6 mt-4" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name"/>
-        </div>
+          <div className="mb-5">
+            <label htmlFor="password" className="block text-sm font-medium">
+              Password:
+            </label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="mt-2 w-full py-8"
+            />
+          </div>
 
-        <div>
-          <label>Email:</label>
-          <Input className="bg-muted p-6 mt-4" type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@gmail.com"/>
-        </div>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4">
+            <Button
+              className="w-full rounded-md p-8"
+              type="submit"
+              variant={"submit"}
+            >
+              Sign Up
+            </Button>
+          </div>
+        </form>
 
-        <div style={{ marginTop: "15px" }}>
-          <label style={{ marginRight: "8px" }}>Password:</label>
-          <Input className="bg-muted p-6 mt-4" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"/>
-        </div>
-
-        {/* Кнопка для регистрации */}
-        <Button
-          variant={"submit"}
-          onClick={handleSignup}  // Исправлено
-          className="button hidden md:flex justify-center items-center w-full md:w-[396px] max-w-[396px] mt-8 mx-auto"
-          type="submit"
-        >
-          Sign Up
-        </Button>
+        <p className="mt-10 text-center">
+          Already have an account?{" "}
+          <button onClick={() => navigate("/login")} className="underline">
+            Log In
+          </button>
+        </p>
       </div>
-      
-      {/* Кнопка для мобильных устройств */}
-      <Button
-        variant={"submit"}
-        onClick={handleSignup} // Исправлено
-        className="button flex md:hidden mt-20 w-full max-w-[330px]"
-        type="submit"
-      >
-        Sign Up
-      </Button>
-    </div>
+    </Container>
   );
 };
 

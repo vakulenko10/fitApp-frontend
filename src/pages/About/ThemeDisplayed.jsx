@@ -44,7 +44,7 @@ const ThemeDisplayed = () => {
 
   return (
     <>
-      <Container>
+      <Container className="m-0 mx-auto flex flex-col justify-center p-0 md:p-8">
         <div className="flex gap-2 flex-wrap my-5 ">
           <Button variant={"accent"}>accent variant btn</Button>
           <Button>default variant btn</Button>
