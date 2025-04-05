@@ -85,8 +85,8 @@ const CreateRecipe = () => {
   };
 
   return (
-    <Container>
-      <div className="bg-white shadow-lg rounded-lg p-10 w-full xl:max-w-[1200px] mx-auto my-12 mt-21.5">
+    <Container className="m-0 mx-auto flex flex-col justify-center p-0 md:p-8">
+      <div className="bg-white rounded-lg p-10 w-full xl:max-w-[1200px] mx-auto">
         <div className="mb-4.5 xl:mb-12.5">
           <h1 className="text-center text-xl font-semibold md:font-bold">
             Your daily calorie intake

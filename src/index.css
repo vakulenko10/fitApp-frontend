@@ -296,7 +296,7 @@
   }
 
   body {
-    @apply bg-background text-foreground m-0 p-0;
+    @apply bg-background text-foreground m-0 p-0 min-h-svh;
     font-family: var(--font-open-sans);
   }
   .container {
@@ -308,14 +308,6 @@
     @apply flex flex-col items-center border-b-1 p-8 md:justify-between md:gap-4 md:rounded-md md:border-1 md:p-10;
   }
 
-  /* Styles fop popup*/
-  .modal-overlay {
-    @apply fixed bg-popup-background inset-0 flex justify-center items-center;
-  }
-
-  .modal-content {
-    @apply bg-popup rounded-lg p-5 max-w-lg w-full flex flex-col;
-  }
 
   h1,
   h2,

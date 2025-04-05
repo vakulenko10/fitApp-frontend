@@ -11,7 +11,7 @@ export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <div className="bg-header px-4">
+    <div className="bg-header sticky top-0 z-50 w-full px-4">
       <Container>
         {/* Десктопний хедер */}
         <header className="bg-header hidden min-h-20 w-full items-center px-4 md:flex lg:flex">

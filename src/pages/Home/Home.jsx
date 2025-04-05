@@ -1,31 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { AuthData } from "@/hooks/AuthData";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { updateUserProfile } from "@/lib/profile";
-import Modal from "react-modal";
 import Container from "@/components/Container";
 import { useNotification } from "@/hooks/UseNotification";
-Modal.setAppElement("#root");
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  setAge,
+  setGender,
+  setWeight,
+  setHeight,
+  setActivityLevel,
+  setGoal,
+  setCalculatedCalories,
+  setIsModalOpen,
+} from "@/redux/calorieSlice";
 
 export default function Home() {
+  const dispatch = useDispatch();
   const { triggerToast } = useNotification();
-  const { user,  setUser, token } = AuthData();
-  const [age, setAge] = useState(25);
-  const [gender, setGender] = useState("male");
-  const [weight, setWeight] = useState(70);
-  const [height, setHeight] = useState(170);
-  const [activityLevel, setActivityLevel] = useState("moderate");
-  const [goal, setGoal] = useState("loseWeight");
-  const [calculatedCalories, setCalculatedCalories] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user, setUser, token } = AuthData();
+  const {
+    age,
+    gender,
+    weight,
+    height,
+    activityLevel,
+    goal,
+    calculatedCalories,
+    isModalOpen,
+  } = useSelector((state) => state.calories);
 
   useEffect(() => {
-    setAge(user.age || 25);
-    setGender(user.gender || "male");
-    setWeight(user.weight || 70);
-    setHeight(user.height || 180);
-  }, [user]);
+    dispatch(setAge(user.age || 25));
+    dispatch(setGender(user.gender || "male"));
+    dispatch(setWeight(user.weight || 70));
+    dispatch(setHeight(user.height || 180));
+  }, [user, dispatch]);
 
   const handleCalculate = () => {
     const result = calculateCalorieIntake(
@@ -36,10 +55,9 @@ export default function Home() {
       activityLevel,
       goal,
     );
-    setCalculatedCalories(result);
-    setIsModalOpen(true);
+    dispatch(setCalculatedCalories(result));
+    dispatch(setIsModalOpen(true));
   };
-
   const updateCalorieIntake = async () => {
     try {
       await updateUserProfile(token, {
@@ -49,10 +67,12 @@ export default function Home() {
         ...prev,
         currentCalorieIntake: calculatedCalories?.calorieIntake,
       }));
-      triggerToast("Calorie intake updated", "success", "/profile" )
-    }
-    catch(e){
-      triggerToast(`Something went wrong while saving your calorie intake: ${e}`, "error" )
+      triggerToast("Calorie intake updated", "success", "/profile");
+    } catch (e) {
+      triggerToast(
+        `Something went wrong while saving your calorie intake: ${e}`,
+        "error",
+      );
     }
   };
 
@@ -77,7 +97,7 @@ export default function Home() {
                 type="button"
                 className="w-full px-6 py-2 md:w-auto"
                 variant={gender === "male" ? "default" : "ghost"}
-                onClick={() => setGender("male")}
+                onClick={() => dispatch(setGender("male"))}
               >
                 Male
               </Button>
@@ -85,7 +105,7 @@ export default function Home() {
                 type="button"
                 className="w-full px-6 py-2 md:w-auto"
                 variant={gender === "female" ? "default" : "ghost"}
-                onClick={() => setGender("female")}
+                onClick={() => dispatch(setGender("female"))}
               >
                 Female
               </Button>
@@ -101,7 +121,7 @@ export default function Home() {
                 id="age-input"
                 className="w-24 rounded-md border p-2"
                 value={age}
-                onChange={(e) => setAge(Number(e.target.value))}
+                onChange={(e) => dispatch(setAge(Number(e.target.value)))}
               />
               <label htmlFor="age-input" className="text-sm">
                 Years
@@ -118,7 +138,7 @@ export default function Home() {
                 className="w-24 rounded-md border p-2"
                 value={height}
                 id="height-input"
-                onChange={(e) => setHeight(Number(e.target.value))}
+                onChange={(e) => dispatch(setHeight(Number(e.target.value)))}
               />
               <label htmlFor="height-input" className="text-sm">
                 cm
@@ -135,7 +155,7 @@ export default function Home() {
                 className="w-24 rounded-md border p-2"
                 value={weight}
                 id="weight-input"
-                onChange={(e) => setWeight(Number(e.target.value))}
+                onChange={(e) => dispatch(setWeight(Number(e.target.value)))}
               />
               <label htmlFor="weight-input" className="text-sm">
                 kg
@@ -154,7 +174,7 @@ export default function Home() {
                     type="button"
                     className="w-full rounded-md border px-6 py-2 md:w-auto"
                     variant={goal === selectedGoal ? "default" : "ghost"}
-                    onClick={() => setGoal(selectedGoal)}
+                    onClick={() => dispatch(setGoal(selectedGoal))}
                   >
                     {selectedGoal === "loseWeight"
                       ? "Lose Weight"
@@ -178,7 +198,7 @@ export default function Home() {
                 className="w-full rounded-md border px-6 py-2 md:w-auto"
                 key={level}
                 variant={activityLevel === level ? "default" : "ghost"}
-                onClick={() => setActivityLevel(level)}
+                onClick={() => dispatch(setActivityLevel(level))}
               >
                 {level.charAt(0).toUpperCase() + level.slice(1)}
               </Button>
@@ -196,75 +216,62 @@ export default function Home() {
           Calculate
         </Button>
 
-        {/* Popup */}
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={() => setIsModalOpen(false)}
-          contentLabel="Calorie Intake Results"
-          className="modal-content"
-          overlayClassName="modal-overlay"
+        {/* {Modal Window} */}
+        <Dialog
+          open={isModalOpen}
+          onOpenChange={(value) => dispatch(setIsModalOpen(value))}
         >
-          {/* Popup closer */}
-          <button
-            onClick={() => setIsModalOpen(false)}
-            className="btn-close self-end pb-2.5 text-red-500"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30px"
-              height="30px"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
-                fill="#000000"
-              />
-            </svg>
-          </button>
-          <div className="rounded-lg border p-4">
-            <p className="text-lg font-bold">Daily Caloric Intake:</p>
-            <p className="text-2xl font-semibold text-green-600">
-              {calculatedCalories?.calorieIntake} kcal
-            </p>
-            <p className="mt-4 font-semibold">Macronutrients (per day):</p>
-            <p>Protein: {calculatedCalories?.macronutrients.protein}g</p>
-            <p>Fats: {calculatedCalories?.macronutrients.fats}g</p>
-            <p>Carbs: {calculatedCalories?.macronutrients.carbs}g</p>
-            <p>Fiber: {calculatedCalories?.macronutrients.fiber}g</p>
-          </div>
-
-          {/* Authentication Check for Saving Results */}
-          {calculatedCalories !== null && (
-            <div className="text-center">
-              {user ? (
-                <>
-                  <p className="m-4 text-lg">
-                    🎯 Would you like to create a recipe based on your
-                    parameters?
-                  </p>
-                  <div className="flex items-center justify-center gap-2">
-                    <Button
-                      variant={"grey"}
-                      onClick={() => setIsModalOpen(false)}
-                    >
-                      No
-                    </Button>
-                    <Button variant={"submit"} onClick={updateCalorieIntake}>
-                      Yes
-                    </Button>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-lg font-bold">
+                Daily Caloric Intake:
+              </DialogTitle>
+              <DialogDescription asChild>
+                <div className="rounded-lg border p-4">
+                  <span className="text-2xl font-semibold text-green-600">
+                    {calculatedCalories?.calorieIntake} kcal
+                  </span>
+                  <div className="mt-4 font-semibold">
+                    Macronutrients (per day):
                   </div>
-                </>
-              ) : (
-                <p className="text-lg text-red-500">
-                  🔒 Log in or register to save your calorie intake results!
-                </p>
-              )}
-            </div>
-          )}
-        </Modal>
+                  <p>Protein: {calculatedCalories?.macronutrients.protein}g</p>
+                  <p>Fats: {calculatedCalories?.macronutrients.fats}g</p>
+                  <p>Carbs: {calculatedCalories?.macronutrients.carbs}g</p>
+                  <p>Fiber: {calculatedCalories?.macronutrients.fiber}g</p>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+
+            {/* Authentication Check for Saving Results */}
+            {calculatedCalories !== null && (
+              <div className="text-center">
+                {user ? (
+                  <>
+                    <div className="m-4 text-lg">
+                      🎯 Would you like to create a recipe based on your
+                      parameters?
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <Button
+                        variant="grey"
+                        onClick={() => dispatch(setIsModalOpen(false))}
+                      >
+                        No
+                      </Button>
+                      <Button variant="submit" onClick={updateCalorieIntake}>
+                        Yes
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-lg text-red-500">
+                    🔒 Log in or register to save your calorie intake results!
+                  </div>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </Container>
   );
