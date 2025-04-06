@@ -45,7 +45,7 @@ const Login = () => {
   return (
     <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
       <div className="bg-primary rounded-md p-10 w-full md:w-1/2 lg:w-1/3">
-        <h1 className="mb-10 text-center text-xl p-0">Login</h1>
+        <h1 className="mb-10 text-center text-2xl p-0">Login</h1>
         <form onSubmit={(e)=>handleLogin(e)}>
           <div className="mb-5">
             <label htmlFor="email" className="block text-sm font-medium">

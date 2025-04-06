@@ -23,7 +23,7 @@ const Signup = () => {
   return (
     <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
       <div className="bg-primary w-full rounded-md p-10 md:w-1/2 lg:w-1/3">
-        <h1 className="mb-10 p-0 text-center text-xl">Sign Up</h1>
+        <h1 className="mb-10 p-0 text-center text-2xl">Sign Up</h1>
         <form onSubmit={handleSignup}>
           <div className="mb-5">
             <label htmlFor="name" className="block text-sm font-medium">

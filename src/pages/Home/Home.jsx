@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input.jsx";
 import { AuthData } from "@/hooks/AuthData";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { updateUserProfile } from "@/lib/profile";
@@ -116,10 +117,10 @@ export default function Home() {
           <form className="section-input md:col-span-2 md:col-start-3">
             <p className="mb-4 text-lg font-medium">How old are you?</p>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 type="number"
                 id="age-input"
-                className="w-24 rounded-md border p-2"
+                className="max-w-20"
                 value={age}
                 onChange={(e) => dispatch(setAge(Number(e.target.value)))}
               />
@@ -133,9 +134,9 @@ export default function Home() {
           <form className="section-input md:col-span-2 md:row-start-2">
             <p className="mb-4 text-lg font-medium">How tall are you?</p>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 type="number"
-                className="w-24 rounded-md border p-2"
+                className="max-w-20"
                 value={height}
                 id="height-input"
                 onChange={(e) => dispatch(setHeight(Number(e.target.value)))}
@@ -150,9 +151,9 @@ export default function Home() {
           <form className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
             <p className="mb-4 text-lg font-medium">How much do you weigh?</p>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 type="number"
-                className="w-24 rounded-md border p-2"
+                className="max-w-20"
                 value={weight}
                 id="weight-input"
                 onChange={(e) => dispatch(setWeight(Number(e.target.value)))}
