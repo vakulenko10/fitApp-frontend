@@ -41,10 +41,10 @@ export default function Home() {
   } = useSelector((state) => state.calories);
 
   useEffect(() => {
-    dispatch(setAge(user.age || 25));
-    dispatch(setGender(user.gender || "male"));
-    dispatch(setWeight(user.weight || 70));
-    dispatch(setHeight(user.height || 180));
+    dispatch(setAge(user.age ?? 25));
+    dispatch(setGender(user.gender ?? "male"));
+    dispatch(setWeight(user.weight ?? 70));
+    dispatch(setHeight(user.height ?? 180));
   }, [user, dispatch]);
 
   const handleCalculate = () => {
@@ -91,7 +91,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8">
           {/* Gender Selection */}
-          <form className="flex flex-col items-center border-b-1 p-8 md:p-10 md:col-span-2 md:justify-between md:rounded-md md:border-1">
+          <form className="flex flex-col items-center border-b-1 p-8 md:col-span-2 md:justify-between md:rounded-md md:border-1 md:p-10">
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
             <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
               <Button
@@ -121,8 +121,12 @@ export default function Home() {
                 type="number"
                 id="age-input"
                 className="max-w-20 md:max-w-30 md:py-8"
-                value={age}
-                onChange={(e) => dispatch(setAge(Number(e.target.value)))}
+                value={age === 0 ? "" : age}
+                onChange={(e) =>
+                  dispatch(
+                    setAge(e.target.value === "" ? 0 : Number(e.target.value)),
+                  )
+                }
               />
               <label htmlFor="age-input" className="text-sm">
                 Years
@@ -137,9 +141,15 @@ export default function Home() {
               <Input
                 type="number"
                 className="max-w-20 md:max-w-30 md:py-8"
-                value={height}
+                value={height === 0 ? "" : height}
                 id="height-input"
-                onChange={(e) => dispatch(setHeight(Number(e.target.value)))}
+                onChange={(e) =>
+                  dispatch(
+                    setHeight(
+                      e.target.value === "" ? 0 : Number(e.target.value),
+                    ),
+                  )
+                }
               />
               <label htmlFor="height-input" className="text-sm">
                 cm
@@ -154,10 +164,17 @@ export default function Home() {
               <Input
                 type="number"
                 className="max-w-20 md:max-w-30 md:py-8"
-                value={weight}
+                value={weight === 0 ? "" : weight}
                 id="weight-input"
-                onChange={(e) => dispatch(setWeight(Number(e.target.value)))}
+                onChange={(e) =>
+                  dispatch(
+                    setWeight(
+                      e.target.value === "" ? 0 : Number(e.target.value),
+                    ),
+                  )
+                }
               />
+
               <label htmlFor="weight-input" className="text-sm">
                 kg
               </label>
