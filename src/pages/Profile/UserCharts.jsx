@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getWeightHistory, updateWeight } from "@/lib/profile";
+import { getWeightHistory } from "@/lib/profile";
 import LineChartComponent from "./LineChart";
 import { AuthData } from "@/hooks/AuthData";
 import Container from '@/components/Container';
