@@ -91,12 +91,12 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8">
           {/* Gender Selection */}
-          <form className="flex flex-col items-center border-b-1 p-6 md:col-span-2 md:justify-between md:rounded-md md:border-1">
+          <form className="flex flex-col items-center border-b-1 p-8 md:p-10 md:col-span-2 md:justify-between md:rounded-md md:border-1">
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
             <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
               <Button
                 type="button"
-                className="w-full px-6 py-2 md:w-auto"
+                className="w-full px-6 py-2 md:w-auto md:py-8"
                 variant={gender === "male" ? "default" : "ghost"}
                 onClick={() => dispatch(setGender("male"))}
               >
@@ -104,7 +104,7 @@ export default function Home() {
               </Button>
               <Button
                 type="button"
-                className="w-full px-6 py-2 md:w-auto"
+                className="w-full px-6 py-2 md:w-auto md:py-8"
                 variant={gender === "female" ? "default" : "ghost"}
                 onClick={() => dispatch(setGender("female"))}
               >
@@ -120,7 +120,7 @@ export default function Home() {
               <Input
                 type="number"
                 id="age-input"
-                className="max-w-20"
+                className="max-w-20 md:max-w-30 md:py-8"
                 value={age}
                 onChange={(e) => dispatch(setAge(Number(e.target.value)))}
               />
@@ -136,7 +136,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <Input
                 type="number"
-                className="max-w-20"
+                className="max-w-20 md:max-w-30 md:py-8"
                 value={height}
                 id="height-input"
                 onChange={(e) => dispatch(setHeight(Number(e.target.value)))}
@@ -153,7 +153,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <Input
                 type="number"
-                className="max-w-20"
+                className="max-w-20 md:max-w-30 md:py-8"
                 value={weight}
                 id="weight-input"
                 onChange={(e) => dispatch(setWeight(Number(e.target.value)))}
@@ -173,7 +173,7 @@ export default function Home() {
                   <Button
                     key={selectedGoal}
                     type="button"
-                    className="w-full rounded-md border px-6 py-2 md:w-auto"
+                    className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
                     variant={goal === selectedGoal ? "default" : "ghost"}
                     onClick={() => dispatch(setGoal(selectedGoal))}
                   >
@@ -196,7 +196,7 @@ export default function Home() {
             {["sedentary", "light", "moderate", "active"].map((level) => (
               <Button
                 type="button"
-                className="w-full rounded-md border px-6 py-2 md:w-auto"
+                className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
                 key={level}
                 variant={activityLevel === level ? "default" : "ghost"}
                 onClick={() => dispatch(setActivityLevel(level))}
