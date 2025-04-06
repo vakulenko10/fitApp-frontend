@@ -22,7 +22,7 @@ const Signup = () => {
 
   return (
     <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
-      <div className="bg-primary w-full rounded-md p-10 md:w-1/2 lg:w-1/3">
+      <div className="bg-primary mx-4 w-full rounded-md p-10 md:w-1/2 lg:w-1/3">
         <h1 className="mb-10 p-0 text-center text-2xl font-medium">Sign Up</h1>
         <form onSubmit={handleSignup}>
           <div className="mb-5">
@@ -35,7 +35,7 @@ const Signup = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
-              className="mt-2 w-full py-8"
+              className="mt-2 w-full md:py-8"
             />
           </div>
 
@@ -49,7 +49,7 @@ const Signup = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@gmail.com"
-              className="mt-2 w-full py-8"
+              className="mt-2 w-full md:py-8"
             />
           </div>
 
@@ -63,13 +63,13 @@ const Signup = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="mt-2 w-full py-8"
+              className="mt-2 w-full md:py-8"
             />
           </div>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4">
             <Button
-              className="w-full rounded-md p-8"
+              className="w-full rounded-md p-6 md:p-8"
               type="submit"
               variant={"submit"}
             >
