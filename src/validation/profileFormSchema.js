@@ -8,10 +8,10 @@ export const profileFormSchema = z.object({
   }),
   height: z.coerce.number().int().positive('Must be a positive number').min(50, "Height must be at least 50 cm")
   .max(250, "Height must be less than or equal to 250 cm"),
-  age: z.coerce.number().int().positive('Must be a positive number'),
-  currentcalorieIntake: z
-  .string()
-  .min(1, "Calorie intake is required")
+  age: z.coerce.number().int().positive('Must be a positive number').min(18, "Age must be at least 18")
+  .max(120, "Age must be less than or equal to 120"),
+  currentCalorieIntake: z
+  .coerce.number().int().positive('Must be a positive number').min(50, "calorie intake must be at least 50kcal")
   .refine((val) => /^[0-9]+$/.test(val), {
     message: "Calorie intake must be a valid number",
   }),
