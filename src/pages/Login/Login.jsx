@@ -44,8 +44,8 @@ const Login = () => {
 
   return (
     <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
-      <div className="bg-primary rounded-md p-10 w-full md:w-1/2 lg:w-1/3">
-        <h1 className="mb-10 text-center text-2xl p-0">Login</h1>
+      <div className="bg-primary rounded-md p-10 w-full md:w-1/2 lg:w-1/3 mx-4">
+        <h1 className="mb-10 text-center text-2xl p-0 font-medium">Login</h1>
         <form onSubmit={(e)=>handleLogin(e)}>
           <div className="mb-5">
             <label htmlFor="email" className="block text-sm font-medium">
@@ -57,7 +57,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@gmail.com"
-              className="mt-2 py-8 w-full"
+              className="mt-2 md:py-8 w-full"
             />
           </div>
 
@@ -71,15 +71,15 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="mt-2 py-8 w-full"
+              className="mt-2 md:py-8 w-full"
             />
           </div>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4">
-            <Button className="p-8 w-full rounded-md" type="submit" variant={"submit"}>
+            <Button className="md:p-8 p-6 w-full rounded-md" type="submit" variant={"submit"}>
               Login
             </Button>
-            <Button onClick={e =>handleGoogleLogin(e)} className="p-8 w-full rounded-md" >
+            <Button onClick={e =>handleGoogleLogin(e)} className="md:p-8 p-6 w-full rounded-md" >
               Login with Google
             </Button>
           </div>
