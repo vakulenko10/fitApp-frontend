@@ -24,6 +24,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       await login(data.email, data.password);
+      triggerToast('now you are logged in!');
       navigate("/profile");
     } catch (error) {
       triggerToast(error.message, "error");
