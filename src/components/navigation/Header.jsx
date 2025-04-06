@@ -124,7 +124,7 @@ export default function Header() {
                   <li key={i}>
                     <Link
                       to={r.path}
-                      className="block text-xl text-gray-700 hover:text-gray-900"
+                      className="block text-lg text-gray-700 hover:text-gray-900"
                       onClick={() => setIsNavOpen(false)}
                     >
                       {r.name}
@@ -140,12 +140,12 @@ export default function Header() {
                 <>
                   <li className="flex flex-col w-full text-center">
                     <Link to="/login">
-                      <Button size={"lg"} variant="outline" className={"w-1/2 rounded-2xl p-4"}>
+                      <Button size={"lg"} variant="outline" className={"w-1/2 rounded-2xl p-2"}>
                         Sign in
                       </Button>
                     </Link>
                     <Link to="/signup">
-                      <Button size={"lg"} className={"p-4 w-1/2 rounded-2xl"}>Sign Up</Button>
+                      <Button size={"lg"} className={"p-2 w-1/2 rounded-2xl"}>Sign Up</Button>
                     </Link>
                   </li>
                 </>
