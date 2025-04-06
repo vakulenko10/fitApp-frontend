@@ -24,29 +24,62 @@ export const getWeightHistory = async (token) => {
   }
 };
 
-export const updateWeight = async (token, weightData) => {
-
-    console.log(typeof(weightData))
-  const response = await fetch(`${API_URL}/weight/add`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-        weight: weightData,
-      }),
-    },
-  );
-
-  if (!response.ok) {
-    console.log(JSON.stringify(response))
-    
-    throw new Error(response.status);
+export const addWeight = async (token, weight) => {
+  if (!token) {
+    throw new Error("User not authenticated");
   }
 
-  return await response.json();
+  try {
+    const response = await fetch(`${API_URL}/weight/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ weight }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to add weight record");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error adding weight record:", error);
+    throw error;
+  }
 };
+
+export const updateWeightRecord = async (token, recordId, weight) => {
+  if (!token) {
+    throw new Error("User not authenticated");
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/weight/update/${recordId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ weight }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to update weight record");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error updating weight record:", error);
+    throw error;
+  }
+};
+
 export const updateUserProfile = async (token, profileData) => {
   if (!token) {
     throw new Error("User not authenticated");
