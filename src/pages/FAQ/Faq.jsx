@@ -20,16 +20,19 @@ const Faq = () => {
             <h1 className="text-3xl font-bold md:text-4xl">Get Started Now</h1>
             {[
               {
-                title: "Control over nutrition",
-                content: "The calculator allows you to accurately track...",
+                title: "Control Over Nutrition",
+                content:
+                  "Our calculator helps you accurately track how many calories you consume throughout the day, giving you better insight into your eating habits.",
               },
               {
-                title: "Personalized recommendations",
-                content: "Based on your age, weight, height...",
+                title: "Personalized Recommendations",
+                content:
+                  "Based on your age, weight, height, gender, and activity level, we provide customized advice on how many calories you need to reach your goals.",
               },
               {
                 title: "Easy to use",
-                content: "Most calorie calculators are available...",
+                content:
+                  "Whether you're on your phone or computer, our calculator is super simple to use — anytime, anywhere!",
               },
             ].map((item, index) => (
               <div
@@ -46,8 +49,10 @@ const Faq = () => {
         {/* Additional Sections */}
         <Section title="How It Works">
           <p className="text-gray-700">
-            Our calculator is simple to use! Just input your age, weight,
-            height, gender, and activity level for personalized recommendations.
+            Our calculator is easy to use! Just enter your age, weight, height,
+            gender, and activity level — and get personalized recommendations
+            for your daily calorie intake. It helps you stay on track with your
+            fitness and health goals!
           </p>
         </Section>
 
@@ -56,7 +61,8 @@ const Faq = () => {
             {[
               {
                 question: "What is a calorie calculator?",
-                answer: "A calorie calculator helps you estimate...",
+                answer:
+                  "A calorie calculator helps you estimate how many calories your body needs to function based on your personal details and activity level.",
               },
               {
                 question: "Is the calculator free?",
@@ -64,7 +70,8 @@ const Faq = () => {
               },
               {
                 question: "Can I track my progress?",
-                answer: "Yes, you can log your daily calories...",
+                answer:
+                  "Absolutely! You can log your daily calorie intake and monitor your progress over time to stay on track with your goals.",
               },
             ].map((item, index) => (
               <div key={index}>
@@ -94,7 +101,10 @@ const Faq = () => {
         </Section>
 
         <Section title="About Us">
-          <p>We are students.</p>
+          <p>
+            We are students passionate about helping people eat healthier and
+            live better.
+          </p>
         </Section>
       </div>
     </Container>
