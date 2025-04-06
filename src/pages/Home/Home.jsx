@@ -26,6 +26,7 @@ import {
   setIsModalOpen,
 } from "@/redux/calorieSlice";
 import { calorieFormSchema } from "@/validation/calorieFormSchema";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -99,7 +100,6 @@ export default function Home() {
         <p className="m-2 md:m-8">
           Feel free to enter your information below to receive your personal daily calorie intake.
         </p>
-
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8">
           {/* Gender Selection */}
           <div className="flex flex-col items-center border-b-1 p-6 md:col-span-2 md:justify-between md:rounded-md md:border-1">
@@ -124,12 +124,13 @@ export default function Home() {
           <div className="section-input md:col-span-2 md:col-start-3">
             <p className="mb-4 text-lg font-medium">How old are you?</p>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 type="number"
+                id="age"
                 className="w-24 rounded-md border p-2"
                 {...register("age", { valueAsNumber: true })}
               />
-              <label className="text-sm">Years</label>
+              <label className="text-sm" htmlFor="age">Years</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.age?.message}</div>
           </div>
@@ -138,12 +139,13 @@ export default function Home() {
           <div className="section-input md:col-span-2 md:row-start-2">
             <p className="mb-4 text-lg font-medium">How tall are you?</p>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 type="number"
                 className="w-24 rounded-md border p-2"
+                id="height"
                 {...register("height", { valueAsNumber: true })}
               />
-              <label className="text-sm">cm</label>
+              <label className="text-sm" htmlFor="height">cm</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.height?.message}</div>
           </div>
@@ -152,18 +154,19 @@ export default function Home() {
           <div className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
             <p className="mb-4 text-lg font-medium">How much do you weigh?</p>
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 type="number"
+                id="weight"
                 className="w-24 rounded-md border p-2"
                 {...register("weight", { valueAsNumber: true })}
               />
-              <label className="text-sm">kg</label>
+              <label className="text-sm" htmlFor="weight">kg</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.weight?.message}</div>
           </div>
 
           {/* Goal */}
-          <div className="section-input md:col-span-2 md:col-start-2 md:row-start-3">
+          <div className="section-input` md:col-span-2 md:col-start-2 md:row-start-3">
             <p className="mb-4 text-lg font-medium">What is your Goal?</p>
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
               {['loseWeight', 'maintainWeight', 'gainMuscle'].map((g) => (
@@ -209,7 +212,6 @@ export default function Home() {
             Calculate
           </Button>
         </form>
-
         {/* Modal */}
         <Dialog
           open={isModalOpen}
