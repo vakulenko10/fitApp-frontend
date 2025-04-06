@@ -7,7 +7,7 @@ import { AuthData } from "@/hooks/AuthData";
 import Container from "@/components/Container";
 import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
-import { useNotification } from "@/hooks/useNotification";
+import { useNotification } from "@/hooks/UseNotification";
 
 const Signup = () => {
   const { signup } = AuthData();

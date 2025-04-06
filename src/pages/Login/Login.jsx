@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { AuthData } from "@/hooks/AuthData";
 import Container from "@/components/Container";
-import { useNotification } from "@/hooks/useNotification";
+import { useNotification } from "@/hooks/UseNotification";
 const Login = () => {
   const { login, googleAuth, setUser, setToken } = AuthData();
   const navigate = useNavigate();
