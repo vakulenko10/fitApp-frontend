@@ -2,7 +2,6 @@ import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
-import { nav } from "./navigations";
 
 const Footer = () => {
   return (
