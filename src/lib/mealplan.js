@@ -22,3 +22,28 @@ export const getMealPlanHistory = async (token) => {
       throw error;
     }
   };
+  export const generateMealPlan = async ({ token, formData, selectedAllergens }) => {
+    const url = token
+      ? `${API_URL}/mealplan/generate`
+      : `${API_URL}/mealplan/generate-unauthorized`;
+  
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({
+        products: formData.selectedProducts,
+        excludedProducts: selectedAllergens,
+        calories: parseInt(formData.calorieIntake, 10),
+      }),
+    };
+  
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      throw new Error("Failed to generate meal plan");
+    }
+    return await response.json();
+  };
+  
