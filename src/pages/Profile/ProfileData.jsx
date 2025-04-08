@@ -196,7 +196,7 @@ const ProfileData = ({ profileData, setProfileData }) => {
                     errors.gender
                       ? "border-red-500 focus:ring-red-500"
                       : "focus:ring-primary border-gray-300"
-                  } ${!isEditing ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+                  } ${!isEditing ? "text-destructive cursor-not-allowed" : "bg-white"}`}
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
