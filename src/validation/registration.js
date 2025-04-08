@@ -16,7 +16,7 @@ export const signupSchema = z
         (val) =>
           /[A-Z]/.test(val) &&
           /[a-z]/.test(val) &&
-          /[0-9]/.test(val) &&
+          /[0-9]/.test(val),
         {
           message: "Password must include uppercase, lowercase, number",
         }
