@@ -12,6 +12,27 @@ import { recipeFormSchema } from "@/validation/recipeFormSchema";
 import { generateMealPlan } from "@/lib/mealplan";
 import { useNavigate } from "react-router-dom";
 
+// Helper function to parse preferences text
+const parsePreferences = (preferencesText) => {
+  if (!preferencesText) return { products: [], allergens: [] };
+
+  // Extract products in parentheses
+  const productRegex = /\(([^)]+)\)/g;
+  const products = [];
+  let match;
+  while ((match = productRegex.exec(preferencesText)) !== null) {
+    products.push(match[1].trim());
+  }
+
+  // Extract allergens (starting with *)
+  const words = preferencesText.split(/[\s,]+/);
+  const allergens = words
+    .filter((word) => word.startsWith("*"))
+    .map((word) => word.substring(1).trim());
+
+  return { products, allergens };
+};
+
 const CreateRecipe = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
@@ -51,10 +72,26 @@ const CreateRecipe = () => {
       setIsLoading(true);
       setGeneratedRecipe(null);
 
+      // Parse the preferences text to extract additional products and allergens
+      const { products, allergens } = parsePreferences(
+        formData.preferences || "",
+      );
+
+      // Combine with the products and allergens from the dropdowns
+      const combinedProducts = [...selectedProducts, ...products];
+      const combinedAllergens = [...selectedAllergens, ...allergens];
+
+      // Prepare enriched form data with parsed information
+      const enrichedFormData = {
+        ...formData,
+        selectedProducts: combinedProducts,
+        preferences: formData.preferences, // Keep the original preferences text
+      };
+
       const data = await generateMealPlan({
         token,
-        formData,
-        selectedAllergens,
+        formData: enrichedFormData,
+        selectedAllergens: combinedAllergens,
       });
 
       localStorage.setItem("mealPlan", JSON.stringify(data.mealPlan));
@@ -126,10 +163,17 @@ const CreateRecipe = () => {
           <div className="mb-5 sm:mb-8">
             <div className="mb-3 text-center">
               <h3 className="p-0 text-lg font-semibold">
-                Type your preferences or allergies
+                Add your dietary preferences and restrictions
               </h3>
               <p className="text-muted-foreground">
-                We cannot guarantee that preferences will always be followed.
+                You can specify additional products in parentheses:{" "}
+                <code>(Salmon)</code>, allergies with an asterisk:{" "}
+                <code>*Peanuts</code>, and any other personal notes or
+                requirements.
+              </p>
+              <p className="text-muted-foreground">
+                While we do our best to follow your input, some preferences may
+                not always be fully met.
               </p>
             </div>
             <Textarea
