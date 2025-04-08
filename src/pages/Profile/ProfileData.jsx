@@ -40,7 +40,7 @@ const Field = ({ label, icon, error, inputProps }) => {
         </span>
         <Input
           {...inputProps}
-          className={`w-full rounded-md border py-3 pr-4 pl-10 text-base transition-all ${error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary border-gray-300"} ${inputProps.disabled ? "cursor-not-allowed bg-gray-100" : "bg-white"} `}
+          className={`w-full rounded-md border py-3 pr-4 pl-10 text-base transition-all ${error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary border-gray-300"} `}
         />
       </div>
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
@@ -294,7 +294,11 @@ const ProfileData = ({ profileData, setProfileData }) => {
 
       <div className="order-1 flex flex-1 items-center justify-center md:order-2">
         <Avatar className="h-32 w-32 rounded-full border-2 shadow-md md:h-40 md:w-40">
-          <AvatarImage src={user?.profileImageURL} alt={user.name} />
+          <AvatarImage
+            src={user?.profileImageURL}
+            alt={user.name}
+            className="rounded-full object-cover"
+          />
           <AvatarFallback>{user.name?.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
       </div>
