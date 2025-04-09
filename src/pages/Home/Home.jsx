@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input.jsx";
@@ -24,6 +26,8 @@ import {
   setCalculatedCalories,
   setIsModalOpen,
 } from "@/redux/calorieSlice";
+import { calorieFormSchema } from "@/validation/calorieFormSchema";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -40,25 +44,38 @@ export default function Home() {
     isModalOpen,
   } = useSelector((state) => state.calories);
 
-  useEffect(() => {
-    dispatch(setAge(user.age ?? 25));
-    dispatch(setGender(user.gender ?? "male"));
-    dispatch(setWeight(user.weight ?? 70));
-    dispatch(setHeight(user.height ?? 180));
-  }, [user, dispatch]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(calorieFormSchema),
+    defaultValues: { age, gender, weight, height, activityLevel, goal },
+  });
 
-  const handleCalculate = () => {
-    const result = calculateCalorieIntake(
-      age,
-      gender,
-      weight,
-      height,
-      activityLevel,
-      goal,
-    );
+  useEffect(() => {
+    setValue("age", user.age || 25);
+    setValue("gender", user.gender || "male");
+    setValue("weight", user.weight || 70);
+    setValue("height", user.height || 180);
+  }, [user, setValue]);
+
+  const onSubmit = (data) => {
+    const { age, gender, weight, height, activityLevel, goal } = data;
+    dispatch(setAge(age));
+    dispatch(setGender(gender));
+    dispatch(setWeight(weight));
+    dispatch(setHeight(height));
+    dispatch(setActivityLevel(activityLevel));
+    dispatch(setGoal(goal));
+
+    const result = calculateCalorieIntake(age, gender, weight, height, activityLevel, goal);
     dispatch(setCalculatedCalories(result));
     dispatch(setIsModalOpen(true));
   };
+
   const updateCalorieIntake = async () => {
     try {
       await updateUserProfile(token, {
@@ -72,169 +89,138 @@ export default function Home() {
     } catch (e) {
       triggerToast(
         `Something went wrong while saving your calorie intake: ${e}`,
-        "error",
+        "error"
       );
     }
   };
 
   return (
     <Container className="m-0 mx-auto flex justify-center p-0 md:p-8">
-      <div className="bg-white text-center shadow-lg md:rounded-md md:p-10 lg:max-w-6xl">
-        <h1 className="pt-10 text-2xl font-bold">
-          Daily Calorie Intake Calculator
-        </h1>
+      <main className="bg-white text-center shadow-lg md:rounded-md md:p-10 lg:max-w-6xl">
+        <h1 className="pt-10 text-2xl font-bold">Daily Calorie Intake Calculator</h1>
         <p className="m-2 md:m-8">
-          Feel free to enter your information below in the Daily Calorie Intake
-          calculator to receive your personal current daily calorie intake, and
-          what your body needs to fuel itself during the day with your routine!
+          Feel free to enter your information below to receive your personal daily calorie intake.
         </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex px-2 flex-col md:grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8 ">
           {/* Gender Selection */}
-          <form className="flex flex-col items-center border-b-1 p-8 md:col-span-2 md:justify-between md:rounded-md md:border-1 md:p-10">
+          <section className="flex flex-col items-center border-b-1 p-8 md:col-span-2 md:justify-between md:rounded-md md:border-1 md:p-10">
+            <label htmlFor="gender-group" className="sr-only">Select your gender</label>
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
             <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
-              <Button
-                type="button"
-                className="w-full px-6 py-2 md:w-auto md:py-8"
-                variant={gender === "male" ? "default" : "ghost"}
-                onClick={() => dispatch(setGender("male"))}
-              >
-                Male
-              </Button>
-              <Button
-                type="button"
-                className="w-full px-6 py-2 md:w-auto md:py-8"
-                variant={gender === "female" ? "default" : "ghost"}
-                onClick={() => dispatch(setGender("female"))}
-              >
-                Female
-              </Button>
+              {['male', 'female'].map((g) => (
+                <Button
+                  key={g}
+                  type="button"
+                  className="w-full px-6 py-2 md:w-auto md:py-8"
+                  variant={watch("gender") === g ? "default" : "ghost"}
+                  onClick={() => setValue("gender", g)}
+                >
+                  {g.charAt(0).toUpperCase() + g.slice(1)}
+                </Button>
+              ))}
             </div>
-          </form>
+            <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.gender?.message}</div>
+          </section>
 
-          {/* Age Input */}
-          <form className="section-input md:col-span-2 md:col-start-3">
+          {/* Age */}
+          <section className="section-input md:col-span-2 md:col-start-3">
+            <label htmlFor="age" className="sr-only">Enter your age in years</label>
             <p className="mb-4 text-lg font-medium">How old are you?</p>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
-                id="age-input"
+                id="age"
                 className="max-w-20 md:max-w-30 md:py-8"
-                value={age === 0 ? "" : age}
-                onChange={(e) =>
-                  dispatch(
-                    setAge(e.target.value === "" ? 0 : Number(e.target.value)),
-                  )
-                }
+                {...register("age", { valueAsNumber: true })}
               />
-              <label htmlFor="age-input" className="text-sm">
-                Years
-              </label>
+              <label className="text-sm" htmlFor="age">Years</label>
             </div>
-          </form>
+            <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.age?.message}</div>
+          </section>
 
-          {/* Height Input */}
-          <form className="section-input md:col-span-2 md:row-start-2">
+          {/* Height */}
+          <section className="section-input md:col-span-2 md:row-start-2">
+            <label htmlFor="height" className="sr-only">Enter your height in centimeters</label>
             <p className="mb-4 text-lg font-medium">How tall are you?</p>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 className="max-w-20 md:max-w-30 md:py-8"
-                value={height === 0 ? "" : height}
-                id="height-input"
-                onChange={(e) =>
-                  dispatch(
-                    setHeight(
-                      e.target.value === "" ? 0 : Number(e.target.value),
-                    ),
-                  )
-                }
+                id="height"
+                {...register("height", { valueAsNumber: true })}
               />
-              <label htmlFor="height-input" className="text-sm">
-                cm
-              </label>
+              <label className="text-sm" htmlFor="height">cm</label>
             </div>
-          </form>
+            <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.height?.message}</div>
+          </section>
 
-          {/* Weight Input */}
-          <form className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
+          {/* Weight */}
+          <section className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
+            <label htmlFor="weight" className="sr-only">Enter your weight in kilograms</label>
             <p className="mb-4 text-lg font-medium">How much do you weigh?</p>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
+                id="weight"
                 className="max-w-20 md:max-w-30 md:py-8"
-                value={weight === 0 ? "" : weight}
-                id="weight-input"
-                onChange={(e) =>
-                  dispatch(
-                    setWeight(
-                      e.target.value === "" ? 0 : Number(e.target.value),
-                    ),
-                  )
-                }
+                {...register("weight", { valueAsNumber: true })}
               />
-
-              <label htmlFor="weight-input" className="text-sm">
-                kg
-              </label>
+              <label className="text-sm" htmlFor="weight">kg</label>
             </div>
-          </form>
+            <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.weight?.message}</div>
+          </section>
 
-          {/* Goal Selection */}
-          <form className="section-input md:col-span-2 md:col-start-2 md:row-start-3">
+          {/* Goal */}
+          <section className="section-input  p-8 md:col-span-2 md:col-start-2 md:row-start-3">
+            <label htmlFor="goal-group" className="sr-only">Select your fitness goal</label>
             <p className="mb-4 text-lg font-medium">What is your Goal?</p>
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
-              {["loseWeight", "maintainWeight", "gainMuscle"].map(
-                (selectedGoal) => (
-                  <Button
-                    key={selectedGoal}
-                    type="button"
-                    className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
-                    variant={goal === selectedGoal ? "default" : "ghost"}
-                    onClick={() => dispatch(setGoal(selectedGoal))}
-                  >
-                    {selectedGoal === "loseWeight"
-                      ? "Lose Weight"
-                      : selectedGoal === "maintainWeight"
-                        ? "Maintain Weight"
-                        : "Gain Muscle"}
-                  </Button>
-                ),
-              )}
+              {['loseWeight', 'maintainWeight', 'gainMuscle'].map((g) => (
+                <Button
+                  key={g}
+                  type="button"
+                  className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
+                  variant={watch("goal") === g ? "default" : "ghost"}
+                  onClick={() => setValue("goal", g)}
+                >
+                  {g === "loseWeight" ? "Lose Weight" : g === "maintainWeight" ? "Maintain" : "Gain Muscle"}
+                </Button>
+              ))}
             </div>
-          </form>
-        </div>
+            <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.goal?.message}</div>
+          </section>
 
-        {/* Activity Level Selection */}
-        <form className="flex flex-col items-center p-8">
-          <p className="mb-4 text-lg font-medium">How active are you?</p>
-          <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
-            {["sedentary", "light", "moderate", "active"].map((level) => (
-              <Button
-                type="button"
-                className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
-                key={level}
-                variant={activityLevel === level ? "default" : "ghost"}
-                onClick={() => dispatch(setActivityLevel(level))}
-              >
-                {level.charAt(0).toUpperCase() + level.slice(1)}
-              </Button>
-            ))}
-          </div>
+          {/* Activity Level */}
+          <section className="flex flex-col items-center p-8">
+            <label htmlFor="activity-level-group" className="sr-only">Select your activity level</label>
+            <p className="mb-4 text-lg font-medium">How active are you?</p>
+            <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
+              {['sedentary', 'light', 'moderate', 'active'].map((level) => (
+                <Button
+                  key={level}
+                  type="button"
+                  className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
+                  variant={watch("activityLevel") === level ? "default" : "ghost"}
+                  onClick={() => setValue("activityLevel", level)}
+                >
+                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                </Button>
+              ))}
+            </div>
+            <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.activityLevel?.message}</div>
+          </section>
+
+          <Button
+            type="submit"
+            variant="submit"
+            size="lg"
+            className="w-full rounded-none p-4 md:rounded-md col-span-4"
+          >
+            Calculate
+          </Button>
         </form>
 
-        {/* Calculate Button */}
-        <Button
-          variant="submit"
-          onClick={handleCalculate}
-          size="lg"
-          className="w-full rounded-none p-4 md:rounded-md"
-        >
-          Calculate
-        </Button>
-
-        {/* {Modal Window} */}
+        {/* Modal */}
         <Dialog
           open={isModalOpen}
           onOpenChange={(value) => dispatch(setIsModalOpen(value))}
@@ -249,9 +235,7 @@ export default function Home() {
                   <span className="text-2xl font-semibold text-green-600">
                     {calculatedCalories?.calorieIntake} kcal
                   </span>
-                  <div className="mt-4 font-semibold">
-                    Macronutrients (per day):
-                  </div>
+                  <div className="mt-4 font-semibold">Macronutrients (per day):</div>
                   <p>Protein: {calculatedCalories?.macronutrients.protein}g</p>
                   <p>Fats: {calculatedCalories?.macronutrients.fats}g</p>
                   <p>Carbs: {calculatedCalories?.macronutrients.carbs}g</p>
@@ -259,15 +243,12 @@ export default function Home() {
                 </div>
               </DialogDescription>
             </DialogHeader>
-
-            {/* Authentication Check for Saving Results */}
             {calculatedCalories !== null && (
               <div className="text-center">
                 {user ? (
                   <>
                     <div className="m-4 text-lg">
-                      🎯 Would you like to create a recipe based on your
-                      parameters?
+                      🎯 Would you like to create a recipe based on your parameters?
                     </div>
                     <div className="flex items-center justify-center gap-2">
                       <Button
@@ -290,7 +271,7 @@ export default function Home() {
             )}
           </DialogContent>
         </Dialog>
-      </div>
+      </main>
     </Container>
   );
 }

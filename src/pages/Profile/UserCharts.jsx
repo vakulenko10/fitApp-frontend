@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getWeightHistory, updateWeight } from "@/lib/profile";
+import { getWeightHistory } from "@/lib/profile";
 import LineChartComponent from "./LineChart";
 import { AuthData } from "@/hooks/AuthData";
 import Container from '@/components/Container';
@@ -38,14 +38,14 @@ const UserCharts = ({setWeightHistory, weightHistory}) => {
   }
 
   return (
-    <div className="bg-primary shadow-lg flex flex-col rounded-lg px-4">
-    <div className=" w-full gap-10">
+    <section className="bg-primary shadow-lg flex flex-col rounded-lg px-4">
+      <div className=" w-full gap-10">
           <div className='flex flex-col justify-center items-center'>
             <h1 className='font-semibold text-lg m-0 lg:text-4xl flex justify-center sm:justify-start'>Weight</h1>
             <LineChartComponent data={weightHistory} />
-            </div>
-        </div>
-        </div>
+          </div>
+      </div>
+    </section>
   )
 }
 
