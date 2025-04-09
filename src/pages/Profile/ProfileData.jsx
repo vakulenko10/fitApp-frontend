@@ -116,35 +116,39 @@ const ProfileData = ({ profileData, setProfileData }) => {
     );
 
   return (
-    <div className="bg-primary shadow-lg flex flex-col md:flex-row rounded-lg p-4 relative">
-      <div className="flex-9/12 order-2">
+    <main className="bg-primary shadow-lg flex flex-col md:flex-row rounded-lg p-4 relative">
+      <section className="flex-9/12 order-2">
         <h1 className="font-semibold text-lg lg:text-4xl mb-4">
           Account Settings
         </h1>
-        <form onSubmit={handleSubmit(
-  onSubmit,
-  (formErrors) => {
-    console.log("❌ Validation failed:", formErrors);
-  }
-)}>
+        <form onSubmit={handleSubmit (onSubmit, (formErrors) => {console.log("❌ Validation failed:", formErrors);})}>
           <div className="space-y-4">
             <div>
-              <p>Name</p>
-              <Input {...register("name")} disabled={!isEditing} />
+              <label htmlFor="name">Name</label>
+              <Input 
+                id="name"
+                {...register("name")} 
+                disabled={!isEditing} 
+              />
               {errors.name && (
                 <p className="text-red-500">{errors.name.message}</p>
               )}
             </div>
             <div>
-              <p>Email</p>
-              <Input {...register("email")} disabled />
+              <label htmlFor="email">Email</label>
+              <Input 
+                id="email"
+                {...register("email")} 
+                disabled 
+              />
               {errors.email && (
                 <p className="text-red-500">{errors.email.message}</p>
               )}
             </div>
             <div>
-              <p>Gender</p>
+              <label htmlFor="gender">Gender</label>
               <select
+                id="gender"
                 {...register("gender")}
                 disabled={!isEditing}
                 className="w-full border rounded-md px-3 py-2 disabled:text-muted-darker"
@@ -158,8 +162,9 @@ const ProfileData = ({ profileData, setProfileData }) => {
               )}
             </div>
             <div>
-              <p>Height</p>
+              <label htmlFor="height">Height</label>
               <Input
+                id="height"
                 {...register("height", { valueAsNumber: true })}
                 disabled={!isEditing}
               />
@@ -168,8 +173,9 @@ const ProfileData = ({ profileData, setProfileData }) => {
               )}
             </div>
             <div>
-              <p>Age</p>
+              <label htmlFor="age">Age</label>
               <Input
+                id="age"
                 {...register("age", { valueAsNumber: true })}
                 disabled={!isEditing}
               />
@@ -178,8 +184,9 @@ const ProfileData = ({ profileData, setProfileData }) => {
               )}
             </div>
             <div>
-              <p>Calorie Intake</p>
+              <label htmlFor="calorieIntake">Calorie Intake</label>
               <Input
+                id="calorieIntake"
                 {...register("currentCalorieIntake")}
                 disabled={!isEditing}
               />
@@ -190,8 +197,9 @@ const ProfileData = ({ profileData, setProfileData }) => {
               )}
             </div>
             <div>
-              <p>Weight</p>
+              <label htmlFor="weight">Weight</label>
               <Input
+                id="weight"
                 {...register("weight", { valueAsNumber: true })}
                 disabled={!isEditing}
               />
@@ -224,7 +232,9 @@ const ProfileData = ({ profileData, setProfileData }) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogTitle>
+                  Are you sure?
+                </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone.
                 </AlertDialogDescription>
@@ -236,17 +246,17 @@ const ProfileData = ({ profileData, setProfileData }) => {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-      </div>
+      </section>
 
-      <div className="flex-1 order-1 md:order-2 flex justify-center items-center">
+      <section className="flex-1 order-1 md:order-2 flex justify-center items-center">
         <Avatar className="h-32 w-32 md:h-40 md:w-40 rounded-full border-2 shadow-md">
           <AvatarImage src={user?.profileImageURL} alt={user.name} />
           <AvatarFallback>
             {user.name?.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

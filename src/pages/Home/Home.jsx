@@ -95,14 +95,15 @@ export default function Home() {
 
   return (
     <Container className="m-0 mx-auto flex justify-center p-0 md:p-8">
-      <div className="bg-white text-center shadow-lg md:rounded-md md:p-10 lg:max-w-6xl">
+      <main className="bg-white text-center shadow-lg md:rounded-md md:p-10 lg:max-w-6xl">
         <h1 className="pt-10 text-2xl font-bold">Daily Calorie Intake Calculator</h1>
         <p className="m-2 md:m-8">
           Feel free to enter your information below to receive your personal daily calorie intake.
         </p>
         <form onSubmit={handleSubmit(onSubmit)} className="flex px-2 flex-col md:grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8 ">
           {/* Gender Selection */}
-          <div className="flex flex-col items-center border-b-1 p-6 md:col-span-2 md:justify-between md:rounded-md md:border-1">
+          <section className="flex flex-col items-center border-b-1 p-6 md:col-span-2 md:justify-between md:rounded-md md:border-1">
+            <label htmlFor="gender-group" className="sr-only">Select your gender</label>
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
             <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
               {['male', 'female'].map((g) => (
@@ -118,10 +119,11 @@ export default function Home() {
               ))}
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.gender?.message}</div>
-          </div>
+          </section>
 
           {/* Age */}
-          <div className="section-input md:col-span-2 md:col-start-3">
+          <section className="section-input md:col-span-2 md:col-start-3">
+            <label htmlFor="age" className="sr-only">Enter your age in years</label>
             <p className="mb-4 text-lg font-medium">How old are you?</p>
             <div className="flex items-center gap-2">
               <Input
@@ -133,10 +135,11 @@ export default function Home() {
               <label className="text-sm" htmlFor="age">Years</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.age?.message}</div>
-          </div>
+          </section>
 
           {/* Height */}
-          <div className="section-input md:col-span-2 md:row-start-2">
+          <section className="section-input md:col-span-2 md:row-start-2">
+            <label htmlFor="height" className="sr-only">Enter your height in centimeters</label>
             <p className="mb-4 text-lg font-medium">How tall are you?</p>
             <div className="flex items-center gap-2">
               <Input
@@ -148,10 +151,11 @@ export default function Home() {
               <label className="text-sm" htmlFor="height">cm</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.height?.message}</div>
-          </div>
+          </section>
 
           {/* Weight */}
-          <div className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
+          <section className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
+            <label htmlFor="weight" className="sr-only">Enter your weight in kilograms</label>
             <p className="mb-4 text-lg font-medium">How much do you weigh?</p>
             <div className="flex items-center gap-2">
               <Input
@@ -163,10 +167,11 @@ export default function Home() {
               <label className="text-sm" htmlFor="weight">kg</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.weight?.message}</div>
-          </div>
+          </section>
 
           {/* Goal */}
-          <div className="section-input  p-8 md:col-span-2 md:col-start-2 md:row-start-3">
+          <section className="section-input  p-8 md:col-span-2 md:col-start-2 md:row-start-3">
+            <label htmlFor="goal-group" className="sr-only">Select your fitness goal</label>
             <p className="mb-4 text-lg font-medium">What is your Goal?</p>
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
               {['loseWeight', 'maintainWeight', 'gainMuscle'].map((g) => (
@@ -182,10 +187,11 @@ export default function Home() {
               ))}
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.goal?.message}</div>
-          </div>
+          </section>
 
           {/* Activity Level */}
-          <div className="flex flex-col items-center p-8 col-span-4">
+          <section className="flex flex-col items-center p-8 col-span-4">
+            <label htmlFor="activity-level-group" className="sr-only">Select your activity level</label>
             <p className="mb-4 text-lg font-medium">How active are you?</p>
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
               {['sedentary', 'light', 'moderate', 'active'].map((level) => (
@@ -201,7 +207,7 @@ export default function Home() {
               ))}
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.activityLevel?.message}</div>
-          </div>
+          </section>
 
           <Button
             type="submit"
@@ -212,6 +218,7 @@ export default function Home() {
             Calculate
           </Button>
         </form>
+
         {/* Modal */}
         <Dialog
           open={isModalOpen}
@@ -263,7 +270,7 @@ export default function Home() {
             )}
           </DialogContent>
         </Dialog>
-      </div>
+      </main>
     </Container>
   );
 }
