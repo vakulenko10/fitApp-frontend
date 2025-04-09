@@ -12,7 +12,7 @@ const Faq = () => {
 
   return (
     <Container className="mx-auto flex justify-center p-0 md:p-8">
-      <div className="max-w-5xl space-y-8">
+      <main className="max-w-5xl space-y-8">
         {/* Main Content Section */}
         <section className="rounded-lg border border-gray-200 bg-white shadow-lg">
           <div className="flex flex-col gap-8 p-6 md:p-10">
@@ -20,16 +20,19 @@ const Faq = () => {
             <h1 className="text-3xl font-bold md:text-4xl">Get Started Now</h1>
             {[
               {
-                title: "Control over nutrition",
-                content: "The calculator allows you to accurately track...",
+                title: "Control Over Nutrition",
+                content:
+                  "Our calculator helps you accurately track how many calories you consume throughout the day, giving you better insight into your eating habits.",
               },
               {
-                title: "Personalized recommendations",
-                content: "Based on your age, weight, height...",
+                title: "Personalized Recommendations",
+                content:
+                  "Based on your age, weight, height, gender, and activity level, we provide customized advice on how many calories you need to reach your goals.",
               },
               {
                 title: "Easy to use",
-                content: "Most calorie calculators are available...",
+                content:
+                  "Whether you're on your phone or computer, our calculator is super simple to use — anytime, anywhere!",
               },
             ].map((item, index) => (
               <div
@@ -46,17 +49,20 @@ const Faq = () => {
         {/* Additional Sections */}
         <Section title="How It Works">
           <p className="text-gray-700">
-            Our calculator is simple to use! Just input your age, weight,
-            height, gender, and activity level for personalized recommendations.
+            Our calculator is easy to use! Just enter your age, weight, height,
+            gender, and activity level — and get personalized recommendations
+            for your daily calorie intake. It helps you stay on track with your
+            fitness and health goals!
           </p>
         </Section>
 
         <Section title="FAQ">
-          <div className="space-y-4">
+          <dl className="space-y-4">
             {[
               {
                 question: "What is a calorie calculator?",
-                answer: "A calorie calculator helps you estimate...",
+                answer:
+                  "A calorie calculator helps you estimate how many calories your body needs to function based on your personal details and activity level.",
               },
               {
                 question: "Is the calculator free?",
@@ -64,15 +70,16 @@ const Faq = () => {
               },
               {
                 question: "Can I track my progress?",
-                answer: "Yes, you can log your daily calories...",
+                answer:
+                  "Absolutely! You can log your daily calorie intake and monitor your progress over time to stay on track with your goals.",
               },
             ].map((item, index) => (
               <div key={index}>
-                <strong>{item.question}</strong>
-                <p className="mt-1">{item.answer}</p>
+                <dt><strong>{item.question}</strong></dt>
+                <dd className="mt-1 ml-1 px-2 py-2 text-sm">{item.answer}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </Section>
 
         <Section title="User Testimonials">
@@ -94,9 +101,12 @@ const Faq = () => {
         </Section>
 
         <Section title="About Us">
-          <p>We are students.</p>
+          <p>
+            We are students passionate about helping people eat healthier and
+            live better.
+          </p>
         </Section>
-      </div>
+      </main>
     </Container>
   );
 };

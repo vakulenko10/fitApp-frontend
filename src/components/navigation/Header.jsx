@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <div className="bg-header sticky top-0 z-50 w-full px-4">
       <Container>
-        {/* Десктопний хедер */}
+        {/* Desktop header */}
         <header className="bg-header hidden min-h-20 w-full items-center px-4 md:flex lg:flex">
           <nav className="flex space-x-4">
             {nav.map((r, i) =>
@@ -58,7 +58,7 @@ export default function Header() {
           </div>
         </header>
 
-        {/* Мобільний хедер із бургер-меню */}
+        {/* Mobile header with burger-menu */}
         <header className="flex min-h-15 w-full items-center justify-end border-b border-gray-400 md:hidden">
           <div
             className="cursor-pointer"
@@ -92,7 +92,7 @@ export default function Header() {
             </svg>
           </div>
 
-          {/* Мобільне меню */}
+          {/* Mobile menu */}
           <div
             className={`fixed top-0 left-0 z-50 h-full w-full transform bg-white ${
               isNavOpen ? "translate-x-0" : "-translate-x-full"
