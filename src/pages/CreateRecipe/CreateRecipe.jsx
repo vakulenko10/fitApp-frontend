@@ -12,6 +12,27 @@ import { recipeFormSchema } from "@/validation/recipeFormSchema";
 import { generateMealPlan } from "@/lib/mealplan";
 import { useNavigate } from "react-router-dom";
 
+// Helper function to parse preferences text
+const parsePreferences = (preferencesText) => {
+  if (!preferencesText) return { products: [], allergens: [] };
+
+  // Extract products in parentheses
+  const productRegex = /\(([^)]+)\)/g;
+  const products = [];
+  let match;
+  while ((match = productRegex.exec(preferencesText)) !== null) {
+    products.push(match[1].trim());
+  }
+
+  // Extract allergens (starting with *)
+  const words = preferencesText.split(/[\s,]+/);
+  const allergens = words
+    .filter((word) => word.startsWith("*"))
+    .map((word) => word.substring(1).trim());
+
+  return { products, allergens };
+};
+
 const CreateRecipe = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedAllergens, setSelectedAllergens] = useState([]);
@@ -24,7 +45,6 @@ const CreateRecipe = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(recipeFormSchema),
@@ -32,12 +52,8 @@ const CreateRecipe = () => {
       calorieIntake: "",
       selectedProducts: [],
       preferences: "",
-      goal: "maintain",
     },
   });
-
-  const calorieIntake = watch("calorieIntake");
-  const goal = watch("goal");
 
   useEffect(() => {
     if (user?.isAuthenticated && user?.currentCalorieIntake) {
@@ -56,10 +72,26 @@ const CreateRecipe = () => {
       setIsLoading(true);
       setGeneratedRecipe(null);
 
+      // Parse the preferences text to extract additional products and allergens
+      const { products, allergens } = parsePreferences(
+        formData.preferences || "",
+      );
+
+      // Combine with the products and allergens from the dropdowns
+      const combinedProducts = [...selectedProducts, ...products];
+      const combinedAllergens = [...selectedAllergens, ...allergens];
+
+      // Prepare enriched form data with parsed information
+      const enrichedFormData = {
+        ...formData,
+        selectedProducts: combinedProducts,
+        preferences: formData.preferences, // Keep the original preferences text
+      };
+
       const data = await generateMealPlan({
         token,
-        formData,
-        selectedAllergens,
+        formData: enrichedFormData,
+        selectedAllergens: combinedAllergens,
       });
 
       localStorage.setItem("mealPlan", JSON.stringify(data.mealPlan));
@@ -80,8 +112,9 @@ const CreateRecipe = () => {
             <h1 className="text-center text-xl font-semibold md:font-bold">
               Your daily calorie intake
               {user?.isAuthenticated && user?.currentCalorieIntake && (
-                <span className="text-sm font-normal block text-gray-500">
-                  (your daily calorie intake is automatically loaded from your profile)
+                <span className="block text-sm font-normal text-gray-500">
+                  (your daily calorie intake is automatically loaded from your
+                  profile)
                 </span>
               )}
             </h1>
@@ -106,10 +139,9 @@ const CreateRecipe = () => {
             </div>
             {errors.calorieIntake && <p className="text-red-500 text-center mt-2">{errors.calorieIntake.message}</p>}
           </section>
-
           <section className="mb-3 xl:mb-12.5">
             <div className="md:hidden">
-              <h1 className="text-xl font-medium text-center">
+              <h1 className="text-center text-xl font-medium">
                 Select what product you want in your recipe
               </h1>
               <hr className="border-t-3 border-black"></hr>
@@ -133,7 +165,6 @@ const CreateRecipe = () => {
               className="lg:min-h-25"
             />
           </section>
-
           <section className="flex flex-col gap-3 items-center mb-3 sm:flex-row sm:gap-5 sm:justify-center sm:mb-3 md:mb-4 xl:mb-8">
             {["deficit", "maintain", "surplus"].map((type) => (
               <Button
@@ -149,7 +180,6 @@ const CreateRecipe = () => {
             ))}
             {errors.goal && <p className="text-red-500 text-center mt-2">{errors.goal.message}</p>}
           </section>
-
           <div className="flex justify-center">
             <Button
               variant="submit"
@@ -163,18 +193,9 @@ const CreateRecipe = () => {
           </div>
         </form>
 
-        {calorieIntake && (
-          <div className="mt-4 text-center text-gray-700">
-            <p>
-              Based on your selection, your {goal === "deficit" ? "reduced" : goal === "surplus" ? "increased" : ""} calorie target:
-              <span className="font-bold"> {calorieIntake} calories</span>
-            </p>
-          </div>
-        )}
-
         {isLoading && (
-          <div className="flex justify-center py-10 mt-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <div className="mt-8 flex justify-center py-10">
+            <div className="border-primary h-12 w-12 animate-spin rounded-full border-t-2 border-b-2"></div>
           </div>
         )}
 
@@ -194,7 +215,6 @@ const CreateRecipe = () => {
                   {user?.isAuthenticated ? "Save": 
                 "Log in to save your recipees"}
               </Button>
-             
               <Button
                 variant="submit"
                 size="lg"
