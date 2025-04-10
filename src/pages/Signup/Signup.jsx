@@ -33,8 +33,8 @@ const Signup = () => {
 
   return (
     <Container className="m-0 mx-auto flex h-[calc(100svh-80px)] items-center justify-center p-0 md:p-8">
-      <div className="bg-primary w-full rounded-md p-10 md:w-1/2 lg:w-1/3">
-        <h1 className="mb-10 p-0 text-center text-xl">Sign Up</h1>
+      <main className="bg-primary mx-4 w-full rounded-md p-10 md:w-1/2 lg:w-1/3">
+        <h1 className="mb-10 p-0 text-center text-2xl font-medium">Sign Up</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-5">
             <label htmlFor="name" className="block text-sm font-medium">
@@ -45,7 +45,7 @@ const Signup = () => {
               type="text"
               {...register("name")}
               placeholder="Enter your name"
-              className="mt-2 w-full py-8"
+              className="mt-2 w-full md:py-8"
             />
             {errors.name && <p className="text-sm text-accent-negative">{errors.name.message}</p>}
           </div>
@@ -59,7 +59,7 @@ const Signup = () => {
               type="text"
               {...register("email")}
               placeholder="name@gmail.com"
-              className="mt-2 w-full py-8"
+              className="mt-2 w-full md:py-8"
             />
             {errors.email && <p className="text-sm text-accent-negative">{errors.email.message}</p>}
           </div>
@@ -73,7 +73,7 @@ const Signup = () => {
               type="password"
               {...register("password")}
               placeholder="Password"
-              className="mt-2 w-full py-8"
+              className="mt-2 w-full md:py-8"
             />
             {errors.password && <p className="text-sm text-accent-negative">{errors.password.message}</p>}
           </div>
@@ -93,7 +93,7 @@ const Signup = () => {
           </div>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4">
-            <Button className="w-full rounded-md p-8" type="submit" variant={"submit"}>
+            <Button className="w-full rounded-md p-6 md:p-8" type="submit" variant={"submit"}>
               Sign Up
             </Button>
           </div>
@@ -105,7 +105,7 @@ const Signup = () => {
             Log In
           </button>
         </p>
-      </div>
+      </main>
     </Container>
   );
 };

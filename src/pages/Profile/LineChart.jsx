@@ -68,7 +68,7 @@ const LineChartComponent = ({ data }) => {
   const chartData = prepareData(timeScale);
 
   return (
-    <div className='w-full relative flex flex-wrap'>
+    <main className='w-full relative flex flex-wrap'>
       {/* Buttons to switch between scales */}
       <div className="mb-4 w-full flex justify-center gap-2">
         <Button onClick={() => setTimeScale('day')} variant={`${timeScale=='day'?'default':'accent'}`}>Daily</Button>
@@ -89,7 +89,7 @@ const LineChartComponent = ({ data }) => {
           <Line type="monotone" dataKey="weight" stroke="#82ad0c" className='' />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </main>
   );
 };
 
