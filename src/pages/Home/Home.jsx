@@ -100,7 +100,7 @@ export default function Home() {
         <p className="m-2 md:m-8">
           Feel free to enter your information below to receive your personal daily calorie intake.
         </p>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex px-2 flex-col md:grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8 ">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8">
           {/* Gender Selection */}
           <div className="flex flex-col items-center border-b-1 p-6 md:col-span-2 md:justify-between md:rounded-md md:border-1">
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
@@ -166,7 +166,7 @@ export default function Home() {
           </div>
 
           {/* Goal */}
-          <div className="section-input  p-8 md:col-span-2 md:col-start-2 md:row-start-3">
+          <div className="section-input` md:col-span-2 md:col-start-2 md:row-start-3">
             <p className="mb-4 text-lg font-medium">What is your Goal?</p>
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
               {['loseWeight', 'maintainWeight', 'gainMuscle'].map((g) => (
