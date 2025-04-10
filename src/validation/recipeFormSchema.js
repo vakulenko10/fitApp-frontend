@@ -10,5 +10,5 @@ export const recipeFormSchema = z.object({
       .array(z.string())
       .min(1, "Select at least one product for your recipe"),
     preferences: z.string().optional(),
-    goal: z.enum(["deficit", "maintain", "surplus"]),
+    // goal: z.enum(["deficit", "maintain", "surplus"]),
   });
