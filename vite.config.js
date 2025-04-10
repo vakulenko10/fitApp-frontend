@@ -10,5 +10,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
       '@components': path.resolve(__dirname, 'src/components')
     },
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: '/src/setupTests.js',
   }
 });
