@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input.jsx";
 import { AuthData } from "@/hooks/AuthData";
 import { calculateCalorieIntake } from "@/lib/calorieIntake";
 import { updateUserProfile } from "@/lib/profile";
@@ -96,22 +95,21 @@ export default function Home() {
 
   return (
     <Container className="m-0 mx-auto flex justify-center p-0 md:p-8">
-      <main className="bg-white text-center shadow-lg md:rounded-md md:p-10 lg:max-w-6xl">
+      <div className="bg-white text-center shadow-lg md:rounded-md md:p-10 lg:max-w-6xl">
         <h1 className="pt-10 text-2xl font-bold">Daily Calorie Intake Calculator</h1>
         <p className="m-2 md:m-8">
           Feel free to enter your information below to receive your personal daily calorie intake.
         </p>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex px-2 flex-col md:grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8 ">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 md:gap-8">
           {/* Gender Selection */}
-          <section className="flex flex-col items-center border-b-1 p-8 md:col-span-2 md:justify-between md:rounded-md md:border-1 md:p-10">
-            <label htmlFor="gender-group" className="sr-only">Select your gender</label>
+          <div className="flex flex-col items-center border-b-1 p-6 md:col-span-2 md:justify-between md:rounded-md md:border-1">
             <p className="mb-4 text-lg font-medium">What is your sex?</p>
             <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
               {['male', 'female'].map((g) => (
                 <Button
                   key={g}
                   type="button"
-                  className="w-full px-6 py-2 md:w-auto md:py-8"
+                  className="w-full px-6 py-2 md:w-auto"
                   variant={watch("gender") === g ? "default" : "ghost"}
                   onClick={() => setValue("gender", g)}
                 >
@@ -120,66 +118,62 @@ export default function Home() {
               ))}
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.gender?.message}</div>
-          </section>
+          </div>
 
           {/* Age */}
-          <section className="section-input md:col-span-2 md:col-start-3">
-            <label htmlFor="age" className="sr-only">Enter your age in years</label>
+          <div className="section-input md:col-span-2 md:col-start-3">
             <p className="mb-4 text-lg font-medium">How old are you?</p>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 id="age"
-                className="max-w-20 md:max-w-30 md:py-8"
+                className="w-24 rounded-md border p-2"
                 {...register("age", { valueAsNumber: true })}
               />
               <label className="text-sm" htmlFor="age">Years</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.age?.message}</div>
-          </section>
+          </div>
 
           {/* Height */}
-          <section className="section-input md:col-span-2 md:row-start-2">
-            <label htmlFor="height" className="sr-only">Enter your height in centimeters</label>
+          <div className="section-input md:col-span-2 md:row-start-2">
             <p className="mb-4 text-lg font-medium">How tall are you?</p>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
-                className="max-w-20 md:max-w-30 md:py-8"
+                className="w-24 rounded-md border p-2"
                 id="height"
                 {...register("height", { valueAsNumber: true })}
               />
               <label className="text-sm" htmlFor="height">cm</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.height?.message}</div>
-          </section>
+          </div>
 
           {/* Weight */}
-          <section className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
-            <label htmlFor="weight" className="sr-only">Enter your weight in kilograms</label>
+          <div className="section-input md:col-span-2 md:col-start-3 md:row-start-2">
             <p className="mb-4 text-lg font-medium">How much do you weigh?</p>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 id="weight"
-                className="max-w-20 md:max-w-30 md:py-8"
+                className="w-24 rounded-md border p-2"
                 {...register("weight", { valueAsNumber: true })}
               />
               <label className="text-sm" htmlFor="weight">kg</label>
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.weight?.message}</div>
-          </section>
+          </div>
 
           {/* Goal */}
-          <section className="section-input  p-8 md:col-span-2 md:col-start-2 md:row-start-3">
-            <label htmlFor="goal-group" className="sr-only">Select your fitness goal</label>
+          <div className="section-input` md:col-span-2 md:col-start-2 md:row-start-3">
             <p className="mb-4 text-lg font-medium">What is your Goal?</p>
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3">
               {['loseWeight', 'maintainWeight', 'gainMuscle'].map((g) => (
                 <Button
                   key={g}
                   type="button"
-                  className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
+                  className="w-full rounded-md border px-6 py-2 md:w-auto"
                   variant={watch("goal") === g ? "default" : "ghost"}
                   onClick={() => setValue("goal", g)}
                 >
@@ -188,18 +182,17 @@ export default function Home() {
               ))}
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.goal?.message}</div>
-          </section>
+          </div>
 
           {/* Activity Level */}
-          <section className="flex flex-col items-center p-8">
-            <label htmlFor="activity-level-group" className="sr-only">Select your activity level</label>
+          <div className="flex flex-col items-center p-8 col-span-4">
             <p className="mb-4 text-lg font-medium">How active are you?</p>
             <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
               {['sedentary', 'light', 'moderate', 'active'].map((level) => (
                 <Button
                   key={level}
                   type="button"
-                  className="w-full rounded-md border px-6 py-2 md:w-auto md:py-8"
+                  className="w-full rounded-md border px-6 py-2 md:w-auto"
                   variant={watch("activityLevel") === level ? "default" : "ghost"}
                   onClick={() => setValue("activityLevel", level)}
                 >
@@ -208,7 +201,7 @@ export default function Home() {
               ))}
             </div>
             <div className="min-h-[20px] text-sm text-red-500 mt-1">{errors.activityLevel?.message}</div>
-          </section>
+          </div>
 
           <Button
             type="submit"
@@ -219,7 +212,6 @@ export default function Home() {
             Calculate
           </Button>
         </form>
-
         {/* Modal */}
         <Dialog
           open={isModalOpen}
@@ -271,7 +263,7 @@ export default function Home() {
             )}
           </DialogContent>
         </Dialog>
-      </main>
+      </div>
     </Container>
   );
 }
