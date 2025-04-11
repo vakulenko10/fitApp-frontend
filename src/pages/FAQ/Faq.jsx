@@ -12,7 +12,7 @@ const Faq = () => {
 
   return (
     <Container className="mx-auto flex justify-center p-0 md:p-8">
-      <div className="max-w-5xl space-y-8">
+      <main className="max-w-5xl space-y-8">
         {/* Main Content Section */}
         <section className="rounded-lg border border-gray-200 bg-white shadow-lg">
           <div className="flex flex-col gap-8 p-6 md:p-10">
@@ -57,7 +57,7 @@ const Faq = () => {
         </Section>
 
         <Section title="FAQ">
-          <div className="space-y-4">
+          <dl className="space-y-4">
             {[
               {
                 question: "What is a calorie calculator?",
@@ -75,11 +75,11 @@ const Faq = () => {
               },
             ].map((item, index) => (
               <div key={index}>
-                <strong>{item.question}</strong>
-                <p className="mt-1">{item.answer}</p>
+                <dt><strong>{item.question}</strong></dt>
+                <dd className="mt-1 ml-1 px-2 py-2 text-sm">{item.answer}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </Section>
 
         <Section title="User Testimonials">
@@ -106,7 +106,7 @@ const Faq = () => {
             live better.
           </p>
         </Section>
-      </div>
+      </main>
     </Container>
   );
 };
