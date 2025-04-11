@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { renderWithAuthContext } from '@/tests/test-utils.js';
+import { renderWithAuthContext } from '@/testing/test-utils.js';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
 import Home from '@/pages/Home/Home.jsx';
