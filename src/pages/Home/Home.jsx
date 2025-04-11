@@ -27,8 +27,10 @@ import {
 } from "@/redux/calorieSlice";
 import { calorieFormSchema } from "@/validation/calorieFormSchema";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { triggerToast } = useNotification();
   const { user, setUser, token } = AuthData();
@@ -237,28 +239,43 @@ export default function Home() {
             </DialogHeader>
             {calculatedCalories !== null && (
               <div className="text-center">
-                {user ? (
-                  <>
-                    <div className="m-4 text-lg">
-                      🎯 Would you like to create a recipe based on your parameters?
-                    </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <Button
-                        variant="grey"
-                        onClick={() => dispatch(setIsModalOpen(false))}
-                      >
-                        No
-                      </Button>
-                      <Button variant="submit" onClick={updateCalorieIntake}>
-                        Yes
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-lg text-red-500">
-                    🔒 Log in or register to save your calorie intake results!
-                  </div>
-                )}
+                {/* <>🎯 Would you like to create a recipe based on your parameters?</> */}
+                <div className="m-4 text-lg">
+                  <h5>
+                    🎯 Would you like to update your daily calorie intake in
+                    your profile?
+                  </h5>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Button
+                    variant="grey"
+                    onClick={() => dispatch(setIsModalOpen(false))}
+                  >
+                    No
+                  </Button>
+                  <Button
+                    variant="submit"
+                    onClick={() => {
+                      dispatch(setIsModalOpen(false))
+                      navigate('/create-recipe')
+                    }
+                    }
+                  >
+                    Yes
+                  </Button>
+                </div>
+                 {user.isAuthenticated ? (
+                    <Button variant="submit" onClick={updateCalorieIntake}>
+                      Update your calorie intake
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="submit"
+                      onClick={() => navigate("/login")}
+                    >
+                      Login to update your profile
+                    </Button>
+                  )}
               </div>
             )}
           </DialogContent>

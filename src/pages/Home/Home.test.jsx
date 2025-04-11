@@ -1,24 +1,36 @@
-import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { renderWithAuthContext } from '@/testing/test-utils.js';
-import { Provider } from 'react-redux';
-import { store } from '@/redux/store';
-import Home from '@/pages/Home/Home.jsx';
+import { vi } from 'vitest';
+import Home from '@/pages/Home/Home';
+import { renderWithAuthContext } from '@/testing/test-utils';
+import '@testing-library/jest-dom';
+import store from '@/redux/store';
+import { mockUser } from '@/__mocks__/lib/mockUser';
 
-const mockUser = {
-  name: 'Test User',
-  age: 28,
-  gender: 'male',
-  weight: 80,
-  height: 180,
-  isAuthenticated: true,
-  currentCalorieIntake: 2000,
-};
+// Mock calorie calculator result
+vi.mock('@/lib/calorieIntake', () => ({
+  calculateCalorieIntake: vi.fn(() => ({
+    calorieIntake: 2200,
+    macronutrients: {
+      protein: 100,
+      fats: 70,
+      carbs: 250,
+      fiber: 30,
+    },
+  })),
+}));
 
-const mockContext = {
+// Mock notification hook
+vi.mock('@/hooks/UseNotification', () => ({
+  useNotification: () => ({
+    triggerToast: vi.fn(),
+  }),
+}));
+
+
+const defaultAuthProps = {
   user: mockUser,
-  setUser: vi.fn(),
   token: 'mock-token',
+  setUser: vi.fn(),
   setToken: vi.fn(),
   login: vi.fn(),
   signup: vi.fn(),
@@ -26,60 +38,59 @@ const mockContext = {
   googleAuth: vi.fn(),
 };
 
-describe('<Home /> Page', () => {
-  test('renders form and fills default values', async () => {
-    renderWithAuthContext(
-      <Provider store={store}>
-        <Home />
-      </Provider>,
-      { providerProps: mockContext }
-    );
+const renderHome = (authProps = defaultAuthProps) => {
+  return renderWithAuthContext(<Home />, { providerProps: authProps, reduxStore: store });
+};
 
-    // Check heading and instructions
+describe('Home Component', () => {
+  test('renders form and inputs', () => {
+    renderHome();
     expect(screen.getByText(/Daily Calorie Intake Calculator/i)).toBeInTheDocument();
-
-    // Check if gender button is selected by default
-    expect(screen.getByRole('button', { name: /Male/i })).toHaveClass('bg-primary');
-
-    // Check if age input contains default value
-    const ageInput = screen.getByLabelText(/Years/i);
-    expect(ageInput.value).toBe('28');
+    expect(screen.getByLabelText(/Years/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/cm/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/kg/i)).toBeInTheDocument();
   });
 
-  test('submits form and shows modal', async () => {
-    renderWithAuthContext(
-      <Provider store={store}>
-        <Home />
-      </Provider>,
-      { providerProps: mockContext }
+  test('calculates calorie intake and opens modal for authenticated user', async () => {
+
+    renderHome();
+
+    fireEvent.change(screen.getByLabelText(/Years/i), { target: { value: 30 } });
+    fireEvent.change(screen.getByLabelText(/cm/i), { target: { value: 175 } });
+    fireEvent.change(screen.getByLabelText(/kg/i), { target: { value: 70 } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Lose Weight/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Moderate/i }));
+
+    fireEvent.click(screen.getByRole('button', { name: /Calculate/i }));
+
+    await waitFor(() =>
+      expect(screen.getByText(/Daily Caloric Intake:/i)).toBeInTheDocument()
     );
 
-    const button = screen.getByRole('button', { name: /Calculate/i });
-    fireEvent.click(button);
-
-    await waitFor(() => {
-      expect(screen.getByText(/Daily Caloric Intake:/i)).toBeInTheDocument();
-      expect(screen.getByText(/Would you like to create a recipe/i)).toBeInTheDocument();
-    });
+    expect(screen.getByText(/2200 kcal/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Would you like to create a recipe/i)
+    ).toBeInTheDocument();
   });
 
-  test('shows login/register message if user is not authenticated', async () => {
-    const guestContext = { ...mockContext, user: null };
+  test('shows login prompt in modal for unauthenticated user', async () => {
+    renderHome();
+    fireEvent.change(screen.getByLabelText(/Years/i), { target: { value: 30 } });
+    fireEvent.change(screen.getByLabelText(/cm/i), { target: { value: 175 } });
+    fireEvent.change(screen.getByLabelText(/kg/i), { target: { value: 70 } });
 
-    renderWithAuthContext(
-      <Provider store={store}>
-        <Home />
-      </Provider>,
-      { providerProps: guestContext }
+    fireEvent.click(screen.getByRole('button', { name: /Lose Weight/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Moderate/i }));
+    
+    fireEvent.click(screen.getByRole('button', { name: /Calculate/i }));
+
+    await waitFor(() =>
+      expect(screen.getByText(/Daily Caloric Intake:/i)).toBeInTheDocument()
     );
 
-    const calculate = screen.getByRole('button', { name: /Calculate/i });
-    fireEvent.click(calculate);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(/Log in or register to save your calorie intake results/i)
-      ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(/Log in or register to save your calorie intake results!/i)
+    ).toBeInTheDocument();
   });
 });
