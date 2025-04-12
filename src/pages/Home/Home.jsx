@@ -27,8 +27,10 @@ import {
 } from "@/redux/calorieSlice";
 import { calorieFormSchema } from "@/validation/calorieFormSchema";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { triggerToast } = useNotification();
   const { user, setUser, token } = AuthData();
@@ -176,6 +178,7 @@ export default function Home() {
                   className="w-full rounded-md border px-6 py-2 md:w-auto"
                   variant={watch("goal") === g ? "default" : "ghost"}
                   onClick={() => setValue("goal", g)}
+                  aria-label={`${g === "loseWeight" ? "Lose Weight" : g === "maintainWeight" ? "Maintain" : "Gain Muscle"}`}
                 >
                   {g === "loseWeight" ? "Lose Weight" : g === "maintainWeight" ? "Maintain" : "Gain Muscle"}
                 </Button>
@@ -195,6 +198,7 @@ export default function Home() {
                   className="w-full rounded-md border px-6 py-2 md:w-auto"
                   variant={watch("activityLevel") === level ? "default" : "ghost"}
                   onClick={() => setValue("activityLevel", level)}
+                  aria-label={`${level}`}
                 >
                   {level.charAt(0).toUpperCase() + level.slice(1)}
                 </Button>
@@ -208,6 +212,7 @@ export default function Home() {
             variant="submit"
             size="lg"
             className="w-full rounded-none p-4 md:rounded-md col-span-4"
+            aria-label="Calculate"
           >
             Calculate
           </Button>
@@ -237,28 +242,42 @@ export default function Home() {
             </DialogHeader>
             {calculatedCalories !== null && (
               <div className="text-center">
-                {user ? (
-                  <>
-                    <div className="m-4 text-lg">
-                      🎯 Would you like to create a recipe based on your parameters?
-                    </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <Button
-                        variant="grey"
-                        onClick={() => dispatch(setIsModalOpen(false))}
-                      >
-                        No
-                      </Button>
-                      <Button variant="submit" onClick={updateCalorieIntake}>
-                        Yes
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-lg text-red-500">
-                    🔒 Log in or register to save your calorie intake results!
-                  </div>
-                )}
+                {/* <>🎯 Would you like to create a recipe based on your parameters?</> */}
+                <div className="m-4 text-lg">
+                  <h5>
+                  🎯 Would you like to create a recipe?
+                  </h5>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Button
+                    variant="grey"
+                    onClick={() => dispatch(setIsModalOpen(false))}
+                  >
+                    No
+                  </Button>
+                  <Button
+                    variant="submit"
+                    onClick={() => {
+                      dispatch(setIsModalOpen(false))
+                      navigate('/create-recipe')
+                    }
+                    }
+                  >
+                    Yes
+                  </Button>
+                </div>
+                 {user.isAuthenticated ? (
+                    <Button variant="submit" onClick={updateCalorieIntake}>
+                      Update your calorie intake
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="submit"
+                      onClick={() => navigate("/login")}
+                    >
+                      Login to update your profile
+                    </Button>
+                  )}
               </div>
             )}
           </DialogContent>
