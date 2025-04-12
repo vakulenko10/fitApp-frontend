@@ -31,7 +31,7 @@ export default function Header() {
           <div className="ml-auto flex gap-2">
             {user.isAuthenticated ? (
               <>
-                <Avatar className="border-secondary relative h-12 w-12 rounded-full border-2 shadow-md">
+                <Avatar aria-label="profile-image" className="border-secondary relative h-12 w-12 rounded-full border-2 shadow-md">
                   <AvatarImage
                     src={user?.profileImageURL}
                     alt={user.name}
@@ -43,14 +43,14 @@ export default function Header() {
                     </AvatarFallback>
                   )}
                 </Avatar>
-                <Button onClick={logout}>Log out</Button>
+                <Button onClick={logout} aria-label="log-out-header-btn">Log out</Button>
               </>
             ) : (
               <>
-                <Link to="/login">
+                <Link to="/login" aria-label="sign-in-header-btn">
                   <Button variant="outline">Sign in</Button>
                 </Link>
-                <Link to="/signup">
+                <Link to="/signup" aria-label="sign-up-header-btn">
                   <Button>Sign Up</Button>
                 </Link>
               </>
@@ -134,18 +134,18 @@ export default function Header() {
               )}
               {user.isAuthenticated ? (
                 <li>
-                  <Button onClick={logout}>Log out</Button>
+                  <Button onClick={logout} aria-label="log-out-header-btn">Log out</Button>
                 </li>
               ) : (
                 <>
                   <li className="flex flex-col w-full text-center">
                     <Link to="/login">
-                      <Button size={"lg"} variant="outline" className={"w-1/2 rounded-2xl p-4"}>
+                      <Button size={"lg"} variant="outline" aria-label="sign-in-header-btn" className={"w-1/2 rounded-2xl p-4"}>
                         Sign in
                       </Button>
                     </Link>
                     <Link to="/signup">
-                      <Button size={"lg"} className={"p-4 w-1/2 rounded-2xl"}>Sign Up</Button>
+                      <Button size={"lg"} aria-label="sign-up-header-btn" className={"p-4 w-1/2 rounded-2xl"}>Sign Up</Button>
                     </Link>
                   </li>
                 </>
