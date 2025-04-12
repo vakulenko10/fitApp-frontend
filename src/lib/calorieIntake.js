@@ -84,3 +84,4 @@ export function calculateCalorieIntake(
     },
   };
 }
+console.log(calculateCalorieIntake(25, 'female', 60, 165, 'light', 'loseWeight'))
