@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { getMealPlanHistory } from "@/lib/mealplan";
 import { AuthData } from "@/hooks/AuthData";
-import Container from '@/components/Container';
+import Container from "@/components/Container";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerDescription, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 const MealPlanHistory = () => {
   const { user, token } = AuthData();
@@ -28,81 +37,156 @@ const MealPlanHistory = () => {
   }, [token]);
 
   if (loading) {
-    return <Container><div>Loading...</div></Container>;
+    return (
+      <Container>
+        <div>Loading...</div>
+      </Container>
+    );
   }
 
   return (
-    <main className="bg-primary shadow-lg p-6 rounded-lg overflow-x-auto">
-      <h2 className="text-2xl font-bold text-primary-foreground mb-6">Meal Plan History</h2>
+    <div className="bg-primary rounded-lg p-4 shadow-lg md:p-6">
+      <h2 className="text-primary-foreground mb-4 text-xl font-bold md:text-2xl">
+        Meal Plan History
+      </h2>
 
-      <ScrollArea className="h-[400px] overflow-y-auto rounded-sm">
-        <table className="w-full min-w-[50rem] text-sm text-left text-primary-foreground">
-          <caption className='sr-only'>History of your generated meal plans</caption>
-          <thead className="bg-secondary text-secondary-foreground">
-            <tr>
-              <th className="px-4 py-2 md:px-6 md:py-3"></th>
-              <th className="px-4 py-2 md:px-6 md:py-3">Creation date</th>
-              <th className="px-4 py-2 md:px-6 md:py-3">Calorie Intake</th>
-              <th className="px-4 py-2 md:px-6 md:py-3">Included Products</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mealPlanHistory?.length > 0 ? (
-              mealPlanHistory.map((plan, index) => 
-              (
-                <tr key={plan.id} className="group bg-background border-b text-secondary hover:bg-background/50 transition">
-                  <td className="px-4 py-2 md:px-6 md:py-4">
-                    <Drawer>
-                      <DrawerTrigger className={` text-nowrap rounded-2xl py-1 px-3 text-accent-foreground text-md font-sans transition bg-accent group-hover:bg-secondary hover:bg-secondary/80`}>
-                        View Details
-                      </DrawerTrigger>
-                      <DrawerContent>
-                        <DrawerHeader>
-                          <DrawerTitle className={'flex justify-between items-center'}>
-                            Meal Plan Details
-                          <div className='flex flex-col md:flex-row gap-0 md:gap-6'>
-                          <h5 className='text-primary-foreground/80 p-0 m-0 '>{new Date(plan.createdAt).toLocaleDateString()}</h5>
-                          <h5 className='text-primary-foreground/80 p-0 m-0 '>{plan.calorieIntake}kcal</h5></div>
-                          </DrawerTitle>
-                          
-                          <DrawerDescription className={'m-0 py-0'}>
-                            <strong>Generated Text:</strong>
-                          </DrawerDescription>
+      <div className="hidden md:block">
+        <ScrollArea className="h-[400px] overflow-y-auto rounded-sm">
+          <table className="text-primary-foreground w-full min-w-[50rem] text-left text-sm">
+            <thead className="bg-secondary text-secondary-foreground">
+              <tr>
+                <th className="px-4 py-2"> </th>
+                <th className="px-4 py-2">Creation date</th>
+                <th className="px-4 py-2">Calorie Intake</th>
+                <th className="px-4 py-2">Included Products</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mealPlanHistory?.length > 0 ? (
+                mealPlanHistory.map((plan) => (
+                  <tr
+                    key={plan.id}
+                    className="group bg-background text-secondary hover:bg-background/50 border-b transition"
+                  >
+                    <td className="px-4 py-2">
+                      <Drawer>
+                        <DrawerTrigger className="bg-muted text-foreground hover:bg-muted/80 rounded-md px-3 py-1.5 text-sm font-medium transition-all">
+                          View Details
+                        </DrawerTrigger>
+                        <DrawerContent>
+                          <DrawerHeader>
+                            <DrawerTitle className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                              Meal Plan Details
+                              <div className="flex flex-col gap-2 md:flex-row md:gap-6">
+                                <h5 className="text-primary-foreground/80">
+                                  {new Date(
+                                    plan.createdAt,
+                                  ).toLocaleDateString()}
+                                </h5>
+                                <h5 className="text-primary-foreground/80">
+                                  {plan.calorieIntake}kcal
+                                </h5>
+                              </div>
+                            </DrawerTitle>
 
-                          <ScrollArea className={'h-[40vh]'}>
-                            <div className="text-sm text-muted-foreground h-full overflow-y-auto">
-                              {plan.generatedText}
-                            </div>
-                          </ScrollArea>
-                        </DrawerHeader>
-                        <DrawerFooter className={'p-0 pb-2 relative w-full text-center items-center'}>
-                          <DrawerClose className="transition w-[10rem] px-2 py-1 rounded-lg bg-background text-secondary hover:bg-background/80 hover:text-secondary/80">
-                            {/* <Button variant="outline" className="text-secondary hover:text-secondary/80"> */}
+                            <DrawerDescription className="py-2">
+                              <strong>Generated Text:</strong>
+                            </DrawerDescription>
+
+                            <ScrollArea className="h-[40vh]">
+                              <div className="text-muted-foreground h-full overflow-y-auto text-sm">
+                                {plan.generatedText}
+                              </div>
+                            </ScrollArea>
+                          </DrawerHeader>
+                          <DrawerFooter className="relative w-full items-center p-0 pb-2 text-center">
+                            <DrawerClose className="bg-muted text-foreground hover:bg-muted/80 mx-auto mt-4 w-fit rounded-md px-4 py-1.5 text-sm transition-all">
                               Close
-                            {/* </Button> */}
-                          </DrawerClose>
-                        </DrawerFooter>
-                      </DrawerContent>
-                    </Drawer>
-                  </td>
-                  <td className="px-4 py-2 md:px-6 md:py-4">{new Date(plan.createdAt).toLocaleDateString()}</td>
-                  <td className="px-4 py-2 md:px-6 md:py-4">{plan.calorieIntake} kcal</td>
-                  <td className="px-4 py-2 md:px-6 md:py-4 truncate max-w-[150px] md:max-w-none">
-                    {JSON.parse(plan.includedProducts).join(", ")}
+                            </DrawerClose>
+                          </DrawerFooter>
+                        </DrawerContent>
+                      </Drawer>
+                    </td>
+                    <td className="px-4 py-2">
+                      {new Date(plan.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-2">{plan.calorieIntake} kcal</td>
+                    <td className="max-w-[150px] truncate px-4 py-2">
+                      {JSON.parse(plan.includedProducts).join(", ")}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="4"
+                    className="text-muted-foreground px-4 py-4 text-center"
+                  >
+                    No meal plans found.
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="px-4 py-2 md:px-6 md:py-4 text-center text-muted-foreground">
-                  No meal plans found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </ScrollArea>
-    </main>
+              )}
+            </tbody>
+          </table>
+        </ScrollArea>
+      </div>
+
+      <div className="space-y-4 md:hidden">
+        {mealPlanHistory?.length > 0 ? (
+          mealPlanHistory.map((plan) => (
+            <div
+              key={plan.id}
+              className="bg-background rounded-md p-4 shadow-sm"
+            >
+              <div className="text-muted-foreground mb-2 text-sm">
+                {new Date(plan.createdAt).toLocaleDateString()}
+              </div>
+              <div className="text-secondary text-lg font-semibold">
+                {plan.calorieIntake} kcal
+              </div>
+              <div className="text-foreground mt-1 truncate text-sm">
+                {JSON.parse(plan.includedProducts).join(", ")}
+              </div>
+              <div className="mt-3">
+                <Drawer>
+                  <DrawerTrigger className="bg-muted text-foreground hover:bg-muted/80 rounded-md px-3 py-1.5 text-sm font-medium transition-all">
+                    View Details
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <DrawerHeader>
+                      <DrawerTitle className="flex flex-col gap-2">
+                        Meal Plan Details
+                        <div className="text-primary-foreground/80 text-sm">
+                          {new Date(plan.createdAt).toLocaleDateString()} -{" "}
+                          {plan.calorieIntake} kcal
+                        </div>
+                      </DrawerTitle>
+                      <DrawerDescription className="py-2">
+                        <strong>Generated Text:</strong>
+                      </DrawerDescription>
+                      <ScrollArea className="h-[40vh]">
+                        <div className="text-muted-foreground h-full overflow-y-auto text-sm">
+                          {plan.generatedText}
+                        </div>
+                      </ScrollArea>
+                    </DrawerHeader>
+                    <DrawerFooter className="relative w-full items-center p-0 pb-2 text-center">
+                      <DrawerClose className="bg-muted text-foreground hover:bg-muted/80 mx-auto mt-4 w-fit rounded-md px-4 py-1.5 text-sm transition-all">
+                        Close
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-muted-foreground text-center text-sm">
+            No meal plans found.
+          </p>
+        )}
+      </div>
+    </div>
   );
 };
 
