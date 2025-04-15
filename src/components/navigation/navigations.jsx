@@ -1,4 +1,4 @@
-import { Home, About, Login, Signup, Profile, CreateRecipe, Faq } from '@/pages/index';
+import { Home, Login, Signup, Profile, CreateRecipe, Faq } from '@/pages/index';
 
 export const nav = [
   {
@@ -8,13 +8,13 @@ export const nav = [
     isMenu: true,
     isPrivate: false,
   },
-  {
-    path: "/about",
-    name: "About",
-    element: <About />,
-    isMenu: true,
-    isPrivate: false,
-  },
+  // {
+  //   path: "/about",
+  //   name: "About",
+  //   element: <About />,
+  //   isMenu: true,
+  //   isPrivate: false,
+  // },
   {
     path: "/login",
     name: "Login",
