@@ -8,20 +8,10 @@ import MealPlanHistory from "./MealPlanHistory";
 import Container from "@/components/Container";
 
 const Profile = () => {
-  const { user, token } = AuthData();
   const [loading, setLoading] = useState(false);
   
   const [weightHistory, setWeightHistory] = useState();
-  
-  const [profileData, setProfileData] = useState({
-    name: user.name || "",
-    email: user.email || "",
-    gender: user.gender || "",
-    height: user.height || "",
-    weight: user.weight || 0,
-    age: user.age || "",
-    currentCalorieIntake: user.currentCalorieIntake || 0
-  });
+ 
 
   
 
@@ -41,7 +31,7 @@ const Profile = () => {
         </TabsList>
         <Container className={`sm:max-w-[30rem] md:max-w-[40rem] lg:max-w-[60rem] my-12`} >
           <TabsContent value="profile">
-            <ProfileData profileData={profileData} setProfileData={setProfileData}/>
+            <ProfileData/>
           </TabsContent>
           <TabsContent value="charts">
             <UserCharts setWeightHistory={setWeightHistory} weightHistory={weightHistory} />

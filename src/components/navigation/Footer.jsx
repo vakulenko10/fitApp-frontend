@@ -16,12 +16,6 @@ const Footer = () => {
               Home
             </Link>
             <Link
-              to="/about"
-              className="text-muted-foreground hover:text-foreground font-medium"
-            >
-              About
-            </Link>
-            <Link
               to="/create-recipe"
               className="text-muted-foreground hover:text-foreground font-medium"
             >
