@@ -11,6 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { recipeFormSchema } from "@/validation/recipeFormSchema";
 import { generateMealPlan } from "@/lib/mealplan";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setSendToRecipe } from "@/redux/calorieSlice";
+import { calculateMacrosFromCalories } from "@/lib/calorieIntake";
 
 // Helper function to parse preferences text
 const parsePreferences = (preferencesText) => {
@@ -41,6 +44,12 @@ const CreateRecipe = () => {
   const { user, token } = AuthData();
   const { triggerToast } = useNotification();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    calculatedCalories,
+    sendToRecipe,
+    goal: calculatedGoal,
+  } = useSelector((state) => state.calories);
   const {
     register,
     handleSubmit,
@@ -66,6 +75,25 @@ const CreateRecipe = () => {
   useEffect(() => {
     setValue("selectedProducts", selectedProducts);
   }, [selectedProducts, setValue]);
+
+  useEffect(() => {
+    if (sendToRecipe && calculatedCalories) {
+      // Set calorie input value - convert to string to match form schema
+      setValue("calorieIntake", String(calculatedCalories.calorieIntake));
+
+      // Format macronutrients for preferences
+      const macroPreferences =
+        `Macronutrients: Protein: ${calculatedCalories.macronutrients.protein}g, ` +
+        `Fats: ${calculatedCalories.macronutrients.fats}g, ` +
+        `Carbs: ${calculatedCalories.macronutrients.carbs}g, ` +
+        `Fiber: ${calculatedCalories.macronutrients.fiber}g`;
+
+      setValue("preferences", macroPreferences);
+
+      // Reset the flag after using the data
+      dispatch(setSendToRecipe(false));
+    }
+  }, [calculatedCalories, sendToRecipe, setValue, dispatch]);
 
   const handleCreateRecipe = async (formData) => {
     try {
@@ -130,6 +158,35 @@ const CreateRecipe = () => {
                 onClick={() => {
                   const fallback = user?.currentCalorieIntake || "2000";
                   setValue("calorieIntake", String(fallback));
+
+                  // Get appropriate values for calculation
+                  const calories = parseInt(fallback, 10);
+
+                  // For both authenticated and non-authenticated users
+                  // Use user profile data, calculator selection, or defaults
+                  const gender = user?.gender || "male";
+                  // Pull goal from user profile OR recent calculator selection OR default
+                  const goal = user?.goal || calculatedGoal || "maintainWeight";
+
+                  // Calculate macronutrients based on calories
+                  const macros = calculateMacrosFromCalories(
+                    calories,
+                    gender,
+                    goal,
+                  );
+
+                  // Format and set in preferences for all users
+                  const macroPreferences =
+                    `Macronutrients: Protein: ${macros.protein}g, ` +
+                    `Fats: ${macros.fats}g, ` +
+                    `Carbs: ${macros.carbs}g, ` +
+                    `Fiber: ${macros.fiber}g`;
+
+                  setValue("preferences", macroPreferences);
+
+                  // Reset selected products and allergens
+                  setSelectedProducts([]);
+                  setSelectedAllergens([]);
                 }}
               >
                 Reset

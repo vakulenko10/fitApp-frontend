@@ -9,6 +9,7 @@ const initialState = {
   goal: "loseWeight",
   calculatedCalories: null,
   isModalOpen: false,
+  sendToRecipe: false,
 };
 
 const calorieSlice = createSlice({
@@ -39,6 +40,9 @@ const calorieSlice = createSlice({
     setIsModalOpen: (state, action) => {
       state.isModalOpen = action.payload;
     },
+    setSendToRecipe: (state, action) => {
+      state.sendToRecipe = action.payload;
+    },
   },
 });
 
@@ -51,6 +55,7 @@ export const {
   setGoal,
   setCalculatedCalories,
   setIsModalOpen,
+  setSendToRecipe,
 } = calorieSlice.actions;
 
 export default calorieSlice.reducer;
