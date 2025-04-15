@@ -48,7 +48,7 @@ const Field = ({ label, icon, error, inputProps }) => {
   );
 };
 
-const ProfileData = ({ profileData, setProfileData }) => {
+const ProfileData = () => {
   const { triggerToast } = useNotification();
   const { user, setUser, token } = AuthData();
   const [loading, setLoading] = useState(true);
@@ -61,12 +61,12 @@ const ProfileData = ({ profileData, setProfileData }) => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: profileData,
+    defaultValues: user,
   });
 
   useEffect(() => {
-    reset(profileData);
-  }, [profileData, reset]);
+    reset(user);
+  }, [user, reset]);
 
   const onSubmit = async (data) => {
     const updatedProfile = {};
