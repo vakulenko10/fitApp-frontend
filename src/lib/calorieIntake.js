@@ -84,4 +84,52 @@ export function calculateCalorieIntake(
     },
   };
 }
-console.log(calculateCalorieIntake(25, 'female', 60, 165, 'light', 'loseWeight'))
+
+export function calculateMacrosFromCalories(
+  calorieIntake,
+  gender,
+  goal = "maintainWeight",
+) {
+  // Macronutrient distribution based on goal
+  const macroDistribution = {
+    maintainWeight: {
+      protein: 0.25,
+      carbs: 0.47,
+      fats: 0.28,
+      fiber: gender === "male" ? 14 : 12,
+    },
+    loseWeight: {
+      protein: 0.28,
+      carbs: 0.43,
+      fats: 0.29,
+      fiber: gender === "male" ? 14 : 12,
+    },
+    gainMuscle: {
+      protein: 0.25,
+      carbs: 0.49,
+      fats: 0.26,
+      fiber: gender === "male" ? 14 : 12,
+    },
+  };
+
+  // Get the macronutrient ratios for the selected goal
+  const { protein, carbs, fats, fiber } =
+    macroDistribution[goal] || macroDistribution.maintainWeight;
+
+  // Calculate macronutrient intake in grams
+  const proteinIntake = (calorieIntake * protein) / 4; // 1g protein = 4 kcal
+  const carbIntake = (calorieIntake * carbs) / 4; // 1g carbs = 4 kcal
+  const fatIntake = (calorieIntake * fats) / 9; // 1g fat = 9 kcal
+  const fiberIntake = (fiber * calorieIntake) / 1000;
+
+  return {
+    protein: Math.round(proteinIntake),
+    fats: Math.round(fatIntake),
+    carbs: Math.round(carbIntake),
+    fiber: Math.round(fiberIntake),
+  };
+}
+
+console.log(
+  calculateCalorieIntake(25, "female", 60, 165, "light", "loseWeight"),
+);
